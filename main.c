@@ -20,4 +20,6 @@ int main (int argc, char* argv[]) {
     cardType testArray[] = {test0, test1, test2, test3};
 
     printf("%d", getTrickWinner(testArray, 4, NOTRUMP, testArray[0].color));
+
+    return EXIT_SUCCESS;
 }
