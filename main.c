@@ -21,5 +21,6 @@ int main (int argc, char* argv[]) {
 
     printf("%d", getTrickWinner(testArray, 4, NOTRUMP, testArray[0].color));
 
+    getchar();
     return EXIT_SUCCESS;
 }
