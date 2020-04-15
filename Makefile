@@ -1,12 +1,16 @@
 clean: coinche.exe
 	rm main.o
-	rm coinche.o
+	rm core.o
+	rm play.o
 
-coinche.exe: main.o coinche.o
-	gcc -o coinche.exe main.o coinche.o
+coinche.exe: main.o core.o play.o
+	gcc -o coinche.exe main.o core.o play.o
 
 main.o: main.c
 	gcc -Wall -Werror -g -c main.c
 
-coinche.o: coinche.c
-	gcc -Wall -Werror -g -c coinche.c
+core.o: main.c
+	gcc -Wall -Werror -g -c core.c
+
+play.o: play.c
+	gcc -Wall -Werror -g -c play.c

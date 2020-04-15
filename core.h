@@ -1,3 +1,6 @@
+#ifndef _CORE_H_
+#define _CORE_H_
+
 typedef enum valueType {
     SEVEN = 0,
     EIGHT = 1,
@@ -23,6 +26,6 @@ typedef struct cardType {
     colorType color;
 } cardType;
 
-int getCardStrength(cardType card, colorType trump, colorType roundColor);
+const int CARD_POINTS_TABLE[4][8];
 
-int getTrickWinner(cardType *cardArray, int numberOfCards, colorType trump, colorType roundColor);
+#endif
