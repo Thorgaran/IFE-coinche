@@ -9,7 +9,7 @@ coinche.exe: main.o core.o play.o
 main.o: main.c
 	gcc -Wall -Werror -g -c main.c
 
-core.o: main.c
+core.o: core.c
 	gcc -Wall -Werror -g -c core.c
 
 play.o: play.c
