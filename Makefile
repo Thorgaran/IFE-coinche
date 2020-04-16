@@ -1,16 +1,23 @@
+OS=$(shell uname)
+ifeq ($(OS), CYGWIN_NT-10.0)
+	CLEANCMD=rm
+else
+	CLEANCMD=del
+endif
+
 clean: coinche.exe
-	rm main.o
-	rm core.o
-	rm play.o
+	$(CLEANCMD) main.o
+	$(CLEANCMD) core.o
+	$(CLEANCMD) play.o
 
 coinche.exe: main.o core.o play.o
-	gcc -o coinche.exe main.o core.o play.o
+	gcc -o $@ $^
 
 main.o: main.c
-	gcc -Wall -Werror -g -c main.c
+	gcc -Wall -Werror -g -c $<
 
 core.o: core.c
-	gcc -Wall -Werror -g -c core.c
+	gcc -Wall -Werror -g -c $<
 
 play.o: play.c
-	gcc -Wall -Werror -g -c play.c
+	gcc -Wall -Werror -g -c $<
