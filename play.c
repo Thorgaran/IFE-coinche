@@ -126,3 +126,20 @@ void findValidCardsInHand(cardType *cardsInHand, int nbOfCardsInHand, cardType *
         }
     }    
 }
+
+bool removeCard(cardType *cardArray, int nbOfCards, cardType cardToRemove) {
+    bool foundCard = FALSE;
+    for (int i = 0; i < nbOfCards; i++) {
+        if (foundCard == TRUE) {
+            cardArray[i-1] = cardArray[i];
+        }
+        else if ((cardArray[i].value == cardToRemove.value) && (cardArray[i].color == cardToRemove.color)) {
+            foundCard = TRUE;
+        }
+    }
+    if (foundCard == TRUE) {
+        cardArray[nbOfCards-1].value = NULL_VALUE;
+        cardArray[nbOfCards-1].color = NULL_COLOR;
+    }
+    return foundCard;
+}

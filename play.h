@@ -53,4 +53,12 @@ bool setCanPlay(cardType *cardArray, int nbOfCards, colorType conditionalColor, 
 */
 void findValidCardsInHand(cardType *cardsInHand, int nbOfCardsInHand, cardType *trickCards, int nbOfTrickCards, colorType trump);
 
+/* Seeks a card in an array to remove it.
+*   @param *cardArray: array containing the cards
+*   @param nbOfCards: the number of cards in cardArray
+*   @param cardToRemove: the card to seek and remove in cardArray
+*   @return foundCard: TRUE if the function was able to find the card (thus removing it), FALSE otherwise
+*/
+bool removeCard(cardType *cardArray, int nbOfCards, cardType cardToRemove);
+
 #endif
