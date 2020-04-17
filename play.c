@@ -18,12 +18,12 @@ int getCardStrength(cardType card, colorType trump, colorType roundColor) {
     return cardStrength;
 }
 
-int getStrongestCard(cardType *cardArray, int numberOfCards, colorType trump, colorType roundColor) {
+int getStrongestCard(cardType *cardArray, int nbOfCards, colorType trump, colorType roundColor) {
     int greatestStrength = getCardStrength(cardArray[0], trump, roundColor);
     int cardStrength;
     int strongestCardPos = 0;
 
-    for (int i = 1; i < numberOfCards; i++) {
+    for (int i = 1; i < nbOfCards; i++) {
         cardStrength = getCardStrength(cardArray[i], trump, roundColor); //cardStrength is needed to avoid calling getCardStrength twice
         if (cardStrength > greatestStrength) {
            greatestStrength = cardStrength;
@@ -36,24 +36,93 @@ int getStrongestCard(cardType *cardArray, int numberOfCards, colorType trump, co
 int getCardPoints(cardType card, colorType trump) {
     int cardPoints;
     if (trump == ALLTRUMP) {                    //If ALLTRUMP
-        cardPoints = CARD_POINTS_TABLE[0][card.value];
+        cardPoints = CARD_POINTS_TABLE[0][card.value - 1];
     }
     else if (trump == NOTRUMP) {                //If NOTRUMP
-        cardPoints = CARD_POINTS_TABLE[1][card.value];
+        cardPoints = CARD_POINTS_TABLE[1][card.value - 1];
     }
     else if (card.color == trump) {             //If the card is a trump
-        cardPoints = CARD_POINTS_TABLE[2][card.value];
+        cardPoints = CARD_POINTS_TABLE[2][card.value - 1];
     }
     else {                                      //If the card is not a trump
-        cardPoints = CARD_POINTS_TABLE[3][card.value]; 
+        cardPoints = CARD_POINTS_TABLE[3][card.value - 1]; 
     }
     return cardPoints;
 }
 
-int getCardArrayPoints(cardType *cardArray, int numberOfCards, colorType trump) {
+int getCardArrayPoints(cardType *cardArray, int nbOfCards, colorType trump) {
     int totalPoints = 0;
-    for (int i = 0; i < numberOfCards; i++) {
+    for (int i = 0; i < nbOfCards; i++) {
         totalPoints += getCardPoints(cardArray[i], trump);
     }
     return totalPoints;
+}
+
+bool setCanPlay(cardType *cardArray, int nbOfCards, colorType conditionalColor, cardType bestTrump, bool canPlay) {
+    bool conditionMet = FALSE;
+    for (int i = 0; i < nbOfCards; i++) {
+        if (((conditionalColor == NULL_COLOR) || (conditionalColor == cardArray[i].color)) && ((cardArray[i].color != bestTrump.color) || (cardArray[i].value > bestTrump.value))) {
+            //If the card is the right color (or if the condition is bypassed with NULL_COLOR), AND if the card isn't a trump weaker than the best one on the table
+            cardArray[i].canPlay = canPlay;
+            conditionMet = TRUE;
+        }
+    }
+    return conditionMet;
+}
+
+void findValidCardsInHand(cardType *cardsInHand, int nbOfCardsInHand, cardType *trickCards, int nbOfTrickCards, colorType trump) {
+    bool canFollow;
+    cardType bestTrump = {.color = trump, .value = NULL_VALUE};                                                     //The best current trump, will be used later
+    cardType nullCard = {.color = NULL_COLOR, .value = NULL_VALUE};                                                 //nullCard is used to bypass any trump condition in SetCanPlay
+    setCanPlay(cardsInHand, nbOfCardsInHand, NULL_COLOR, nullCard, FALSE);                                          //Each card is initialised to canPlay = FALSE
+
+    if (nbOfTrickCards == 0) {                                                                                      //The first player of a trick
+        setCanPlay(cardsInHand, nbOfCardsInHand, NULL_COLOR, nullCard, TRUE);                                       //can play any card.
+    }
+    else {
+        if (trump == ALLTRUMP) {
+            trump = trickCards[0].color;
+            bestTrump.color = trump;
+        }
+        for (int i = 0; i < nbOfTrickCards; i++) {                                                                  //Find the best trump in the current trick cards
+            if (trickCards[i].color == trump) {
+                if ((trickCards[i].value == NINE) || (trickCards[i].value == JACK)) {
+                    trickCards[i].value += 6;                                                                       //In trickCards, change temporarily the value of NINE and JACK trump cards to TRUMP_NINE and TRUMP_JACK
+                }
+                if (trickCards[i].value > bestTrump.value) {
+                    bestTrump.value = trickCards[i].value;
+                }
+            }
+        }
+        for (int i = 0; i < nbOfCardsInHand; i++) {
+            if ((cardsInHand[i].color == trump) && ((cardsInHand[i].value == NINE) || (cardsInHand[i].value == JACK))) {
+                cardsInHand[i].value += 6;                                                                          //In cardsInHand, change temporarily the value of NINE and JACK trump cards to TRUMP_NINE and TRUMP_JACK
+            }
+        }
+        canFollow = setCanPlay(cardsInHand, nbOfCardsInHand, trickCards[0].color, bestTrump, TRUE);                 //A player must follow in the right color. If that color is a trump, the player has to play a stronger card. 
+        if ((trickCards[0].color == trump) && (canFollow == FALSE)) {                                               //If the trick was started with a trump AND playing a higher trump than the current best one is impossible,
+            canFollow = setCanPlay(cardsInHand, nbOfCardsInHand, trickCards[0].color, nullCard, TRUE);              //the player has to follow with a lower trump.
+        }
+        if (canFollow == FALSE) {                                                                                   //If playing in the right color is impossible:
+            if (getStrongestCard(trickCards, nbOfTrickCards, trump, trickCards[0].color) == (nbOfTrickCards - 2)) { //If a player's partner is the current trick winner,
+                setCanPlay(cardsInHand, nbOfCardsInHand, NULL_COLOR, nullCard, TRUE);                               //any card can be played.
+            }
+            else {
+                canFollow = setCanPlay(cardsInHand, nbOfCardsInHand, trump, bestTrump, TRUE);                       //A player must play a stronger trump card than the current best one if its partner isn't winning.
+                if (canFollow == FALSE) {                                                                           //If all of the above are impossible,
+                    setCanPlay(cardsInHand, nbOfCardsInHand, NULL_COLOR, nullCard, TRUE);                           //the player can play any card.
+                }
+            }
+        }        
+        for (int i = 0; i < nbOfTrickCards; i++) {
+            if ((trickCards[i].value == TRUMP_NINE) || (trickCards[i].value == TRUMP_JACK)) {
+                trickCards[i].value -= 6;                                                                           //In trickCards, reset any TRUMP_NINE and TRUMP_JACK to NINE and JACK
+            }
+        }
+        for (int i = 0; i < nbOfCardsInHand; i++) {
+            if ((cardsInHand[i].value == TRUMP_NINE) || (cardsInHand[i].value == TRUMP_JACK)) {
+                cardsInHand[i].value -= 6;                                                                          //In cardsInHand, reset any TRUMP_NINE and TRUMP_JACK to NINE and JACK
+            }
+        }
+    }    
 }
