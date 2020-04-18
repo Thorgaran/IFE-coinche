@@ -25,7 +25,7 @@ typedef enum colorType {
     SPADE      = 1,
     HEART      = 2,
     DIAMOND    = 3,
-    CLOVER     = 4,
+    CLUB     = 4,
     ALLTRUMP   = 5,
     NOTRUMP    = 6
 } colorType;

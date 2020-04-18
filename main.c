@@ -7,25 +7,25 @@ int main (int argc, char* argv[]) {
     cardType test0, test1, test2, test3, main0, main1, main2, main3, main4, main5, main6, main7;
     
     test0.value = ACE;
-    test0.color = CLOVER;
+    test0.color = CLUB;
     
     test1.value = QUEEN;
-    test1.color = CLOVER;
+    test1.color = CLUB;
     
     test2.value = NINE;
-    test2.color = CLOVER;
+    test2.color = CLUB;
     
     test3.value = SEVEN;
-    test3.color = CLOVER;
+    test3.color = CLUB;
     
     cardType testArray[] = {test0, test1, test2, test3};
     colorType testTrump = SPADE;
 
     main0.value = EIGHT;
-    main0.color = CLOVER;
+    main0.color = CLUB;
 
     main1.value = SEVEN;
-    main1.color = CLOVER;
+    main1.color = CLUB;
 
     main2.value = ACE;
     main2.color = HEART;
