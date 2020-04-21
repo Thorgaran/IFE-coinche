@@ -104,7 +104,7 @@ void findValidCardsInHand(cardType *cardsInHand, int nbOfCardsInHand, cardType *
             canFollow = setCanPlay(cardsInHand, nbOfCardsInHand, trickCards[0].color, nullCard, TRUE);              //the player has to follow with a lower trump.
         }
         if (canFollow == FALSE) {                                                                                   //If playing in the right color is impossible:
-            if (getStrongestCard(trickCards, nbOfTrickCards, trump, trickCards[0].color) == (nbOfTrickCards - 2)) { //If a player's partner is the current trick winner,
+            if (getStrongestCard(trickCards, nbOfTrickCards, trump, trickCards[0].color) == (nbOfTrickCards - 2)) { //If the player's partner is the current trick winner,
                 setCanPlay(cardsInHand, nbOfCardsInHand, NULL_COLOR, nullCard, TRUE);                               //any card can be played.
             }
             else {
