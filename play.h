@@ -37,7 +37,7 @@ int getCardArrayPoints(cardType *cardArray, int nbOfCards, colorType trump);
 /* Sets the canPlay property of each card if it meets a color criteria and if it's not a weaker trump than the current best one
 *   @param *cardArray: array containing the cards
 *   @param nbOfCards: how many cards are in cardArray
-*   @param conditionalColor: the canPlay property of each card will be setif its color is conditionalColor. Set to NULL_COLOR to bypass the condition
+*   @param conditionalColor: the canPlay property of each card will be set if its color is conditionalColor. Set to NULL_COLOR to bypass the condition
 *   @param bestTrump: the current best trump card. A card will not be set if it's a weaker trump than bestTrump. Set bestTrump color to NULL_COLOR to bypass the condition
 *   @param canPlay: the bool value canPlay property should be set to
 *   @return conditionMet -> FALSE if no canPlay property was changed, TRUE otherwise
