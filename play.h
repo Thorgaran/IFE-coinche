@@ -38,11 +38,12 @@ int getCardArrayPoints(Card *cardArray, int nbOfCards, Color trump);
 *   @param *cardArray: array containing the cards
 *   @param nbOfCards: how many cards are in cardArray
 *   @param conditionalColor: the canPlay property of each card will be set if its color is conditionalColor. Set to NULL_COLOR to bypass the condition
-*   @param bestTrump: the current best trump card. A card will not be set if it's a weaker trump than bestTrump. Set bestTrump color to NULL_COLOR to bypass the condition
+*   @param trump: the current trump
+*   @param bestTrumpStrength: the current best trump's Strength. A card will not be set if it's a trump weaker than this. Set to 0 to bypass the condition
 *   @param canPlay: the Bool value canPlay property should be set to
 *   @return conditionMet -> FALSE if no canPlay property was changed, TRUE otherwise
 */
-Bool setCanPlay(Card *cardArray, int nbOfCards, Color conditionalColor, Card bestTrump, Bool canPlay);
+Bool setCanPlay(Card *cardArray, int nbOfCards, Color conditionalColor, Color trump, int bestTrumpStrength, Bool canPlay);
 
 /* Sets the canPlay property of each card in an Array to find which ones can be played depending on the cards currently on the table
 *   @param *cardsInHand: the first N cards of this Array will be evaluated to find the valid ones to play according to the coinche rules
