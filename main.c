@@ -4,7 +4,7 @@
 #include "play.h"
 
 int main (int argc, char* argv[]) {
-    cardType player0cards[8] =
+    Card player0cards[8] =
         {{.value = SEVEN, .color = SPADE},
         { .value = EIGHT, .color = HEART},
         { .value = NINE,  .color = DIAMOND},
@@ -14,7 +14,7 @@ int main (int argc, char* argv[]) {
         { .value = TEN,   .color = DIAMOND},
         { .value = ACE,   .color = CLUB}};
 
-    cardType player1cards[8] =
+    Card player1cards[8] =
         {{.value = SEVEN, .color = HEART},
         { .value = EIGHT, .color = DIAMOND},
         { .value = NINE,  .color = CLUB},
@@ -24,7 +24,7 @@ int main (int argc, char* argv[]) {
         { .value = TEN,   .color = CLUB},
         { .value = ACE,   .color = SPADE}};
     
-    cardType player2cards[8] =
+    Card player2cards[8] =
         {{.value = SEVEN, .color = DIAMOND},
         { .value = EIGHT, .color = CLUB},
         { .value = NINE,  .color = SPADE},
@@ -34,7 +34,7 @@ int main (int argc, char* argv[]) {
         { .value = TEN,   .color = SPADE},
         { .value = ACE,   .color = HEART}};
     
-    cardType player3cards[8] =
+    Card player3cards[8] =
         {{.value = SEVEN, .color = CLUB},
         { .value = EIGHT, .color = SPADE},
         { .value = NINE,  .color = HEART},

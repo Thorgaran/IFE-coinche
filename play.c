@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "core.h"
 
-int getCardStrength(cardType card, colorType trump, colorType roundColor) {
+int getCardStrength(Card card, Color trump, Color roundColor) {
     int cardStrength = card.value;
 
     if (card.color == roundColor) {
@@ -18,7 +18,7 @@ int getCardStrength(cardType card, colorType trump, colorType roundColor) {
     return cardStrength;
 }
 
-int getStrongestCard(cardType *cardArray, int nbOfCards, colorType trump, colorType roundColor) {
+int getStrongestCard(Card *cardArray, int nbOfCards, Color trump, Color roundColor) {
     int greatestStrength = getCardStrength(cardArray[0], trump, roundColor);
     int cardStrength;
     int strongestCardPos = 0;
@@ -33,7 +33,7 @@ int getStrongestCard(cardType *cardArray, int nbOfCards, colorType trump, colorT
     return strongestCardPos;
 }
 
-int getCardPoints(cardType card, colorType trump) {
+int getCardPoints(Card card, Color trump) {
     int cardPoints;
     if (trump == ALLTRUMP) {                    //If ALLTRUMP
         cardPoints = CARD_POINTS_TABLE[0][card.value - 1];
@@ -50,7 +50,7 @@ int getCardPoints(cardType card, colorType trump) {
     return cardPoints;
 }
 
-int getCardArrayPoints(cardType *cardArray, int nbOfCards, colorType trump) {
+int getCardArrayPoints(Card *cardArray, int nbOfCards, Color trump) {
     int totalPoints = 0;
     for (int i = 0; i < nbOfCards; i++) {
         totalPoints += getCardPoints(cardArray[i], trump);
@@ -58,8 +58,8 @@ int getCardArrayPoints(cardType *cardArray, int nbOfCards, colorType trump) {
     return totalPoints;
 }
 
-bool setCanPlay(cardType *cardArray, int nbOfCards, colorType conditionalColor, cardType bestTrump, bool canPlay) {
-    bool conditionMet = FALSE;
+Bool setCanPlay(Card *cardArray, int nbOfCards, Color conditionalColor, Card bestTrump, Bool canPlay) {
+    Bool conditionMet = FALSE;
     for (int i = 0; i < nbOfCards; i++) {
         if (((conditionalColor == NULL_COLOR) || (conditionalColor == cardArray[i].color)) && ((cardArray[i].color != bestTrump.color) || (cardArray[i].value > bestTrump.value))) {
             //If the card is the right color (or if the condition is bypassed with NULL_COLOR), AND if the card isn't a trump weaker than the best one on the table
@@ -70,10 +70,10 @@ bool setCanPlay(cardType *cardArray, int nbOfCards, colorType conditionalColor, 
     return conditionMet;
 }
 
-void findValidCardsInHand(cardType *cardsInHand, int nbOfCardsInHand, cardType *trickCards, int nbOfTrickCards, colorType trump) {
-    bool canFollow;
-    cardType bestTrump = {.color = trump, .value = NULL_VALUE};                                                     //The best current trump, will be used later
-    cardType nullCard = {.color = NULL_COLOR, .value = NULL_VALUE};                                                 //nullCard is used to bypass any trump condition in SetCanPlay
+void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCards, int nbOfTrickCards, Color trump) {
+    Bool canFollow;
+    Card bestTrump = {.color = trump, .value = NULL_VALUE};                                                     //The best current trump, will be used later
+    Card nullCard = {.color = NULL_COLOR, .value = NULL_VALUE};                                                 //nullCard is used to bypass any trump condition in SetCanPlay
     setCanPlay(cardsInHand, nbOfCardsInHand, NULL_COLOR, nullCard, FALSE);                                          //Each card is initialised to canPlay = FALSE
 
     if (nbOfTrickCards == 0) {                                                                                      //The first player of a trick
@@ -127,8 +127,8 @@ void findValidCardsInHand(cardType *cardsInHand, int nbOfCardsInHand, cardType *
     }    
 }
 
-bool removeCard(cardType *cardArray, int nbOfCards, cardType cardToRemove) {
-    bool foundCard = FALSE;
+Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove) {
+    Bool foundCard = FALSE;
     for (int i = 0; i < nbOfCards; i++) {
         if (foundCard == TRUE) {
             cardArray[i-1] = cardArray[i];
@@ -144,8 +144,8 @@ bool removeCard(cardType *cardArray, int nbOfCards, cardType cardToRemove) {
     return foundCard;
 }
 
-cardType askAICard(cardType *cardArray, int nbOfCards) { //TEMPORARY FOR TEST PUROPOSES, WILL NEED AN UPDATE LATER
-    cardType chosenCard;
+Card askAICard(Card *cardArray, int nbOfCards) { //TEMPORARY FOR TEST PUROPOSES, WILL NEED AN UPDATE LATER
+    Card chosenCard;
     int i = 0;
     while ((cardArray[i].canPlay == FALSE) && (i < nbOfCards)) {
         i++;
@@ -161,8 +161,8 @@ cardType askAICard(cardType *cardArray, int nbOfCards) { //TEMPORARY FOR TEST PU
     return chosenCard;
 }
 
-int playTrick(Player *players, int startingPlayer, colorType trump) {
-    cardType trickCards[4];
+int playTrick(Player *players, int startingPlayer, Color trump) {
+    Card trickCards[4];
     int trickWinner;
     for (int i = 0; i < 4; i++) {
         findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump);
@@ -186,7 +186,7 @@ int playTrick(Player *players, int startingPlayer, colorType trump) {
     return trickWinner;
 }
 
-void play(Player *players, int startingPlayer, colorType trump) { //Trump, player's hands, return each team's points ; playerHands[0] is the user's hand?
+void play(Player *players, int startingPlayer, Color trump) { //Trump, player's hands, return each team's points ; playerHands[0] is the user's hand?
     for (int i = 0; i < 8; i++) {
         startingPlayer = playTrick(players, startingPlayer, trump);
     }

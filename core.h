@@ -1,12 +1,12 @@
 #ifndef _CORE_H_
 #define _CORE_H_
 
-typedef enum bool {
+typedef enum Bool {
     FALSE = 0,
     TRUE = 1
-} bool;
+} Bool;
 
-typedef enum valueType {
+typedef enum Value {
     NULL_VALUE = 0,
     SEVEN      = 1,
     EIGHT      = 2,
@@ -18,9 +18,9 @@ typedef enum valueType {
     ACE        = 8,
     TRUMP_NINE = 9,
     TRUMP_JACK = 10
-} valueType;
+} Value;
 
-typedef enum colorType {
+typedef enum Color {
     NULL_COLOR = 0,
     SPADE      = 1,
     HEART      = 2,
@@ -28,20 +28,20 @@ typedef enum colorType {
     CLUB       = 4,
     ALLTRUMP   = 5,
     NOTRUMP    = 6
-} colorType;
+} Color;
 
-typedef struct cardType {
-    valueType value;
-    colorType color;
-    bool canPlay;
-} cardType;
+typedef struct Card {
+    Value value;
+    Color color;
+    Bool canPlay;
+} Card;
 
 typedef struct Player {
     char *name;
-    cardType *cards;
+    Card *cards;
     int nbOfCards;
     int score;
-    bool isUser;
+    Bool isUser;
 } Player;
 
 const int CARD_POINTS_TABLE[4][8];
