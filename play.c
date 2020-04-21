@@ -143,3 +143,52 @@ bool removeCard(cardType *cardArray, int nbOfCards, cardType cardToRemove) {
     }
     return foundCard;
 }
+
+cardType askAICard(cardType *cardArray, int nbOfCards) { //TEMPORARY FOR TEST PUROPOSES, WILL NEED AN UPDATE LATER
+    cardType chosenCard;
+    int i = 0;
+    while ((cardArray[i].canPlay == FALSE) && (i < nbOfCards)) {
+        i++;
+    }
+    if (i == nbOfCards) {
+        printf("ERROR!!! NO AVAILABLE CARD\n");
+        chosenCard = cardArray[i];
+    }
+    else {
+        chosenCard = cardArray[i];
+    }
+    removeCard(cardArray, nbOfCards, chosenCard);
+    return chosenCard;
+}
+
+int playTrick(Player *players, int startingPlayer, colorType trump) {
+    cardType trickCards[4];
+    int trickWinner;
+    for (int i = 0; i < 4; i++) {
+        findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump);
+        for (int j = 0; j < players[(i+startingPlayer)%4].nbOfCards; j++) { //TEMP DEBUG FEEDBACK
+            printf("%d ", players[(i+startingPlayer)%4].cards[j].canPlay);  //TEMP DEBUG FEEDBACK
+        }                                                                   //TEMP DEBUG FEEDBACK
+        printf("\n");                                                       //TEMP DEBUG FEEDBACK
+
+        if (players[(i + startingPlayer) % 4].isUser == TRUE) {
+            trickCards[i] = askAICard(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards); //change to AskUserCard later
+        }
+        else {
+            trickCards[i] = askAICard(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards);
+        }
+        players[(i+startingPlayer)%4].nbOfCards -= 1;
+    }
+    trickWinner = (getStrongestCard(trickCards, 4, trump, trickCards[0].color) + startingPlayer) % 4;
+    //getStrongestCard returns a relative value while trickWinner needs an absolute one, hence the conversion with startingPlayer and a modulo
+    players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump);
+    printf("Player %d wins the trick and gets %d points, for a total of %d!\n", trickWinner, getCardArrayPoints(trickCards, 4, trump), players[trickWinner].score); //TEMP DEBUG FEEDBACK
+    return trickWinner;
+}
+
+void play(Player *players, int startingPlayer, colorType trump) { //Trump, player's hands, return each team's points ; playerHands[0] is the user's hand?
+    for (int i = 0; i < 8; i++) {
+        startingPlayer = playTrick(players, startingPlayer, trump);
+    }
+    players[startingPlayer].score += 10; //10 bonus points for the last trick's winner
+}

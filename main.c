@@ -4,63 +4,57 @@
 #include "play.h"
 
 int main (int argc, char* argv[]) {
-    cardType test0, test1, test2, test3, main0, main1, main2, main3, main4, main5, main6, main7;
+    cardType player0cards[8] =
+        {{.value = SEVEN, .color = SPADE},
+        { .value = EIGHT, .color = HEART},
+        { .value = NINE,  .color = DIAMOND},
+        { .value = JACK,  .color = CLUB},
+        { .value = QUEEN, .color = SPADE},
+        { .value = KING,  .color = HEART},
+        { .value = TEN,   .color = DIAMOND},
+        { .value = ACE,   .color = CLUB}};
+
+    cardType player1cards[8] =
+        {{.value = SEVEN, .color = HEART},
+        { .value = EIGHT, .color = DIAMOND},
+        { .value = NINE,  .color = CLUB},
+        { .value = JACK,  .color = SPADE},
+        { .value = QUEEN, .color = HEART},
+        { .value = KING,  .color = DIAMOND},
+        { .value = TEN,   .color = CLUB},
+        { .value = ACE,   .color = SPADE}};
     
-    test0.value = ACE;
-    test0.color = CLUB;
+    cardType player2cards[8] =
+        {{.value = SEVEN, .color = DIAMOND},
+        { .value = EIGHT, .color = CLUB},
+        { .value = NINE,  .color = SPADE},
+        { .value = JACK,  .color = HEART},
+        { .value = QUEEN, .color = DIAMOND},
+        { .value = KING,  .color = CLUB},
+        { .value = TEN,   .color = SPADE},
+        { .value = ACE,   .color = HEART}};
     
-    test1.value = QUEEN;
-    test1.color = CLUB;
+    cardType player3cards[8] =
+        {{.value = SEVEN, .color = CLUB},
+        { .value = EIGHT, .color = SPADE},
+        { .value = NINE,  .color = HEART},
+        { .value = JACK,  .color = DIAMOND},
+        { .value = QUEEN, .color = CLUB},
+        { .value = KING,  .color = SPADE},
+        { .value = TEN,   .color = HEART},
+        { .value = ACE,   .color = DIAMOND}};
+
+    Player player0 = {.isUser = FALSE, .score = 0, .nbOfCards = 8, .cards = player0cards};
+    Player player1 = {.isUser = FALSE, .score = 0, .nbOfCards = 8, .cards = player1cards};
+    Player player2 = {.isUser = FALSE, .score = 0, .nbOfCards = 8, .cards = player2cards};
+    Player player3 = {.isUser = FALSE, .score = 0, .nbOfCards = 8, .cards = player3cards};
+
+    Player players[] = {player0, player1, player2, player3};
+
+    play(players, 0, HEART);
     
-    test2.value = NINE;
-    test2.color = CLUB;
-    
-    test3.value = SEVEN;
-    test3.color = CLUB;
-    
-    cardType testArray[] = {test0, test1, test2, test3};
-    colorType testTrump = SPADE;
-
-    main0.value = EIGHT;
-    main0.color = CLUB;
-
-    main1.value = SEVEN;
-    main1.color = CLUB;
-
-    main2.value = ACE;
-    main2.color = HEART;
-
-    main3.value = TEN;
-    main3.color = HEART;
-
-    main4.value = KING;
-    main4.color = HEART;
-
-    main5.value = JACK;
-    main5.color = HEART;
-
-    main6.value = JACK;
-    main6.color = SPADE;
-
-    main7.value = ACE;
-    main7.color = DIAMOND;
-
-    cardType testHand[] ={main0, main1, main2, main3, main4, main5, main6, main7};
-    int testHandLength = 8;
-
-    printf("Player %d wins the trick and gets %d points!\n", getStrongestCard(testArray, 4, testTrump, testArray[0].color), getCardArrayPoints(testArray, 4, testTrump));
-    for (int i = 0; i < 8; i++) {
-        findValidCardsInHand(testHand, testHandLength, testArray, 3, testTrump);
-        for (int i = 0; i < testHandLength; i++) {
-            printf("%d ", testHand[i].canPlay);
-        }
-        printf("\n");
-        for (int i = 0; i < (9 - testHandLength); i++) {
-            printf("  ");
-        }
-      
-        removeCard(testHand, testHandLength, testHand[0]);
-        testHandLength--;    
+    for (int i = 0; i < 4; i++) {
+        printf("Player %d has %d points!\n", i, players[i].score);    
     }
     
     getchar();

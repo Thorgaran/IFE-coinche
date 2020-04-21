@@ -25,7 +25,7 @@ typedef enum colorType {
     SPADE      = 1,
     HEART      = 2,
     DIAMOND    = 3,
-    CLUB     = 4,
+    CLUB       = 4,
     ALLTRUMP   = 5,
     NOTRUMP    = 6
 } colorType;
@@ -35,6 +35,14 @@ typedef struct cardType {
     colorType color;
     bool canPlay;
 } cardType;
+
+typedef struct Player {
+    char *name;
+    cardType *cards;
+    int nbOfCards;
+    int score;
+    bool isUser;
+} Player;
 
 const int CARD_POINTS_TABLE[4][8];
 

@@ -61,4 +61,11 @@ void findValidCardsInHand(cardType *cardsInHand, int nbOfCardsInHand, cardType *
 */
 bool removeCard(cardType *cardArray, int nbOfCards, cardType cardToRemove);
 
+//UNFINISHED FUNCTION FOR TEST PURPOSES, THE ACTUAL COMMENT WILL BE WRITTEN WHEN THE FUNCTION IS IN ITS FINAL STATE (+ askUserCard)
+cardType askAICard(cardType *cardArray, int nbOfCards);
+
+int playTrick(Player *players, int startingPlayer, colorType trump);
+
+void play(Player *players, int startingPlayer, colorType trump);
+
 #endif
