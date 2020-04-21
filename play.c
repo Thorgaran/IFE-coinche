@@ -81,7 +81,7 @@ void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCar
     }
     else {
         if (trump == ALLTRUMP) {
-            trump = trickCards[0].color;
+            trump = trickCards[0].color;                                                                            //This line is what makes this function work when the trump is ALLTRUMP
         }
         bestCard = trickCards[getStrongestCard(trickCards, nbOfTrickCards, trump, NULL_COLOR)];                     //Find the best card on the table
         if (bestCard.color == trump) {                                                                              //If it's a trump,
