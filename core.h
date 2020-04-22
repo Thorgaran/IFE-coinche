@@ -15,9 +15,7 @@ typedef enum Value {
     QUEEN      = 5,
     KING       = 6,
     TEN        = 7,
-    ACE        = 8,
-    TRUMP_NINE = 9,
-    TRUMP_JACK = 10
+    ACE        = 8
 } Value;
 
 typedef enum Color {
