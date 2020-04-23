@@ -6,13 +6,13 @@ int getCardStrength(Card card, Color trump, Color roundColor) {
     int cardStrength = card.value;
 
     if (card.color == roundColor) {
-        cardStrength += 10;                             // If the card has the right color, its strength increases
+        cardStrength += 10;                             //If the card has the right color, its strength increases
     }
 
     if ((trump == card.color) || (trump == ALLTRUMP)) {
-        cardStrength += 18;                             // If the card is a trump, its strength increases
+        cardStrength += 18;                             //If the card is a trump, its strength increases
         if ((card.value == NINE) || (card.value == JACK)) {
-            cardStrength += 6;                          // If the card is a trump and a 9 or a jack, its strength increases again according to the belotte rules
+            cardStrength += 6;                          //If the card is a trump and a 9 or a jack, its strength increases again according to the belotte rules
         }
     }
     return cardStrength;
@@ -143,14 +143,14 @@ Card askAICard(Card *cardArray, int nbOfCards) { //TEMPORARY FOR TEST PUROPOSES,
 int playTrick(Player *players, int startingPlayer, Color trump) {
     Card trickCards[4];
     int trickWinner;
-    for (int i = 0; i < 4; i++) {
-        findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump);
+    for (int i = 0; i < 4; i++) { //4 iterations because each player will play a card
+        findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump); //Find valid cards in the hand of the current player
         for (int j = 0; j < players[(i+startingPlayer)%4].nbOfCards; j++) { //TEMP DEBUG FEEDBACK
             printf("%d ", players[(i+startingPlayer)%4].cards[j].canPlay);  //TEMP DEBUG FEEDBACK
         }                                                                   //TEMP DEBUG FEEDBACK
         printf("\n");                                                       //TEMP DEBUG FEEDBACK
 
-        if (players[(i + startingPlayer) % 4].isUser == TRUE) {
+        if (players[(i + startingPlayer) % 4].isUser == TRUE) { //Calls the right function for choosing a card, depending on whether the player is the user or an AI 
             trickCards[i] = askAICard(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards); //change to AskUserCard later
         }
         else {
@@ -160,13 +160,13 @@ int playTrick(Player *players, int startingPlayer, Color trump) {
     }
     trickWinner = (getStrongestCard(trickCards, 4, trump, trickCards[0].color) + startingPlayer) % 4;
     //getStrongestCard returns a relative value while trickWinner needs an absolute one, hence the conversion with startingPlayer and a modulo
-    players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump);
+    players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump); //Increase the score of the trick winner
     printf("Player %d wins the trick and gets %d points, for a total of %d!\n", trickWinner, getCardArrayPoints(trickCards, 4, trump), players[trickWinner].score); //TEMP DEBUG FEEDBACK
     return trickWinner;
 }
 
-void play(Player *players, int startingPlayer, Color trump) { //Trump, player's hands, return each team's points ; playerHands[0] is the user's hand?
-    for (int i = 0; i < 8; i++) {
+void play(Player *players, int startingPlayer, Color trump) {
+    for (int i = 0; i < 8; i++) {   //plays the 8 tricks of a game
         startingPlayer = playTrick(players, startingPlayer, trump);
     }
     players[startingPlayer].score += 10; //10 bonus points for the last trick's winner

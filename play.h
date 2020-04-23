@@ -65,6 +65,12 @@ Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove);
 //UNFINISHED FUNCTION FOR TEST PURPOSES, THE ACTUAL COMMENT WILL BE WRITTEN WHEN THE FUNCTION IS IN ITS FINAL STATE (+ askUserCard)
 Card askAICard(Card *cardArray, int nbOfCards);
 
+/* Plays a single trick : each player plays a card, then the player with the strongest card wins the trick and gets points
+*   @param *players: pointer to an array of 4 players
+*   @param startingPlayer: number from 0 to 3, representing the starting player
+*   @param trump: the current trump
+*   @return trickWinner: number from 0 to 3, representing the winner of the trick
+*/
 int playTrick(Player *players, int startingPlayer, Color trump);
 
 void play(Player *players, int startingPlayer, Color trump);
