@@ -11,14 +11,14 @@
 int getCardStrength(Card card, Color trump, Color roundColor);
 
 /* Finds the strongest card in a set
+*   @param mode: set to STRONGEST or WEAKEST depending on the card you're looking for
 *   @param *cardArray: array containing the cards to compare
 *   @param nbOfCards: how many cards are being compared
 *   @param trump: the current trump
 *   @param roundColor: the color of the first played card in the round
-*   @param mode: set to STRONGEST or WEAKEST depending on the card you're looking for
 *   @return strongestCardPos -> the position of the strongest card in the set, where 0 is the first card of the Array
 */
-int getStrongestOrWeakestCard(Card *cardArray, int nbOfCards, Color trump, Color roundColor, Mode mode);
+int getStrongestOrWeakestCard(int mode, Card *cardArray, int nbOfCards, Color trump, Color roundColor);
 
 /* Finds the point value of a card depending on the current trump
 *   @param card: the evaluated card

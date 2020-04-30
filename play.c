@@ -20,7 +20,7 @@ int getCardStrength(Card card, Color trump, Color roundColor) {
     return cardStrength;
 }
 
-int getStrongestOrWeakestCard(Card *cardArray, int nbOfCards, Color trump, Color roundColor, int mode) {
+int getStrongestOrWeakestCard(int mode, Card *cardArray, int nbOfCards, Color trump, Color roundColor) {
     int greatestStrength = getCardStrength(cardArray[0], trump, roundColor);
     int cardStrength;
     int strongestCardPos = 0;
@@ -85,7 +85,7 @@ void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCar
         if (trump == ALLTRUMP) {
             trump = trickCards[0].color;                                                                            //This line is what makes this function work when the trump is ALLTRUMP
         }
-        bestCard = trickCards[getStrongestOrWeakestCard(trickCards, nbOfTrickCards, trump, NULL_COLOR, STRONGEST)]; //Find the best card on the table
+        bestCard = trickCards[getStrongestOrWeakestCard(STRONGEST, trickCards, nbOfTrickCards, trump, NULL_COLOR)]; //Find the best card on the table
         if (bestCard.color == trump) {                                                                              //If it's a trump,
             bestTrumpStrength = getCardStrength(bestCard, trump, NULL_COLOR);                                       //update bestTrumpStrength
         }
@@ -95,7 +95,7 @@ void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCar
             canFollow = setCanPlay(cardsInHand, nbOfCardsInHand, trump, trump, 0, TRUE);                            //the player has to follow with a lower trump.
         }
         if (canFollow == FALSE) {                                                                                   //If playing in the right color is impossible:
-            if (getStrongestOrWeakestCard(trickCards, nbOfTrickCards, trump, trickCards[0].color, STRONGEST) == (nbOfTrickCards - 2)) { //If the player's partner is the current trick winner,
+            if (getStrongestOrWeakestCard(STRONGEST, trickCards, nbOfTrickCards, trump, trickCards[0].color) == (nbOfTrickCards - 2)) { //If the player's partner is the current trick winner,
                 setCanPlay(cardsInHand, nbOfCardsInHand, NULL_COLOR, trump, 0, TRUE);                                                   //any card can be played.
             }
             else {
@@ -150,7 +150,7 @@ int playTrick(Player *players, int startingPlayer, Color trump) {
         printf("\n");                                                       //TEMP DEBUG FEEDBACK
         trickCards[i] = getPlayerCard(&(players[(i+startingPlayer)%4]));
     }
-    trickWinner = (getStrongestOrWeakestCard(trickCards, 4, trump, trickCards[0].color, STRONGEST) + startingPlayer) % 4;
+    trickWinner = (getStrongestOrWeakestCard(STRONGEST, trickCards, 4, trump, trickCards[0].color) + startingPlayer) % 4;
     //getStrongestOrWeakestCard returns a relative value while trickWinner needs an absolute one, hence the conversion with startingPlayer and a modulo
     players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump);
     printf("Player %d wins the trick and gets %d points, for a total of %d!\n", trickWinner, getCardArrayPoints(trickCards, 4, trump), players[trickWinner].score); //TEMP DEBUG FEEDBACK
