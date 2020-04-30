@@ -9,6 +9,8 @@ clean: coinche.exe
 	$(CLEANCMD) main.o
 	$(CLEANCMD) core.o
 	$(CLEANCMD) play.o
+	$(CLEANCMD) ai.o
+	$(CLEANCMD) userIO.o
 
 coinche.exe: main.o core.o play.o ai.o userIO.o
 	gcc -o $@ $^
