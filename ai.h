@@ -3,6 +3,8 @@
 #include "core.h"
 
 //UNFINISHED FUNCTION FOR TEST PURPOSES, THE ACTUAL COMMENT WILL BE WRITTEN WHEN THE FUNCTION IS IN ITS FINAL STATE (+ askUserCard)
-Card getAICard(Card *cardArray, int nbOfCards);
+Card getAICardFirstAvailable(Card *cardArray, int nbOfCards);
+
+Card getAICardStandard(Card *cardArray, int nbOfCards);
 
 #endif
