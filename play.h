@@ -54,7 +54,7 @@ Bool setCanPlay(Card *cardArray, int nbOfCards, Color conditionalColor, Color tr
 */
 void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCards, int nbOfTrickCards, Color trump);
 
-/* Seeks a card in an array to remove it.
+/* Seeks a card in an array to remove it
 *   @param *cardArray: array containing the cards
 *   @param nbOfCards: the number of cards in cardArray
 *   @param cardToRemove: the card to seek and remove in cardArray
@@ -62,8 +62,11 @@ void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCar
 */
 Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove);
 
-//UNFINISHED FUNCTION FOR TEST PURPOSES, THE ACTUAL COMMENT WILL BE WRITTEN WHEN THE FUNCTION IS IN ITS FINAL STATE (+ askUserCard)
-Card askAICard(Card *cardArray, int nbOfCards);
+/* Get the player player to choose card among the ones that can be played, depending on the player type (User/AI)
+    @param *player: pointer to the player who has to choose a card. Note: the "canPlay" flag for the player cards has to be set already
+    @return chosenCard: the chosen card
+*/
+Card getPlayerCard(Player player);
 
 int playTrick(Player *players, int startingPlayer, Color trump);
 

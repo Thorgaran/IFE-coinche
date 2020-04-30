@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "core.h"
+#include "userIO.h"
+#include "ai.h"
 
 int getCardStrength(Card card, Color trump, Color roundColor) {
     int cardStrength = card.value;
@@ -123,22 +125,19 @@ Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove) {
     return foundCard;
 }
 
-Card askAICard(Card *cardArray, int nbOfCards) { //TEMPORARY FOR TEST PUROPOSES, WILL NEED AN UPDATE LATER
+Card getPlayerCard(Player *player) {
     Card chosenCard;
-    int i = 0;
-    while ((cardArray[i].canPlay == FALSE) && (i < nbOfCards)) {
-        i++;
+    if ((*player).isUser == TRUE) {                                 //If the player is the User                    
+        chosenCard = askUserCard((*player).cards, (*player).nbOfCards);
     }
-    if (i == nbOfCards) {
-        printf("ERROR!!! NO AVAILABLE CARD\n");
-        chosenCard = cardArray[i];
+else {                                                              //If the player is an AI
+        chosenCard = getAICard((*player).cards, (*player).nbOfCards);
     }
-    else {
-        chosenCard = cardArray[i];
-    }
-    removeCard(cardArray, nbOfCards, chosenCard);
+    removeCard((*player).cards, (*player).nbOfCards, chosenCard);   //Once a card has been chosen, remove it from the player's hand
+    (*player).nbOfCards -= 1;                                       //Decrease the player's number of cards
     return chosenCard;
 }
+
 
 int playTrick(Player *players, int startingPlayer, Color trump) {
     Card trickCards[4];
@@ -149,14 +148,7 @@ int playTrick(Player *players, int startingPlayer, Color trump) {
             printf("%d ", players[(i+startingPlayer)%4].cards[j].canPlay);  //TEMP DEBUG FEEDBACK
         }                                                                   //TEMP DEBUG FEEDBACK
         printf("\n");                                                       //TEMP DEBUG FEEDBACK
-
-        if (players[(i + startingPlayer) % 4].isUser == TRUE) {
-            trickCards[i] = askAICard(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards); //change to AskUserCard later
-        }
-        else {
-            trickCards[i] = askAICard(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards);
-        }
-        players[(i+startingPlayer)%4].nbOfCards -= 1;
+        trickCards[i] = getPlayerCard(&(players[(i+startingPlayer)%4]));
     }
     trickWinner = (getStrongestCard(trickCards, 4, trump, trickCards[0].color) + startingPlayer) % 4;
     //getStrongestCard returns a relative value while trickWinner needs an absolute one, hence the conversion with startingPlayer and a modulo
