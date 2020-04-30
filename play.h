@@ -73,6 +73,11 @@ Card askAICard(Card *cardArray, int nbOfCards);
 */
 int playTrick(Player *players, int startingPlayer, Color trump);
 
+/* Plays a full 8-trick game, counting points
+    @param *players: pointer to an array of 4 players
+    @param startingPlayer: number from 0 to 3, representing the starting player
+    @param trump: the current trump
+*/
 void play(Player *players, int startingPlayer, Color trump);
 
 #endif
