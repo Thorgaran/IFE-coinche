@@ -25,7 +25,7 @@ int getStrongestCard(Card *cardArray, int nbOfCards, Color trump, Color roundCol
 *   @param trump: the current trump
 *   @param roundColor: the color of the first played card in the round
 */
-void sortCards(Card *cardArray, int nbOfCards, Color trump, Color roundColor);
+void sortCards(Card *cardArray, int nbToSort, Color trump, Color roundColor);
 
 /* Seeks a card in an array to remove it
 *   @param *cardArray: array containing the cards

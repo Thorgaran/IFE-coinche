@@ -36,18 +36,18 @@ int getStrongestCard(Card *cardArray, int nbOfCards, Color trump, Color roundCol
 void sortCards(Card *cardArray, int nbToSort, Color trump, Color roundColor) { //Bubble sort algorithm
     Card previousCard;
     int newNbToSort;
-    while (nbToSort > 1) {
+    while (nbToSort > 1) { //While there is more than a single card left to sort
         newNbToSort = 0;
         for (int i = 1; i < nbToSort; i++) {
-            previousCard = cardArray[i - 1];
+            previousCard = cardArray[i - 1]; //Variable needed for the swap
             if (getCardStrength(previousCard, trump, roundColor) > getCardStrength(cardArray[i], trump, roundColor)) {
             //If the previous card is stonger than the current card
                 cardArray[i - 1] = cardArray[i]; //Swap cards
                 cardArray[i] = previousCard;
-                newNbToSort = i;
+                newNbToSort = i; //On the next array pass, no need to go past the last card swapped in this pass
             }
         }
-        nbToSort = newNbToSort;
+        nbToSort = newNbToSort; //nbToSort cannot be updated directly in the for loop to avoid breaking the exit condition
     }
 }
 

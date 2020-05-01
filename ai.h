@@ -15,7 +15,7 @@ Card getAICardFirstAvailable(Card *cardsInHand, int nbOfCardsInHand);
 *   @param nbOfCardsInHand: the number of cards in hand
 *   @param *trickCards: the cards already played by the previous players. Only the first N cards matter, where N is nbOfTrickCards
 *   @param nbOfTrickCards: the number of cards played by the previous players. Can be 0
-*   @return playableCards[chosenCardIndex]: the chosen card
+*   @return chosenCard: the chosen card
 */
 Card getAICardStandard(Card *cardsInHand, int nbOfCardsInHand, Card *trickCards, int nbOfTrickCards, Color trump, Color roundColor);
 
