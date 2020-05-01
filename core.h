@@ -1,7 +1,5 @@
 #ifndef _CORE_H_
 #define _CORE_H_
-#define STRONGEST 1
-#define WEAKEST -1
 
 typedef enum Bool {
     FALSE = 0,

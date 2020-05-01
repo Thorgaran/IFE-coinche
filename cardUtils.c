@@ -18,19 +18,37 @@ int getCardStrength(Card card, Color trump, Color roundColor) {
     return cardStrength;
 }
 
-int getStrongestOrWeakestCard(int mode, Card *cardArray, int nbOfCards, Color trump, Color roundColor) {
+int getStrongestCard(Card *cardArray, int nbOfCards, Color trump, Color roundColor) {
     int greatestStrength = getCardStrength(cardArray[0], trump, roundColor);
     int cardStrength;
     int strongestCardPos = 0;
 
     for (int i = 1; i < nbOfCards; i++) {
         cardStrength = getCardStrength(cardArray[i], trump, roundColor); //cardStrength is needed to avoid calling getCardStrength twice
-        if (cardStrength > (mode * greatestStrength)) {
+        if (cardStrength > greatestStrength) {
            greatestStrength = cardStrength;
            strongestCardPos = i;
         }
     }
     return strongestCardPos;
+}
+
+void sortCards(Card *cardArray, int nbToSort, Color trump, Color roundColor) { //Bubble sort algorithm
+    Card previousCard;
+    int newNbToSort;
+    while (nbToSort > 1) {
+        newNbToSort = 0;
+        for (int i = 1; i < nbToSort; i++) {
+            previousCard = cardArray[i - 1];
+            if (getCardStrength(previousCard, trump, roundColor) > getCardStrength(cardArray[i], trump, roundColor)) {
+            //If the previous card is stonger than the current card
+                cardArray[i - 1] = cardArray[i]; //Swap cards
+                cardArray[i] = previousCard;
+                newNbToSort = i;
+            }
+        }
+        nbToSort = newNbToSort;
+    }
 }
 
 Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove) {
@@ -48,4 +66,15 @@ Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove) {
         cardArray[nbOfCards-1].color = NULL_COLOR;
     }
     return foundCard;
+}
+
+int getPlayableCards(Card *cardArray, int nbOfCards, Card* playableCards) {
+    int nbOfPlayableCards;
+    for (int i = 0; i < nbOfCards; i++) {
+        if (cardArray[i].canPlay == TRUE) {
+            playableCards[nbOfPlayableCards] = cardArray[i];
+            nbOfPlayableCards++;
+        }
+    }
+    return nbOfPlayableCards;
 }

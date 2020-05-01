@@ -11,14 +11,21 @@
 int getCardStrength(Card card, Color trump, Color roundColor);
 
 /* Finds the strongest card in a set
-*   @param mode: set to STRONGEST or WEAKEST depending on the card you're looking for
 *   @param *cardArray: array containing the cards to compare
 *   @param nbOfCards: how many cards are being compared
 *   @param trump: the current trump
 *   @param roundColor: the color of the first played card in the round
 *   @return strongestCardPos -> the position of the strongest card in the set, where 0 is the first card of the Array
 */
-int getStrongestOrWeakestCard(int mode, Card *cardArray, int nbOfCards, Color trump, Color roundColor);
+int getStrongestCard(Card *cardArray, int nbOfCards, Color trump, Color roundColor);
+
+/* Sorts the cards in an array from weakest to strongest
+*   @param *cardArray: array containing the cards to sort
+*   @param nbToSort: the first N cards of the array that will be sorted. Usually set to the array length to sort the whole array
+*   @param trump: the current trump
+*   @param roundColor: the color of the first played card in the round
+*/
+void sortCards(Card *cardArray, int nbOfCards, Color trump, Color roundColor);
 
 /* Seeks a card in an array to remove it
 *   @param *cardArray: array containing the cards
@@ -27,5 +34,13 @@ int getStrongestOrWeakestCard(int mode, Card *cardArray, int nbOfCards, Color tr
 *   @return foundCard: TRUE if the function was able to find the card (thus removing it), FALSE otherwise
 */
 Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove);
+
+/* In an array of cards, return only those with canPlay = TRUE, and with a strength above the treshold
+*   @param *cardArray: array containing the cards
+*   @param nbOfCards: the number of cards in cardArray
+*   @param playableCards: pointer to a memory space to store the playableCards in. This array must be big enough to store all playable cards
+*   @return nbOfPlayableCards: the number of cards that ended up in playableCards
+*/
+int getPlayableCards(Card *cardArray, int nbOfCards, Card* playableCards);
 
 #endif
