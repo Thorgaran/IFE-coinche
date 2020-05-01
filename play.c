@@ -83,7 +83,7 @@ Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color t
     if ((*player).isUser == TRUE) {                                 //If the player is the User                    
         chosenCard = askUserCard((*player).cards, (*player).nbOfCards);
     }
-else {                                                              //If the player is an AI
+    else {                                                              //If the player is an AI
         chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
     }
     removeCard((*player).cards, (*player).nbOfCards, chosenCard);   //Once a card has been chosen, remove it from the player's hand
