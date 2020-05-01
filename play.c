@@ -95,8 +95,8 @@ int playTrick(Player *players, int startingPlayer, Color trump) {
     Card trickCards[4];
     Color roundColor = NULL_COLOR;
     int trickWinner;
-    for (int i = 0; i < 4; i++) {
-        findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump);
+    for (int i = 0; i < 4; i++) { //4 iterations because each player will play a card
+        findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump); //Find valid cards in the hand of the current player
         for (int j = 0; j < players[(i+startingPlayer)%4].nbOfCards; j++) { //TEMP DEBUG FEEDBACK
             printf("%d ", players[(i+startingPlayer)%4].cards[j].canPlay);  //TEMP DEBUG FEEDBACK
         }                                                                   //TEMP DEBUG FEEDBACK
@@ -108,14 +108,14 @@ int playTrick(Player *players, int startingPlayer, Color trump) {
     }
     trickWinner = (getStrongestCard(trickCards, 4, trump, roundColor) + startingPlayer) % 4;
     //getStrongestCard returns a relative value while trickWinner needs an absolute one, hence the conversion with startingPlayer and a modulo
-    players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump);
+    players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump); //Increase the score of the trick winner
     printf("Player %d wins the trick and gets %d points, for a total of %d!\n", trickWinner, getCardArrayPoints(trickCards, 4, trump), players[trickWinner].score); //TEMP DEBUG FEEDBACK
     return trickWinner;
 }
 
-void play(Player *players, int startingPlayer, Color trump) { //Trump, player's hands, return each team's points ; playerHands[0] is the user's hand?
-    for (int i = 0; i < 8; i++) {
-        startingPlayer = playTrick(players, startingPlayer, trump);
+void play(Player *players, int startingPlayer, Color trump) {
+    for (int i = 0; i < 8; i++) {   //plays the 8 tricks of a game
+        startingPlayer = playTrick(players, startingPlayer, trump); //the previous trick winner becomes the starting player
     }
     players[startingPlayer].score += 10; //10 bonus points for the last trick's winner
 }
