@@ -1,37 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "core.h"
-
-int getCardStrength(Card card, Color trump, Color roundColor) {
-    int cardStrength = card.value;
-
-    if (card.color == roundColor) {
-        cardStrength += 10;                             //If the card has the right color, its strength increases
-    }
-
-    if ((trump == card.color) || (trump == ALLTRUMP)) {
-        cardStrength += 18;                             //If the card is a trump, its strength increases
-        if ((card.value == NINE) || (card.value == JACK)) {
-            cardStrength += 6;                          //If the card is a trump and a 9 or a jack, its strength increases again according to the belotte rules
-        }
-    }
-    return cardStrength;
-}
-
-int getStrongestCard(Card *cardArray, int nbOfCards, Color trump, Color roundColor) {
-    int greatestStrength = getCardStrength(cardArray[0], trump, roundColor);
-    int cardStrength;
-    int strongestCardPos = 0;
-
-    for (int i = 1; i < nbOfCards; i++) {
-        cardStrength = getCardStrength(cardArray[i], trump, roundColor); //cardStrength is needed to avoid calling getCardStrength twice
-        if (cardStrength > greatestStrength) {
-           greatestStrength = cardStrength;
-           strongestCardPos = i;
-        }
-    }
-    return strongestCardPos;
-}
+#include "cardUtils.h"
+#include "userIO.h"
+#include "ai.h"
 
 int getCardPoints(Card card, Color trump) {
     int cardPoints;
@@ -106,42 +78,22 @@ void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCar
     }    
 }
 
-Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove) {
-    Bool foundCard = FALSE;
-    for (int i = 0; i < nbOfCards; i++) {
-        if (foundCard == TRUE) {
-            cardArray[i-1] = cardArray[i];
-        }
-        else if ((cardArray[i].value == cardToRemove.value) && (cardArray[i].color == cardToRemove.color)) {
-            foundCard = TRUE;
-        }
-    }
-    if (foundCard == TRUE) {
-        cardArray[nbOfCards-1].value = NULL_VALUE;
-        cardArray[nbOfCards-1].color = NULL_COLOR;
-    }
-    return foundCard;
-}
-
-Card askAICard(Card *cardArray, int nbOfCards) { //TEMPORARY FOR TEST PUROPOSES, WILL NEED AN UPDATE LATER
+Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color trump, Color roundColor) {
     Card chosenCard;
-    int i = 0;
-    while ((cardArray[i].canPlay == FALSE) && (i < nbOfCards)) {
-        i++;
+    if ((*player).isUser == TRUE) {                                 //If the player is the User                    
+        chosenCard = askUserCard((*player).cards, (*player).nbOfCards);
     }
-    if (i == nbOfCards) {
-        printf("ERROR!!! NO AVAILABLE CARD\n");
-        chosenCard = cardArray[i];
+    else {                                                              //If the player is an AI
+        chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
     }
-    else {
-        chosenCard = cardArray[i];
-    }
-    removeCard(cardArray, nbOfCards, chosenCard);
+    removeCard((*player).cards, (*player).nbOfCards, chosenCard);   //Once a card has been chosen, remove it from the player's hand
+    (*player).nbOfCards -= 1;                                       //Decrease the player's number of cards
     return chosenCard;
 }
 
 int playTrick(Player *players, int startingPlayer, Color trump) {
     Card trickCards[4];
+    Color roundColor = NULL_COLOR;
     int trickWinner;
     for (int i = 0; i < 4; i++) { //4 iterations because each player will play a card
         findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump); //Find valid cards in the hand of the current player
@@ -149,16 +101,12 @@ int playTrick(Player *players, int startingPlayer, Color trump) {
             printf("%d ", players[(i+startingPlayer)%4].cards[j].canPlay);  //TEMP DEBUG FEEDBACK
         }                                                                   //TEMP DEBUG FEEDBACK
         printf("\n");                                                       //TEMP DEBUG FEEDBACK
-
-        if (players[(i + startingPlayer) % 4].isUser == TRUE) { //Calls the right function for choosing a card, depending on whether the player is the user or an AI 
-            trickCards[i] = askAICard(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards); //change to AskUserCard later
+        trickCards[i] = getPlayerCard(&(players[(i+startingPlayer)%4]), trickCards, i, trump, roundColor);
+        if (i == 0) {
+            roundColor = trickCards[0].color;
         }
-        else {
-            trickCards[i] = askAICard(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards);
-        }
-        players[(i+startingPlayer)%4].nbOfCards -= 1;
     }
-    trickWinner = (getStrongestCard(trickCards, 4, trump, trickCards[0].color) + startingPlayer) % 4;
+    trickWinner = (getStrongestCard(trickCards, 4, trump, roundColor) + startingPlayer) % 4;
     //getStrongestCard returns a relative value while trickWinner needs an absolute one, hence the conversion with startingPlayer and a modulo
     players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump); //Increase the score of the trick winner
     printf("Player %d wins the trick and gets %d points, for a total of %d!\n", trickWinner, getCardArrayPoints(trickCards, 4, trump), players[trickWinner].score); //TEMP DEBUG FEEDBACK
