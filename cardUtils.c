@@ -69,7 +69,7 @@ Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove) {
 }
 
 int getPlayableCards(Card *cardArray, int nbOfCards, Card* playableCards) {
-    int nbOfPlayableCards;
+    int nbOfPlayableCards = 0;
     for (int i = 0; i < nbOfCards; i++) {
         if (cardArray[i].canPlay == TRUE) {
             playableCards[nbOfPlayableCards] = cardArray[i];

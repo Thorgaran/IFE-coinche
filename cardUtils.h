@@ -35,7 +35,7 @@ void sortCards(Card *cardArray, int nbToSort, Color trump, Color roundColor);
 */
 Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove);
 
-/* In an array of cards, return only those with canPlay = TRUE, and with a strength above the treshold
+/* In an array of cards, return only those with canPlay = TRUE, the function findValidCardsInHand must have been called before
 *   @param *cardArray: array containing the cards
 *   @param nbOfCards: the number of cards in cardArray
 *   @param playableCards: pointer to a memory space to store the playableCards in. This array must be big enough to store all playable cards

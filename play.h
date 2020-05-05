@@ -37,7 +37,7 @@ Bool setCanPlay(Card *cardArray, int nbOfCards, Color conditionalColor, Color tr
 */
 void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCards, int nbOfTrickCards, Color trump);
 
-/* Get the player player to choose card among the ones that can be played, depending on the player type (User/AI)
+/* Get the player to choose a card among the ones that can be played, depending on the player type (User/AI)
 *   @param *player: pointer to the player who has to choose a card. Note: the "canPlay" flag for the player cards has to be set already
 *   @param *trickCards: the cards already played by the previous players. Only the first N cards matter, where N is nbOfTrickCards
 *   @param nbOfTrickCards: the number of cards played by the previous players. Can be 0
