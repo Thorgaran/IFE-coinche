@@ -86,8 +86,7 @@ Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color t
     else {                                                              //If the player is an AI
         chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
     }
-    removeCard((*player).cards, (*player).nbOfCards, chosenCard);   //Once a card has been chosen, remove it from the player's hand
-    (*player).nbOfCards -= 1;                                       //Decrease the player's number of cards
+    removeCard((*player).cards, &((*player).nbOfCards), chosenCard);   //Once a card has been chosen, remove it from the player's hand
     return chosenCard;
 }
 

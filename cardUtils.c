@@ -51,19 +51,18 @@ void sortCards(Card *cardArray, int nbToSort, Color trump, Color roundColor) { /
     }
 }
 
-Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove) {
+Bool removeCard(Card *cardArray, int *nbOfCards, Card cardToRemove) {
     Bool foundCard = FALSE;
-    for (int i = 0; i < nbOfCards; i++) {
-        if (foundCard == TRUE) {
-            cardArray[i-1] = cardArray[i];
+    for (int i = 0; i < (*nbOfCards); i++) {
+        if (foundCard == TRUE) { //The card has been found
+            cardArray[i-1] = cardArray[i]; //Move this card to replace the previous one
         }
-        else if ((cardArray[i].value == cardToRemove.value) && (cardArray[i].color == cardToRemove.color)) {
-            foundCard = TRUE;
+        else if ((cardArray[i].value == cardToRemove.value) && (cardArray[i].color == cardToRemove.color)) { //Is this the card we're looking for?
+            foundCard = TRUE; //If it is, then stop looking for it and start moving cards
         }
     }
-    if (foundCard == TRUE) {
-        cardArray[nbOfCards-1].value = NULL_VALUE;
-        cardArray[nbOfCards-1].color = NULL_COLOR;
+    if (foundCard == TRUE) { //The number of cards shouldn't be decreased if no card was removed
+        (*nbOfCards)--; //Decrease the number of cards in the array
     }
     return foundCard;
 }
