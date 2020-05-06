@@ -43,4 +43,6 @@ Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove);
 */
 int getPlayableCards(Card *cardArray, int nbOfCards, Card* playableCards);
 
+void CardsDistribution(void);
+
 #endif

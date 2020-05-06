@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include "core.h"
 #include "play.h"
+#include "cardUtils.h"
 
 int main (int argc, char* argv[]) {
-    Card player0cards[8] =
+    /*Card player0cards[8] =
         {{.value = ACE,   .color = HEART},
         { .value = ACE,   .color = SPADE},
         { .value = QUEEN, .color = HEART},
@@ -55,8 +56,10 @@ int main (int argc, char* argv[]) {
     
     for (int i = 0; i < 4; i++) {
         printf("Player %d has %d points!\n", i, players[i].score);    
-    }
-    
+    }*/
+    CardsDistribution();
     getchar();
+
+    ;
     return EXIT_SUCCESS;
 }

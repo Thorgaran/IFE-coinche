@@ -78,3 +78,22 @@ int getPlayableCards(Card *cardArray, int nbOfCards, Card* playableCards) {
     }
     return nbOfPlayableCards;
 }
+
+void CardsDistribution (void){
+    Card cardDeck[32];
+    int cardNb = 0;
+    //int nbOfDistributedCards = 0;
+
+    for(int i = 1; i < 5; i++){
+        for(int j = 1; j < 9; j++){
+            cardDeck[cardNb].color = i;
+            cardDeck[cardNb].value = j;
+            cardNb ++;
+        }
+    }
+    for (int i = 0; i < 32; i++)
+    {
+        printf("%d %d\n",cardDeck[i].color,cardDeck[i].value);
+    }
+
+}
