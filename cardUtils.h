@@ -27,13 +27,13 @@ int getStrongestCard(Card *cardArray, int nbOfCards, Color trump, Color roundCol
 */
 void sortCards(Card *cardArray, int nbToSort, Color trump, Color roundColor);
 
-/* Seeks a card in an array to remove it
+/* Seeks a card in an array to remove it, and decreases the number of cards if it removes one
 *   @param *cardArray: array containing the cards
-*   @param nbOfCards: the number of cards in cardArray
+*   @param *nbOfCards: pointer to the number of cards in cardArray
 *   @param cardToRemove: the card to seek and remove in cardArray
 *   @return foundCard: TRUE if the function was able to find the card (thus removing it), FALSE otherwise
 */
-Bool removeCard(Card *cardArray, int nbOfCards, Card cardToRemove);
+Bool removeCard(Card *cardArray, int *nbOfCards, Card cardToRemove);
 
 /* In an array of cards, return only those with canPlay = TRUE, the function findValidCardsInHand must have been called before
 *   @param *cardArray: array containing the cards
