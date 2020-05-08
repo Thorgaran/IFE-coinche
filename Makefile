@@ -12,8 +12,9 @@ clean: coinche.exe
 	$(CLEANCMD) ai.o
 	$(CLEANCMD) userIO.o
 	$(CLEANCMD) cardUtils.o
+	$(CLEANCMD) bid.o
 
-coinche.exe: main.o core.o play.o ai.o userIO.o cardUtils.o
+coinche.exe: main.o core.o play.o ai.o userIO.o cardUtils.o bid.o
 	gcc -o $@ $^
 
 main.o: main.c
@@ -32,4 +33,7 @@ userIO.o: userIO.c
 	gcc -Wall -Werror -g -c $<
 
 cardUtils.o: cardUtils.c
+	gcc -Wall -Werror -g -c $<
+
+bid.o: bid.c
 	gcc -Wall -Werror -g -c $<
