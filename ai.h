@@ -19,4 +19,12 @@ Card getAICardFirstAvailable(Card *cardsInHand, int nbOfCardsInHand);
 */
 Card getAICardStandard(Card *cardsInHand, int nbOfCardsInHand, Card *trickCards, int nbOfTrickCards, Color trump, Color roundColor);
 
+/* If the AI has 4 strong cards or more in a given color, it makes a 120 points contract. If it has 3 strong cards, it makes an 80 points one
+*   @param *cardsInHand: pointer to the first address of a player's hand
+*   @param nbOfCardsInHand: the number of cards in hand
+*   @param *contract: pointer to the contract being debated. Will be edited if the AI decides to make a contract
+*   @return hasPassed: TRUE if the AI has decided to pass, FALSE if it decided to make a contract
+*/
+Bool getAIContractStandard(Card *cardsInHand, int nbOfCardsInHand, Contract *contract);
+
 #endif

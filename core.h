@@ -73,7 +73,7 @@ typedef struct Contract {
     ContractType type;
     int points;
     Coinche coinche;
-    int playerPos;
+    Position issuer;
 } Contract;
 
 const int CARD_POINTS_TABLE[4][8];
