@@ -34,12 +34,18 @@ typedef struct Card {
     Bool canPlay;
 } Card;
 
+typedef enum PlayerType {
+    USER              = 0,
+    AI_FIRSTAVAILABLE = 1,
+    AI_STANDARD       = 2
+} PlayerType;
+
 typedef struct Player {
     char *name;
     Card *cards;
     int nbOfCards;
     int score;
-    Bool isUser;
+    PlayerType type;
 } Player;
 
 const int CARD_POINTS_TABLE[4][8];

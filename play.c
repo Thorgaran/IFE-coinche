@@ -80,13 +80,18 @@ void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCar
 
 Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color trump, Color roundColor) {
     Card chosenCard;
-    if ((*player).isUser == TRUE) {                                 //If the player is the User                    
-        chosenCard = askUserCard((*player).cards, (*player).nbOfCards);
+    switch ((*player).type) {
+        case USER: //If the player is the User
+            chosenCard = askUserCard((*player).cards, (*player).nbOfCards);
+            break;
+        case AI_FIRSTAVAILABLE: //If the player is an AI of type FIRSTAVAILABLE
+            chosenCard = getAICardFirstAvailable((*player).cards, (*player).nbOfCards);
+            break;
+        case AI_STANDARD: //If the player is an AI of type STANDARD
+            chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
+            break;
     }
-    else {                                                              //If the player is an AI
-        chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
-    }
-    removeCard((*player).cards, &((*player).nbOfCards), chosenCard);   //Once a card has been chosen, remove it from the player's hand
+    removeCard((*player).cards, &((*player).nbOfCards), chosenCard); //Once a card has been chosen, remove it from the player's hand
     return chosenCard;
 }
 
