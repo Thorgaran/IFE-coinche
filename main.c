@@ -44,14 +44,14 @@ int main (int argc, char* argv[]) {
         { .value = EIGHT, .color = CLUB},
         { .value = KING,  .color = CLUB}};
 
-    Player player0 = {.type   = AI_STANDARD, .score = 0, .nbOfCards = 8, .cards = player0cards};
-    Player player1 = {.type   = AI_STANDARD, .score = 0, .nbOfCards = 8, .cards = player1cards};
-    Player player2 = {.type   = AI_STANDARD, .score = 0, .nbOfCards = 8, .cards = player2cards};
-    Player player3 = {.type   = AI_STANDARD, .score = 0, .nbOfCards = 8, .cards = player3cards};
+    Player player0 = {.type   = AI_STANDARD, .pos = SOUTH, .score = 0, .nbOfCards = 8, .cards = player0cards};
+    Player player1 = {.type   = AI_STANDARD, .pos = WEST,  .score = 0, .nbOfCards = 8, .cards = player1cards};
+    Player player2 = {.type   = AI_STANDARD, .pos = NORTH, .score = 0, .nbOfCards = 8, .cards = player2cards};
+    Player player3 = {.type   = AI_STANDARD, .pos = EAST,  .score = 0, .nbOfCards = 8, .cards = player3cards};
 
     Player players[] = {player0, player1, player2, player3};
 
-    play(players, 0, CLUB);
+    play(players, SOUTH, CLUB);
     
     for (int i = 0; i < 4; i++) {
         printf("Player %d has %d points!\n", i, players[i].score);    

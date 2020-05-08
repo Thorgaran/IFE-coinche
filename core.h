@@ -40,12 +40,20 @@ typedef enum PlayerType {
     AI_STANDARD       = 2
 } PlayerType;
 
+typedef enum Position {
+    SOUTH = 0,
+    WEST  = 1,
+    NORTH = 2,
+    EAST  = 3
+} Position;
+
 typedef struct Player {
+    PlayerType type;
+    Position pos;
     char *name;
     Card *cards;
     int nbOfCards;
     int score;
-    PlayerType type;
 } Player;
 
 const int CARD_POINTS_TABLE[4][8];

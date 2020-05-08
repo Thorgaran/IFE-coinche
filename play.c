@@ -95,7 +95,7 @@ Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color t
     return chosenCard;
 }
 
-int playTrick(Player *players, int startingPlayer, Color trump) {
+int playTrick(Player *players, Position startingPlayer, Color trump) {
     Card trickCards[4];
     Color roundColor = NULL_COLOR;
     int trickWinner;
@@ -117,7 +117,7 @@ int playTrick(Player *players, int startingPlayer, Color trump) {
     return trickWinner;
 }
 
-void play(Player *players, int startingPlayer, Color trump) {
+void play(Player *players, Position startingPlayer, Color trump) {
     for (int i = 0; i < 8; i++) {   //plays the 8 tricks of a game
         startingPlayer = playTrick(players, startingPlayer, trump); //the previous trick winner becomes the starting player
     }
