@@ -80,17 +80,22 @@ void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCar
 
 Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color trump, Color roundColor) {
     Card chosenCard;
-    if ((*player).isUser == TRUE) {                                 //If the player is the User                    
-        chosenCard = askUserCard((*player).cards, (*player).nbOfCards);
+    switch ((*player).type) {
+        case USER: //If the player is the User
+            chosenCard = askUserCard((*player).cards, (*player).nbOfCards);
+            break;
+        case AI_FIRSTAVAILABLE: //If the player is an AI of type FIRSTAVAILABLE
+            chosenCard = getAICardFirstAvailable((*player).cards, (*player).nbOfCards);
+            break;
+        case AI_STANDARD: //If the player is an AI of type STANDARD
+            chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
+            break;
     }
-    else {                                                              //If the player is an AI
-        chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
-    }
-    removeCard((*player).cards, &((*player).nbOfCards), chosenCard);   //Once a card has been chosen, remove it from the player's hand
+    removeCard((*player).cards, &((*player).nbOfCards), chosenCard); //Once a card has been chosen, remove it from the player's hand
     return chosenCard;
 }
 
-int playTrick(Player *players, int startingPlayer, Color trump) {
+int playTrick(Player *players, Position startingPlayer, Color trump) {
     Card trickCards[4];
     Color roundColor = NULL_COLOR;
     int trickWinner;
@@ -112,7 +117,7 @@ int playTrick(Player *players, int startingPlayer, Color trump) {
     return trickWinner;
 }
 
-void play(Player *players, int startingPlayer, Color trump) {
+void play(Player *players, Position startingPlayer, Color trump) {
     for (int i = 0; i < 8; i++) {   //plays the 8 tricks of a game
         startingPlayer = playTrick(players, startingPlayer, trump); //the previous trick winner becomes the starting player
     }

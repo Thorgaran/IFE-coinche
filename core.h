@@ -46,12 +46,26 @@ typedef struct Card {
     Bool canPlay;
 } Card;
 
+typedef enum PlayerType {
+    USER              = 0,
+    AI_FIRSTAVAILABLE = 1,
+    AI_STANDARD       = 2
+} PlayerType;
+
+typedef enum Position {
+    SOUTH = 0,
+    WEST  = 1,
+    NORTH = 2,
+    EAST  = 3
+} Position;
+
 typedef struct Player {
+    PlayerType type;
+    Position pos;
     char *name;
     Card *cards;
     int nbOfCards;
     int score;
-    Bool isUser;
 } Player;
 
 typedef struct Contract {
