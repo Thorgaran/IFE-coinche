@@ -28,6 +28,18 @@ typedef enum Color {
     NOTRUMP    = 6
 } Color;
 
+typedef enum Coinche {
+    NORMAL      = 0,
+    COINCHE     = 1,
+    OVERCOINCHE = 2
+} Coinche;
+
+typedef enum ContractType {
+    POINTS  = 0,
+    CAPOT   = 1,
+    GENERAL = 2
+} ContractType;
+
 typedef struct Card {
     Value value;
     Color color;
@@ -41,6 +53,14 @@ typedef struct Player {
     int score;
     Bool isUser;
 } Player;
+
+typedef struct Contract {
+    Color trump;
+    ContractType type;
+    int points;
+    Coinche coinche;
+    int playerPos;
+} Contract;
 
 const int CARD_POINTS_TABLE[4][8];
 
