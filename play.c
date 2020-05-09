@@ -90,6 +90,8 @@ Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color t
         case AI_STANDARD: //If the player is an AI of type STANDARD
             chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
             break;
+        default: //Default behaviour if the AI type isn't recognised
+            chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
     }
     removeCard((*player).cards, &((*player).nbOfCards), chosenCard); //Once a card has been chosen, remove it from the player's hand
     return chosenCard;
