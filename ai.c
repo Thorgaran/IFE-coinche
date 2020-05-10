@@ -3,7 +3,7 @@
 #include "core.h"
 #include "cardUtils.h"
 
-Card getAICardFirstAvailable(Card *cardsInHand, int nbOfCardsInHand) {
+Card getAICardFirstAvailable(Card cardsInHand[], int nbOfCardsInHand) {
     Card chosenCard;
     int i = 0;
     while (cardsInHand[i].canPlay == FALSE) { //Seek the first playable card
@@ -13,7 +13,7 @@ Card getAICardFirstAvailable(Card *cardsInHand, int nbOfCardsInHand) {
     return chosenCard;
 }
 
-Card getAICardStandard(Card *cardsInHand, int nbOfCardsInHand, Card *trickCards, int nbOfTrickCards, Color trump, Color roundColor) {
+Card getAICardStandard(Card cardsInHand[], int nbOfCardsInHand, Card trickCards[], int nbOfTrickCards, Color trump, Color roundColor) {
     Card chosenCard, playableCards[8];
     int bestTrickCardStrength = -1, chosenCardIndex = 0;                                    //If the AI is unable to win, it'll play its lowest card
     int nbOfPlayableCards = getPlayableCards(cardsInHand, nbOfCardsInHand, playableCards);  //Initialise both playableCards and nbOfPlayableCards
