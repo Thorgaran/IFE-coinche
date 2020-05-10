@@ -22,7 +22,7 @@ int getCardPoints(Card card, Color trump) {
     return cardPoints;
 }
 
-int getCardArrayPoints(Card *cardArray, int nbOfCards, Color trump) {
+int getCardArrayPoints(Card cardArray[], int nbOfCards, Color trump) {
     int totalPoints = 0;
     for (int i = 0; i < nbOfCards; i++) {
         totalPoints += getCardPoints(cardArray[i], trump);
@@ -30,7 +30,7 @@ int getCardArrayPoints(Card *cardArray, int nbOfCards, Color trump) {
     return totalPoints;
 }
 
-Bool setCanPlay(Card *cardArray, int nbOfCards, Color conditionalColor, Color trump, int bestTrumpStrength, Bool canPlay) {
+Bool setCanPlay(Card cardArray[], int nbOfCards, Color conditionalColor, Color trump, int bestTrumpStrength, Bool canPlay) {
     Bool conditionMet = FALSE;
     for (int i = 0; i < nbOfCards; i++) {
         if (((conditionalColor == NULL_COLOR) || (conditionalColor == cardArray[i].color)) &&
@@ -43,7 +43,7 @@ Bool setCanPlay(Card *cardArray, int nbOfCards, Color conditionalColor, Color tr
     return conditionMet;
 }
 
-void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCards, int nbOfTrickCards, Color trump) {
+void findValidCardsInHand(Card cardsInHand[], int nbOfCardsInHand, Card trickCards[], int nbOfTrickCards, Color trump) {
     Bool canFollow;
     Card bestCard;
     int bestTrumpStrength = 0;
@@ -78,7 +78,7 @@ void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCar
     }    
 }
 
-Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color trump, Color roundColor) {
+Card getPlayerCard(Player *player, Card trickCards[], int nbOfTrickCards, Color trump, Color roundColor) {
     Card chosenCard;
     switch ((*player).type) {
         case USER: //If the player is the User
@@ -97,7 +97,7 @@ Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color t
     return chosenCard;
 }
 
-Position playTrick(Player *players, Position startingPlayer, Color trump) {
+Position playTrick(Player players[], Position startingPlayer, Color trump) {
     Card trickCards[4];
     Color roundColor = NULL_COLOR;
     Position trickWinner;
@@ -119,7 +119,7 @@ Position playTrick(Player *players, Position startingPlayer, Color trump) {
     return trickWinner;
 }
 
-void play(Player *players, Position startingPlayer, Color trump) {
+void play(Player players[], Position startingPlayer, Color trump) {
     for (int i = 0; i < 8; i++) {   //plays the 8 tricks of a game
         startingPlayer = playTrick(players, startingPlayer, trump); //the previous trick winner becomes the starting player
     }

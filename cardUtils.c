@@ -18,7 +18,7 @@ int getCardStrength(Card card, Color trump, Color roundColor) {
     return cardStrength;
 }
 
-int getStrongestCard(Card *cardArray, int nbOfCards, Color trump, Color roundColor) {
+int getStrongestCard(Card cardArray[], int nbOfCards, Color trump, Color roundColor) {
     int greatestStrength = getCardStrength(cardArray[0], trump, roundColor);
     int cardStrength;
     int strongestCardPos = 0;
@@ -33,7 +33,7 @@ int getStrongestCard(Card *cardArray, int nbOfCards, Color trump, Color roundCol
     return strongestCardPos;
 }
 
-void sortCards(Card *cardArray, int nbToSort, Color trump, Color roundColor) { //Bubble sort algorithm
+void sortCards(Card cardArray[], int nbToSort, Color trump, Color roundColor) { //Bubble sort algorithm
     Card previousCard;
     int newNbToSort;
     while (nbToSort > 1) { //While there is more than a single card left to sort
@@ -51,7 +51,7 @@ void sortCards(Card *cardArray, int nbToSort, Color trump, Color roundColor) { /
     }
 }
 
-Bool removeCard(Card *cardArray, int *nbOfCards, Card cardToRemove) {
+Bool removeCard(Card cardArray[], int *nbOfCards, Card cardToRemove) {
     Bool foundCard = FALSE;
     for (int i = 0; i < (*nbOfCards); i++) {
         if (foundCard == TRUE) { //The card has been found
@@ -67,7 +67,7 @@ Bool removeCard(Card *cardArray, int *nbOfCards, Card cardToRemove) {
     return foundCard;
 }
 
-int getPlayableCards(Card *cardArray, int nbOfCards, Card* playableCards) {
+int getPlayableCards(Card cardArray[], int nbOfCards, Card playableCards[]) {
     int nbOfPlayableCards = 0;
     for (int i = 0; i < nbOfCards; i++) {
         if (cardArray[i].canPlay == TRUE) {
