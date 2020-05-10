@@ -4,6 +4,6 @@
 
 Card askUserCard(Card cardArray[], int nbOfCards);
 
-Bool askUserContract(Card *cardArray, int nbOfCards, Contract *contract);
+Bool askUserContract(Card cardArray[], int nbOfCards, Contract *contract);
 
 #endif

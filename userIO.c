@@ -7,7 +7,7 @@ Card askUserCard(Card cardArray[], int nbOfCards) {
     return chosenCard;
 }
 
-Bool askUserContract(Card *cardArray, int nbOfCards, Contract *contract) {
+Bool askUserContract(Card cardArray[], int nbOfCards, Contract *contract) {
     Bool hasPassed = TRUE;
     return hasPassed;
 }

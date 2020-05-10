@@ -30,7 +30,7 @@ Card getAICardStandard(Card cardsInHand[], int nbOfCardsInHand, Card trickCards[
     return chosenCard;
 }
 
-Bool getAIContractStandard(Card *cardsInHand, int nbOfCardsInHand, Contract *contract) {
+Bool getAIContractStandard(Card cardsInHand[], int nbOfCardsInHand, Contract *contract) {
     Bool hasPassed = TRUE;
     Color strongestColor = SPADE;
     int nbOfStrongCards[] = {0, 0, 0, 0};                                           //Will contain the number of strong cards in each color, from SPADE to CLUB

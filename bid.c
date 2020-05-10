@@ -22,7 +22,7 @@ Bool getPlayerContract(Player player, Contract *contract) {
     return hasPassed;
 }
 
-Bool bidAttempt(Player *players, Position startingPlayer, Contract *contract) {
+Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
     Position currentPlayer = startingPlayer; //Transferring startingPlayer to currentPlayer
     Bool hasPassed, everyonePassed = TRUE; //everyonePassed starts at TRUE and will be set to FALSE as soon as someone makes a contract
     int nbOfConsecutivePass = 0;
@@ -43,7 +43,7 @@ Bool bidAttempt(Player *players, Position startingPlayer, Contract *contract) {
     return everyonePassed;
 }
 
-Contract bid(Player *players, Position startingPlayer) {
+Contract bid(Player players[], Position startingPlayer) {
     Contract contract = {.points = 0, .coinche = NORMAL}; //Contract is initialized
     Bool everyonePassed;
     do {
