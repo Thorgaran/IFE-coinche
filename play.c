@@ -97,10 +97,10 @@ Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color t
     return chosenCard;
 }
 
-int playTrick(Player *players, Position startingPlayer, Color trump) {
+Position playTrick(Player *players, Position startingPlayer, Color trump) {
     Card trickCards[4];
     Color roundColor = NULL_COLOR;
-    int trickWinner;
+    Position trickWinner;
     for (int i = 0; i < 4; i++) { //4 iterations because each player will play a card
         findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump); //Find valid cards in the hand of the current player
         for (int j = 0; j < players[(i+startingPlayer)%4].nbOfCards; j++) { //TEMP DEBUG FEEDBACK
@@ -113,7 +113,7 @@ int playTrick(Player *players, Position startingPlayer, Color trump) {
         }
     }
     trickWinner = (getStrongestCard(trickCards, 4, trump, roundColor) + startingPlayer) % 4;
-    //getStrongestCard returns a relative value while trickWinner needs an absolute one, hence the conversion with startingPlayer and a modulo
+    //getStrongestCard returns a relative value while trickWinner an absolute position, hence the conversion with startingPlayer and a modulo
     players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump); //Increase the score of the trick winner
     printf("Player %d wins the trick and gets %d points, for a total of %d!\n", trickWinner, getCardArrayPoints(trickCards, 4, trump), players[trickWinner].score); //TEMP DEBUG FEEDBACK
     return trickWinner;

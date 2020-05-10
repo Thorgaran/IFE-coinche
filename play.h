@@ -49,15 +49,15 @@ Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color t
 
 /* Plays a single trick : each player plays a card, then the player with the strongest card wins the trick and gets points
 *   @param *players: pointer to an array of 4 players
-*   @param startingPlayer: number from 0 to 3, representing the starting player
+*   @param startingPlayer: position of the starting player
 *   @param trump: the current trump
-*   @return trickWinner: number from 0 to 3, representing the winner of the trick
+*   @return trickWinner: position of the winner of the trick
 */
-int playTrick(Player *players, Position startingPlayer, Color trump);
+Position playTrick(Player *players, Position startingPlayer, Color trump);
 
 /* Plays a full 8-trick game, counting points
     @param *players: pointer to an array of 4 players
-    @param startingPlayer: number from 0 to 3, representing the starting player
+    @param startingPlayer: position of the starting player
     @param trump: the current trump
 */
 void play(Player *players, Position startingPlayer, Color trump);
