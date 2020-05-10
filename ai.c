@@ -29,3 +29,30 @@ Card getAICardStandard(Card cardsInHand[], int nbOfCardsInHand, Card trickCards[
     chosenCard = playableCards[chosenCardIndex];
     return chosenCard;
 }
+
+Bool getAIContractStandard(Card cardsInHand[], int nbOfCardsInHand, Contract *contract) {
+    Bool hasPassed = TRUE;
+    Color strongestColor = SPADE;
+    int nbOfStrongCards[] = {0, 0, 0, 0};                                           //Will contain the number of strong cards in each color, from SPADE to CLUB
+    for (int i = 0; i < nbOfCardsInHand; i++) {                                     //Browse through each hand card
+        if (getCardStrength(cardsInHand[i], ALLTRUMP, NULL_COLOR) >= 22) {          //A "strong card" is defined to be a Queen or better, in trump order
+            nbOfStrongCards[cardsInHand[i].color - 1]++;                            //Increment the number of strong cards by one in the right color
+        }
+    }
+    for (Color color = HEART; color <= CLUB; color++) {                             //Find the strongest color
+        if (nbOfStrongCards[color - 1] > nbOfStrongCards[strongestColor - 1]) {     //If this color has more strong cards than strongestColor does,
+            strongestColor = color;                                                 //then it becomes the new strongestColor
+        }
+    }
+    if ((nbOfStrongCards[strongestColor - 1] >= 4) && ((*contract).points < 120)) { //If the AI has 4 strongs cards or more AND the current contract points are less than 120,
+        hasPassed = FALSE;                                                          //it takes the contract in this color with 120 points
+        (*contract).trump = strongestColor;
+        (*contract).points = 120;
+    }
+    else if ((nbOfStrongCards[strongestColor - 1] == 3) && ((*contract).points < 80)) { //If the AI has 3 strongs cards AND the current contract points are less than 80,
+        hasPassed = FALSE;                                                          //it takes the contract in this color with 80 points
+        (*contract).trump = strongestColor;
+        (*contract).points = 80;
+    }
+    return hasPassed;
+}
