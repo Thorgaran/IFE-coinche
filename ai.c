@@ -44,7 +44,7 @@ Bool getAIContractStandard(Card *cardsInHand, int nbOfCardsInHand, Contract *con
             strongestColor = color;                                                 //then it becomes the new strongestColor
         }
     }
-    if ((nbOfStrongCards[strongestColor - 1] >= 4) && ((*contract).points < 120)) {     //If the AI has 4 strongs cards or more AND the current contract points are less than 120,
+    if ((nbOfStrongCards[strongestColor - 1] >= 4) && ((*contract).points < 120)) { //If the AI has 4 strongs cards or more AND the current contract points are less than 120,
         hasPassed = FALSE;                                                          //it takes the contract in this color with 120 points
         (*contract).trump = strongestColor;
         (*contract).points = 120;
