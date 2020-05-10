@@ -51,18 +51,12 @@ int main (int argc, char* argv[]) {
     Player player3 = {.type = AI_STANDARD, .pos = EAST,  .score = 0, .nbOfCards = 8, .cards = player3cards};
 
     Player players[] = {player0, player1, player2, player3};
-    Contract contract = {.points = 0};
-    for (int i = 0; i <= 3; i++) {
-        if (getPlayerContract(players[i], &contract) == FALSE) {
-            printf("Player %d decided to make a %d \"%d\" contract!\n", i, contract.points, contract.trump - 1);
-        }
-        else
-        {
-            printf("Player %d didn't make a contract.\n", i);
-        }
-    }
+    Contract contract;
+    Position startingPlayer = SOUTH;
 
-    play(players, SOUTH, contract.trump);
+    contract = bid(players, startingPlayer);
+
+    play(players, startingPlayer, contract.trump);
     
     for (int i = 0; i < 4; i++) {
         printf("Player %d has %d points!\n", i, players[i].score);    
