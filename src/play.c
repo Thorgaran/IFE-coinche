@@ -22,7 +22,7 @@ int getCardPoints(Card card, Color trump) {
     return cardPoints;
 }
 
-int getCardArrayPoints(Card *cardArray, int nbOfCards, Color trump) {
+int getCardArrayPoints(Card cardArray[], int nbOfCards, Color trump) {
     int totalPoints = 0;
     for (int i = 0; i < nbOfCards; i++) {
         totalPoints += getCardPoints(cardArray[i], trump);
@@ -30,7 +30,7 @@ int getCardArrayPoints(Card *cardArray, int nbOfCards, Color trump) {
     return totalPoints;
 }
 
-Bool setCanPlay(Card *cardArray, int nbOfCards, Color conditionalColor, Color trump, int bestTrumpStrength, Bool canPlay) {
+Bool setCanPlay(Card cardArray[], int nbOfCards, Color conditionalColor, Color trump, int bestTrumpStrength, Bool canPlay) {
     Bool conditionMet = FALSE;
     for (int i = 0; i < nbOfCards; i++) {
         if (((conditionalColor == NULL_COLOR) || (conditionalColor == cardArray[i].color)) &&
@@ -43,7 +43,7 @@ Bool setCanPlay(Card *cardArray, int nbOfCards, Color conditionalColor, Color tr
     return conditionMet;
 }
 
-void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCards, int nbOfTrickCards, Color trump) {
+void findValidCardsInHand(Card cardsInHand[], int nbOfCardsInHand, Card trickCards[], int nbOfTrickCards, Color trump) {
     Bool canFollow;
     Card bestCard;
     int bestTrumpStrength = 0;
@@ -78,22 +78,29 @@ void findValidCardsInHand(Card *cardsInHand, int nbOfCardsInHand, Card *trickCar
     }    
 }
 
-Card getPlayerCard(Player *player, Card *trickCards, int nbOfTrickCards, Color trump, Color roundColor) {
+Card getPlayerCard(Player *player, Card trickCards[], int nbOfTrickCards, Color trump, Color roundColor) {
     Card chosenCard;
-    if ((*player).isUser == TRUE) {                                 //If the player is the User                    
-        chosenCard = askUserCard((*player).cards, (*player).nbOfCards);
+    switch ((*player).type) {
+        case USER: //If the player is the User
+            chosenCard = askUserCard((*player).cards, (*player).nbOfCards);
+            break;
+        case AI_FIRSTAVAILABLE: //If the player is an AI of type FIRSTAVAILABLE
+            chosenCard = getAICardFirstAvailable((*player).cards, (*player).nbOfCards);
+            break;
+        case AI_STANDARD: //If the player is an AI of type STANDARD
+            chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
+            break;
+        default: //Default behaviour if this AI type has no dedicated card function
+            chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
     }
-    else {                                                              //If the player is an AI
-        chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
-    }
-    removeCard((*player).cards, &((*player).nbOfCards), chosenCard);   //Once a card has been chosen, remove it from the player's hand
+    removeCard((*player).cards, &((*player).nbOfCards), chosenCard); //Once a card has been chosen, remove it from the player's hand
     return chosenCard;
 }
 
-int playTrick(Player *players, int startingPlayer, Color trump) {
+Position playTrick(Player players[], Position startingPlayer, Color trump) {
     Card trickCards[4];
     Color roundColor = NULL_COLOR;
-    int trickWinner;
+    Position trickWinner;
     for (int i = 0; i < 4; i++) { //4 iterations because each player will play a card
         findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump); //Find valid cards in the hand of the current player
         for (int j = 0; j < players[(i+startingPlayer)%4].nbOfCards; j++) { //TEMP DEBUG FEEDBACK
@@ -106,13 +113,13 @@ int playTrick(Player *players, int startingPlayer, Color trump) {
         }
     }
     trickWinner = (getStrongestCard(trickCards, 4, trump, roundColor) + startingPlayer) % 4;
-    //getStrongestCard returns a relative value while trickWinner needs an absolute one, hence the conversion with startingPlayer and a modulo
+    //getStrongestCard returns a relative value while trickWinner an absolute position, hence the conversion with startingPlayer and a modulo
     players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump); //Increase the score of the trick winner
     printf("Player %d wins the trick and gets %d points, for a total of %d!\n", trickWinner, getCardArrayPoints(trickCards, 4, trump), players[trickWinner].score); //TEMP DEBUG FEEDBACK
     return trickWinner;
 }
 
-void play(Player *players, int startingPlayer, Color trump) {
+void play(Player players[], Position startingPlayer, Color trump) {
     for (int i = 0; i < 8; i++) {   //plays the 8 tricks of a game
         startingPlayer = playTrick(players, startingPlayer, trump); //the previous trick winner becomes the starting player
     }

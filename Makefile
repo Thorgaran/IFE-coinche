@@ -1,35 +1,33 @@
-OS=$(shell uname)
-ifeq ($(OS), CYGWIN_NT-10.0)
-	CLEANCMD=rm
+DEBUG := true
+
+CC := gcc
+
+SRCS := $(wildcard src/*.c)
+OBJS := $(SRCS:.c=.o)
+
+OS=$(shell gcc -dumpmachine)
+ifeq ($(OS), x86_64-pc-cygwin)
+	RM=rm -f
 else
-	CLEANCMD=del
+	RM=del
 endif
 
-clean: coinche.exe
-	$(CLEANCMD) main.o
-	$(CLEANCMD) core.o
-	$(CLEANCMD) play.o
-	$(CLEANCMD) ai.o
-	$(CLEANCMD) userIO.o
-	$(CLEANCMD) cardUtils.o
+ifeq ($(DEBUG),true)
+	CFLAGS := -g -Wall -Werror
+else
+	CFLAGS := -Wall -Werror
+endif
 
-coinche.exe: main.o core.o play.o ai.o userIO.o cardUtils.o
-	gcc -o $@ $^
+coinche.exe: $(OBJS)
+ifeq ($(DEBUG),true)
+	@echo "Debug compilation"
+else
+	@echo "Release compilation"
+endif
+	$(CC) -o $@ $^
 
-main.o: main.c
-	gcc -Wall -Werror -g -c $<
+%.o: src/%.c
+	$(CC) $(CFLAGS) -o $@ -c $<
 
-core.o: core.c
-	gcc -Wall -Werror -g -c $<
-
-play.o: play.c
-	gcc -Wall -Werror -g -c $<
-
-ai.o: ai.c
-	gcc -Wall -Werror -g -c $<
-
-userIO.o: userIO.c
-	gcc -Wall -Werror -g -c $<
-
-cardUtils.o: cardUtils.c
-	gcc -Wall -Werror -g -c $<
+clean:
+	$(RM) src/*.o

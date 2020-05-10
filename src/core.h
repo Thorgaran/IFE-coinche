@@ -34,13 +34,47 @@ typedef struct Card {
     Bool canPlay;
 } Card;
 
+typedef enum PlayerType {
+    USER              = 0,
+    AI_FIRSTAVAILABLE = 1,
+    AI_STANDARD       = 2
+} PlayerType;
+
+typedef enum Position {
+    SOUTH = 0,
+    WEST  = 1,
+    NORTH = 2,
+    EAST  = 3
+} Position;
+
 typedef struct Player {
+    PlayerType type;
+    Position pos;
     char *name;
     Card *cards;
     int nbOfCards;
     int score;
-    Bool isUser;
 } Player;
+
+typedef enum Coinche {
+    NORMAL      = 0,
+    COINCHE     = 1,
+    OVERCOINCHE = 2
+} Coinche;
+
+typedef enum ContractType {
+    POINTS  = 0,
+    CAPOT   = 1,
+    GENERAL = 2
+} ContractType;
+
+typedef struct Contract {
+    Color trump;
+    ContractType type;
+    int points;
+    Coinche coinche;
+    Position issuer;
+} Contract;
 
 const int CARD_POINTS_TABLE[4][8];
 

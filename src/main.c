@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "core.h"
+#include "bid.h"
 #include "play.h"
 #include "cardUtils.h"
 
@@ -21,7 +22,7 @@ int main (int argc, char* argv[]) {
         { .value = NINE,  .color = CLUB},
         { .value = TEN,   .color = SPADE},
         { .value = SEVEN, .color = DIAMOND},
-        { .value = JACK,  .color = DIAMOND},
+        { .value = SEVEN, .color = SPADE},
         { .value = SEVEN, .color = CLUB},
         { .value = ACE,   .color = CLUB}};
     
@@ -31,28 +32,32 @@ int main (int argc, char* argv[]) {
         { .value = SEVEN, .color = HEART},
         { .value = JACK,  .color = SPADE},
         { .value = TEN,   .color = DIAMOND},
-        { .value = ACE,   .color = DIAMOND},
+        { .value = EIGHT, .color = DIAMOND},
         { .value = KING,  .color = HEART},
         { .value = TEN,   .color = CLUB}};
     
     Card player3cards[8] =
         {{.value = EIGHT, .color = HEART},
-        { .value = SEVEN, .color = SPADE},
+        { .value = JACK,  .color = DIAMOND},
         { .value = KING,  .color = DIAMOND},
         { .value = NINE,  .color = SPADE},
-        { .value = EIGHT, .color = DIAMOND},
+        { .value = ACE,   .color = DIAMOND},
         { .value = NINE,  .color = DIAMOND},
         { .value = EIGHT, .color = CLUB},
         { .value = KING,  .color = CLUB}};
 
-    Player player0 = {.isUser = FALSE, .score = 0, .nbOfCards = 8, .cards = player0cards};
-    Player player1 = {.isUser = FALSE, .score = 0, .nbOfCards = 8, .cards = player1cards};
-    Player player2 = {.isUser = FALSE, .score = 0, .nbOfCards = 8, .cards = player2cards};
-    Player player3 = {.isUser = FALSE, .score = 0, .nbOfCards = 8, .cards = player3cards};
+    Player player0 = {.type = AI_STANDARD, .pos = SOUTH, .score = 0, .nbOfCards = 8, .cards = player0cards};
+    Player player1 = {.type = AI_STANDARD, .pos = WEST,  .score = 0, .nbOfCards = 8, .cards = player1cards};
+    Player player2 = {.type = AI_STANDARD, .pos = NORTH, .score = 0, .nbOfCards = 8, .cards = player2cards};
+    Player player3 = {.type = AI_STANDARD, .pos = EAST,  .score = 0, .nbOfCards = 8, .cards = player3cards};
 
     Player players[] = {player0, player1, player2, player3};
+    Contract contract;
+    Position startingPlayer = SOUTH;
 
-    play(players, 0, CLUB);
+    contract = bid(players, startingPlayer);
+
+    play(players, startingPlayer, contract.trump);
     
     for (int i = 0; i < 4; i++) {
         printf("Player %d has %d points!\n", i, players[i].score);    
