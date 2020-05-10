@@ -7,9 +7,9 @@ OBJS := $(SRCS:.c=.o)
 
 OS=$(shell gcc -dumpmachine)
 ifeq ($(OS), x86_64-pc-cygwin)
-	RM=rm -f
+	RM=rm -f src/*.o
 else
-	RM=del
+	RM=del src\*.o
 endif
 
 ifeq ($(DEBUG),true)
@@ -30,4 +30,4 @@ endif
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
-	$(RM) src/*.o
+	$(RM)
