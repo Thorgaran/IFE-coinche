@@ -91,25 +91,15 @@ void createDeck(Card cardDeck[]){
 }
 void cardsDistribution (Player *players){
     srand(time(0));
-    Card cardDeck[32], playersCards[4][8];
+    Card cardDeck[32];
     int randomCardNb;
     int nbOfRemainingCards = 32;
-
     createDeck(cardDeck);
-
     for (int i = 0; i < 4; i++){
-        players[i].cards = playersCards[i];
         for (int j = 0; j < 8; j++){
             randomCardNb = rand()%(nbOfRemainingCards);
             players[i].cards[j] = cardDeck[randomCardNb];
             removeCard(cardDeck,&nbOfRemainingCards,cardDeck[randomCardNb]);
         } 
     }
-    for (int i = 0; i < 4; i++){
-        printf("\n\n");
-        for (int j = 0; j < 8; j++){
-            printf("%d %d\n",players[i].cards[j].color,players[i].cards[j].value);
-        }
-    }
-
 }

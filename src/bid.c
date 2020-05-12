@@ -26,20 +26,19 @@ Bool getPlayerContract(Player player, Contract *contract) {
 Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
     Position currentPlayer = startingPlayer; //Transferring startingPlayer to currentPlayer
     Bool hasPassed, everyonePassed = TRUE; //everyonePassed starts at TRUE and will be set to FALSE as soon as someone makes a contract
-    int nbOfConsecutivePass = 0; //temporary = currentPlayer;
+    int nbOfConsecutivePass = 0;
     do {
         hasPassed = getPlayerContract(players[currentPlayer], &(*contract)); //Get the player to decide on a contract or pass
         if (hasPassed == TRUE) {        //If the player passed,
             nbOfConsecutivePass++;      //increase the number of consecutive pass
-            //printf("Player %d didn't make a contract.\n", temporary); //TEMP DEBUG FEEDBACK
+            printf("Player %d didn't make a contract.\n", currentPlayer); //TEMP DEBUG FEEDBACK
         }
         else {                          //If the player didn't pass,
             nbOfConsecutivePass = 0;    //Reset the number of consecutive pass
             everyonePassed = FALSE;     //If everyonePassed is still on TRUE, set it to FALSE
-            //printf("Player %d decided to make a %d \"%d\" contract!\n", temporary, (*contract).points, (*contract).trump - 1); //TEMP DEBUG FEEDBACK
+            printf("Player %d decided to make a %d \"%d\" contract!\n", currentPlayer, (*contract).points, (*contract).trump - 1); //TEMP DEBUG FEEDBACK
         }
         currentPlayer = (currentPlayer + 1) % 4; //Go to next player
-        //temporary = currentPlayer;
     } while (((nbOfConsecutivePass < 3) || ((everyonePassed == TRUE) && (nbOfConsecutivePass < 4))) && ((*contract).coinche != OVERCOINCHED));
     //While no three players passed in a row OR it's still the first turn AND no four players passed in a row, AND there was no overcoinche
     return everyonePassed;
