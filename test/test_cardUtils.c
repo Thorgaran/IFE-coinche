@@ -188,4 +188,23 @@ void test_createDeck()
         cardDeck[i].canPlay = FALSE;
     }
     TEST_ASSERT_EQUAL_MEMORY_MESSAGE(expectedCardDeck, cardDeck, sizeof(Card), "createDeck isn't working");
-}      
+}
+
+void test_cardsDistribution()
+{
+    Bool foundCard;
+    Card cardDeck[32];
+    Player players[4];
+    int nbOfCardsLeft = 32;
+    createDeck(cardDeck);
+    cardsDistribution(players);
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            foundCard = removeCard(cardDeck, &nbOfCardsLeft, players[i].cards[j]);
+            TEST_ASSERT_TRUE_MESSAGE(foundCard, "the card has not been found");
+        }
+    }
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, nbOfCardsLeft, "there are some cards left");
+}
