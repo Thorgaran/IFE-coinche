@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "core.h"
 
 int getCardStrength(Card card, Color trump, Color roundColor) {
@@ -78,21 +79,37 @@ int getPlayableCards(Card cardArray[], int nbOfCards, Card playableCards[]) {
     return nbOfPlayableCards;
 }
 
-void CardsDistribution (void){
-    Card cardDeck[32];
+void createDeck(Card cardDeck[]){
     int cardNb = 0;
-    //int nbOfDistributedCards = 0;
-
-    for(int i = 1; i < 5; i++){
-        for(int j = 1; j < 9; j++){
-            cardDeck[cardNb].color = i;
-            cardDeck[cardNb].value = j;
+    for(int color = SPADE; color <= CLUB; color++){
+        for(int value = SEVEN; value <= ACE; value++){
+            cardDeck[cardNb].color = color;
+            cardDeck[cardNb].value = value;
             cardNb ++;
         }
     }
-    for (int i = 0; i < 32; i++)
-    {
-        printf("%d %d\n",cardDeck[i].color,cardDeck[i].value);
+}
+void CardsDistribution (Player *players){
+    srand(time(0));
+    Card cardDeck[32], playersCards[4][8];
+    int randomCardNb;
+    int nbOfRemainingCards = 32;
+
+    createDeck(cardDeck);
+
+    for (int i = 0; i < 4; i++){
+        players[i].cards = playersCards[i];
+        for (int j = 0; j < 8; j++){
+            randomCardNb = rand()%(nbOfRemainingCards);
+            players[i].cards[j] = cardDeck[randomCardNb];
+            removeCard(cardDeck,&nbOfRemainingCards,cardDeck[randomCardNb]);
+        } 
+    }
+    for (int i = 0; i < 4; i++){
+        printf("\n\n");
+        for (int j = 0; j < 8; j++){
+            printf("%d %d\n",players[i].cards[j].color,players[i].cards[j].value);
+        }
     }
 
 }

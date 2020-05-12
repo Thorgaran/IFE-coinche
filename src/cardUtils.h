@@ -43,6 +43,14 @@ Bool removeCard(Card cardArray[], int *nbOfCards, Card cardToRemove);
 */
 int getPlayableCards(Card cardArray[], int nbOfCards, Card playableCards[]);
 
-void CardsDistribution(void);
+/* Creation of the deck containing all the cards
+*  @param cardDeck[]: must be a 32 long array
+*/
+void createDeck(Card cardDeck[]);
+
+/* Function that randomly distributes 8 of the 32 cards to each player at the beginning of the game
+*  @param *players: array of the four players
+*/
+void CardsDistribution(Player *players);
 
 #endif
