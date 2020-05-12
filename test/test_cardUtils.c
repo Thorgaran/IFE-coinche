@@ -153,18 +153,18 @@ void test_createDeck()
         {{.value = SEVEN, .color = SPADE  , .canPlay = FALSE},
         { .value = EIGHT, .color = SPADE  , .canPlay = FALSE},
         { .value = NINE,  .color = SPADE  , .canPlay = FALSE},
-        { .value = TEN,   .color = SPADE  , .canPlay = FALSE},
         { .value = JACK,  .color = SPADE  , .canPlay = FALSE},
         { .value = QUEEN, .color = SPADE  , .canPlay = FALSE},
         { .value = KING,  .color = SPADE  , .canPlay = FALSE},
+        { .value = TEN,   .color = SPADE  , .canPlay = FALSE},
         { .value = ACE,   .color = SPADE  , .canPlay = FALSE},
         { .value = SEVEN, .color = HEART  , .canPlay = FALSE},
         { .value = EIGHT, .color = HEART  , .canPlay = FALSE},
         { .value = NINE,  .color = HEART  , .canPlay = FALSE},
-        { .value = TEN,   .color = HEART  , .canPlay = FALSE},
         { .value = JACK,  .color = HEART  , .canPlay = FALSE},
         { .value = QUEEN, .color = HEART  , .canPlay = FALSE},
         { .value = KING,  .color = HEART  , .canPlay = FALSE},
+        { .value = TEN,   .color = HEART  , .canPlay = FALSE},
         { .value = ACE,   .color = HEART  , .canPlay = FALSE},
         { .value = SEVEN, .color = DIAMOND, .canPlay = FALSE},
         { .value = EIGHT, .color = DIAMOND, .canPlay = FALSE},
@@ -187,5 +187,5 @@ void test_createDeck()
     {
         cardDeck[i].canPlay = FALSE;
     }
-    TEST_ASSERT_EQUAL_MEMORY_MESSAGE(expectedCardDeck, cardDeck, sizeof(Card), "createDeck isn't working");
+    TEST_ASSERT_EQUAL_MEMORY_ARRAY_MESSAGE(expectedCardDeck, cardDeck, sizeof(Card), 32, "createDeck isn't working");
 }      
