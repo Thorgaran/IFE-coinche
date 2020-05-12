@@ -21,7 +21,7 @@ int getCardArrayPoints(Card cardArray[], int nbOfCards, Color trump);
 *   @param cardArray[]: array containing the cards
 *   @param nbOfCards: how many cards are in cardArray
 *   @param conditionalColor: the canPlay property of each card will be set if its color is conditionalColor. Set to NULL_COLOR to bypass the condition
-*   @param trump: the current trump
+*   @param trump: the current trump. Note: this cannot be ALLTRUMP. If it is, replace ALLTRUMP with the current trick color
 *   @param bestTrumpStrength: the current best trump's Strength. A card will not be set if it's a trump weaker than this. Set to 0 to bypass the condition
 *   @param canPlay: the Bool value canPlay property should be set to
 *   @return conditionMet -> FALSE if no canPlay property was changed, TRUE otherwise

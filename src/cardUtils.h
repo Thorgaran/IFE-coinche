@@ -30,7 +30,7 @@ void sortCards(Card cardArray[], int nbToSort, Color trump, Color roundColor);
 /* Seeks a card in an array to remove it, and decreases the number of cards if it removes one
 *   @param cardArray[]: array containing the cards
 *   @param *nbOfCards: pointer to the number of cards in cardArray
-*   @param cardToRemove: the card to seek and remove in cardArray
+*   @param cardToRemove: the card to seek and remove in cardArray (it's canPlay state doesn't matter)
 *   @return foundCard: TRUE if the function was able to find the card (thus removing it), FALSE otherwise
 */
 Bool removeCard(Card cardArray[], int *nbOfCards, Card cardToRemove);
