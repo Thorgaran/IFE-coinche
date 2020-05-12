@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "core.h"
 #include "bid.h"
 #include "play.h"
 #include "cardUtils.h"
 
 int main (int argc, char* argv[]) {
+
     /*Card player0cards[8] =
         {{.value = ACE,   .color = HEART},
         { .value = ACE,   .color = SPADE},
@@ -44,27 +46,24 @@ int main (int argc, char* argv[]) {
         { .value = ACE,   .color = DIAMOND},
         { .value = NINE,  .color = DIAMOND},
         { .value = EIGHT, .color = CLUB},
-        { .value = KING,  .color = CLUB}};
+        { .value = KING,  .color = CLUB}};*/
 
-    Player player0 = {.type = AI_STANDARD, .pos = SOUTH, .score = 0, .nbOfCards = 8, .cards = player0cards};
-    Player player1 = {.type = AI_STANDARD, .pos = WEST,  .score = 0, .nbOfCards = 8, .cards = player1cards};
-    Player player2 = {.type = AI_STANDARD, .pos = NORTH, .score = 0, .nbOfCards = 8, .cards = player2cards};
-    Player player3 = {.type = AI_STANDARD, .pos = EAST,  .score = 0, .nbOfCards = 8, .cards = player3cards};
+    Player player0 = {.type = AI_STANDARD, .pos = SOUTH, .score = 0, .nbOfCards = 8};
+    Player player1 = {.type = AI_STANDARD, .pos = WEST,  .score = 0, .nbOfCards = 8};
+    Player player2 = {.type = AI_STANDARD, .pos = NORTH, .score = 0, .nbOfCards = 8};
+    Player player3 = {.type = AI_STANDARD, .pos = EAST,  .score = 0, .nbOfCards = 8};
 
     Player players[] = {player0, player1, player2, player3};
     Contract contract;
     Position startingPlayer = SOUTH;
 
-    contract = bid(players, startingPlayer);
-
+    //contract = bid(players, startingPlayer);
+    contract.trump = CLUB;
     play(players, startingPlayer, contract.trump);
     
     for (int i = 0; i < 4; i++) {
         printf("Player %d has %d points!\n", i, players[i].score);    
-    }*/
-    CardsDistribution();
+    }
     getchar();
-
-    ;
     return EXIT_SUCCESS;
 }

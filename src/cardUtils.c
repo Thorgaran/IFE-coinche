@@ -89,7 +89,7 @@ void createDeck(Card cardDeck[]){
         }
     }
 }
-void CardsDistribution (Player *players){
+void cardsDistribution (Player *players){
     srand(time(0));
     Card cardDeck[32], playersCards[4][8];
     int randomCardNb;
