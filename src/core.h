@@ -57,9 +57,9 @@ typedef struct Player {
 } Player;
 
 typedef enum Coinche {
-    NORMAL      = 0,
-    COINCHE     = 1,
-    OVERCOINCHE = 2
+    NOT_COINCHED = 0,
+    COINCHED     = 1,
+    OVERCOINCHED = 2
 } Coinche;
 
 typedef enum ContractType {

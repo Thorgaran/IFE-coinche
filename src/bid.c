@@ -38,13 +38,13 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
             printf("Player %d decided to make a %d \"%d\" contract!\n", currentPlayer, (*contract).points, (*contract).trump - 1); //TEMP DEBUG FEEDBACK
         }
         currentPlayer = (currentPlayer + 1) % 4; //Go to next player
-    } while (((nbOfConsecutivePass < 3) || ((everyonePassed == TRUE) && (nbOfConsecutivePass < 4))) && ((*contract).coinche != OVERCOINCHE));
+    } while (((nbOfConsecutivePass < 3) || ((everyonePassed == TRUE) && (nbOfConsecutivePass < 4))) && ((*contract).coinche != OVERCOINCHED));
     //While no three players passed in a row OR it's still the first turn AND no four players passed in a row, AND there was no overcoinche
     return everyonePassed;
 }
 
 Contract bid(Player players[], Position startingPlayer) {
-    Contract contract = {.points = 0, .coinche = NORMAL}; //Contract is initialized
+    Contract contract = {.points = 0, .coinche = NOT_COINCHED}; //Contract is initialized
     Bool everyonePassed;
     do {
         //REPLACE THIS LINE WITH THE CARD DEALING FUNCTION

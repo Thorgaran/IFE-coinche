@@ -1,5 +1,5 @@
 #include "unity.h"
-
+#include "core.h"
 #include "cardUtils.h"
 
 void setUp(void)
