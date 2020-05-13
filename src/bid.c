@@ -27,6 +27,7 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
     Position currentPlayer = startingPlayer; //Transferring startingPlayer to currentPlayer
     Bool hasPassed, everyonePassed = TRUE; //everyonePassed starts at TRUE and will be set to FALSE as soon as someone makes a contract
     int nbOfConsecutivePass = 0;
+    printf("New bid attempt...\n"); //TEMP DEBUG FEEDBACK
     do {
         hasPassed = getPlayerContract(players[currentPlayer], &(*contract)); //Get the player to decide on a contract or pass
         if (hasPassed == TRUE) {        //If the player passed,
