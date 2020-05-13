@@ -3,6 +3,7 @@
 #include "core.h"
 #include "userIO.h"
 #include "ai.h"
+#include "cardUtils.h"
 
 Bool getPlayerContract(Player player, Contract *contract) {
     Bool hasPassed = TRUE;
@@ -26,6 +27,7 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
     Position currentPlayer = startingPlayer; //Transferring startingPlayer to currentPlayer
     Bool hasPassed, everyonePassed = TRUE; //everyonePassed starts at TRUE and will be set to FALSE as soon as someone makes a contract
     int nbOfConsecutivePass = 0;
+    printf("New bid attempt...\n"); //TEMP DEBUG FEEDBACK
     do {
         hasPassed = getPlayerContract(players[currentPlayer], &(*contract)); //Get the player to decide on a contract or pass
         if (hasPassed == TRUE) {        //If the player passed,
@@ -47,7 +49,7 @@ Contract bid(Player players[], Position startingPlayer) {
     Contract contract = {.points = 0, .coinche = NOT_COINCHED}; //Contract is initialized
     Bool everyonePassed;
     do {
-        //REPLACE THIS LINE WITH THE CARD DEALING FUNCTION
+        cardsDistribution(players);
         everyonePassed = bidAttempt(players, startingPlayer, &contract); //Do a bid attempt
     } while (everyonePassed == TRUE); //As long as no contract is made, repeat the loop
     return contract;

@@ -35,7 +35,7 @@ Bool getAIContractStandard(Card cardsInHand[], int nbOfCardsInHand, Contract *co
     Color strongestColor = SPADE;
     int nbOfStrongCards[] = {0, 0, 0, 0};                                           //Will contain the number of strong cards in each color, from SPADE to CLUB
     for (int i = 0; i < nbOfCardsInHand; i++) {                                     //Browse through each hand card
-        if (getCardStrength(cardsInHand[i], ALLTRUMP, NULL_COLOR) >= 22) {          //A "strong card" is defined to be a Queen or better, in trump order
+        if (getCardStrength(cardsInHand[i], ALLTRUMP, NULL_COLOR) >= 23) {          //A "strong card" is defined to be a Queen or better, in trump order (a trump queen has a strength of 23)
             nbOfStrongCards[cardsInHand[i].color - 1]++;                            //Increment the number of strong cards by one in the right color
         }
     }

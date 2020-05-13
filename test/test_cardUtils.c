@@ -146,3 +146,65 @@ void test_getPlayableCards()
     TEST_ASSERT_EQUAL_MEMORY_MESSAGE(&(cardArrayExpected[1]), &(playableCards[0]), sizeof(Card), "array, canPlay second");
     }
 }
+
+void test_createDeck()
+{
+    Card cardDeck[32], expectedCardDeck[32] = 
+        {{.value = SEVEN, .color = SPADE  , .canPlay = FALSE},
+        { .value = EIGHT, .color = SPADE  , .canPlay = FALSE},
+        { .value = NINE,  .color = SPADE  , .canPlay = FALSE},
+        { .value = JACK,  .color = SPADE  , .canPlay = FALSE},
+        { .value = QUEEN, .color = SPADE  , .canPlay = FALSE},
+        { .value = KING,  .color = SPADE  , .canPlay = FALSE},
+        { .value = TEN,   .color = SPADE  , .canPlay = FALSE},
+        { .value = ACE,   .color = SPADE  , .canPlay = FALSE},
+        { .value = SEVEN, .color = HEART  , .canPlay = FALSE},
+        { .value = EIGHT, .color = HEART  , .canPlay = FALSE},
+        { .value = NINE,  .color = HEART  , .canPlay = FALSE},
+        { .value = JACK,  .color = HEART  , .canPlay = FALSE},
+        { .value = QUEEN, .color = HEART  , .canPlay = FALSE},
+        { .value = KING,  .color = HEART  , .canPlay = FALSE},
+        { .value = TEN,   .color = HEART  , .canPlay = FALSE},
+        { .value = ACE,   .color = HEART  , .canPlay = FALSE},
+        { .value = SEVEN, .color = DIAMOND, .canPlay = FALSE},
+        { .value = EIGHT, .color = DIAMOND, .canPlay = FALSE},
+        { .value = NINE,  .color = DIAMOND, .canPlay = FALSE},
+        { .value = JACK,  .color = DIAMOND, .canPlay = FALSE},
+        { .value = QUEEN, .color = DIAMOND, .canPlay = FALSE},
+        { .value = KING,  .color = DIAMOND, .canPlay = FALSE},
+        { .value = TEN,   .color = DIAMOND, .canPlay = FALSE},
+        { .value = ACE,   .color = DIAMOND, .canPlay = FALSE},
+        { .value = SEVEN, .color = CLUB   , .canPlay = FALSE},
+        { .value = EIGHT, .color = CLUB   , .canPlay = FALSE},
+        { .value = NINE,  .color = CLUB   , .canPlay = FALSE},
+        { .value = JACK,  .color = CLUB   , .canPlay = FALSE},
+        { .value = QUEEN, .color = CLUB   , .canPlay = FALSE},
+        { .value = KING,  .color = CLUB   , .canPlay = FALSE},
+        { .value = TEN,   .color = CLUB   , .canPlay = FALSE},
+        { .value = ACE,   .color = CLUB   , .canPlay = FALSE}};
+    createDeck(cardDeck);
+    for (int i = 0; i < 32; i++)
+    {
+        cardDeck[i].canPlay = FALSE;
+    }
+    TEST_ASSERT_EQUAL_MEMORY_ARRAY_MESSAGE(expectedCardDeck, cardDeck, sizeof(Card), 32, "createDeck isn't working");
+}
+
+void test_cardsDistribution()
+{
+    Bool foundCard;
+    Card cardDeck[32];
+    Player players[4];
+    int nbOfCardsLeft = 32;
+    createDeck(cardDeck);
+    cardsDistribution(players);
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            foundCard = removeCard(cardDeck, &nbOfCardsLeft, players[i].cards[j]);
+            TEST_ASSERT_TRUE_MESSAGE(foundCard, "the card has not been found");
+        }
+    }
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, nbOfCardsLeft, "there are some cards left");
+}
