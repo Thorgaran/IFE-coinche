@@ -177,7 +177,7 @@ void test_playTrick()
     }
 }
 
-void test_play()
+void test_playRound()
 {
     int expectedScore[6][4] = {{26, 38, 71, 27}, {42, 79, 41, 0}, {41, 59, 30, 32}, {65, 71, 26, 0}, {46, 74, 27, 15}, {64, 58, 40, 0}};
     for(Position startingPlayer = SOUTH; startingPlayer <= EAST; startingPlayer++) {

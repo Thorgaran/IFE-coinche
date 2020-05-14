@@ -45,11 +45,11 @@ void findValidCardsInHand(Card cardsInHand[], int nbOfCardsInHand, Card trickCar
 */
 Position playTrick(Player players[], Position startingPlayer, Color trump);
 
-/* Plays a full 8-trick game, counting points
-    @param players[]: array of 4 players
-    @param startingPlayer: position of the starting player
-    @param trump: the current trump
+/* Plays a full 8-trick round, counting points
+*   @param players[]: array of 4 players
+*   @param startingPlayer: position of the starting player
+*   @param trump: the current trump
 */
-void play(Player players[], Position startingPlayer, Color trump);
+void playRound(Player players[], Position startingPlayer, Color trump);
 
 #endif

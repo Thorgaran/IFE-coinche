@@ -21,7 +21,7 @@ int main (int argc, char* argv[]) {
 
     contract = bid(players, startingPlayer);
 
-    play(players, startingPlayer, contract.trump);
+    playRound(players, startingPlayer, contract.trump);
     
     for (int i = 0; i < 4; i++) {
         printf("Player %d has %d points!\n", i, players[i].score);    

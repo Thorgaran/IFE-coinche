@@ -99,7 +99,7 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
     return trickWinner;
 }
 
-void play(Player players[], Position startingPlayer, Color trump) {
+void playRound(Player players[], Position startingPlayer, Color trump) {
     for (int i = 0; i < 8; i++) {   //plays the 8 tricks of a game
         startingPlayer = playTrick(players, startingPlayer, trump); //the previous trick winner becomes the starting player
     }
