@@ -1,5 +1,5 @@
-#ifndef _CARDUTILS_H_
-#define _CARDUTILS_H_
+#ifndef CARDUTILS_H
+#define CARDUTILS_H
 #include "core.h"
 
 /* Defines the "strength" of a played card in order to compare cards and find which one is stronger
@@ -83,4 +83,4 @@ int getPlayableCards(Card cardArray[], int nbOfCards, Card playableCards[]);
 */
 void createDeck(Card cardDeck[]);
 
-#endif
+#endif // CARDUTILS_H

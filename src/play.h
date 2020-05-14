@@ -1,5 +1,5 @@
-#ifndef _PLAY_H_
-#define _PLAY_H_
+#ifndef PLAY_H
+#define PLAY_H
 #include "core.h"
 
 /* Play a bid attempt: either a contract is made or everyone passed
@@ -43,4 +43,4 @@ void awardTeamPoints(Player players[], Contract contract);
 */
 void playGame(Player players[]);
 
-#endif
+#endif // PLAY_H

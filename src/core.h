@@ -1,5 +1,5 @@
-#ifndef _CORE_H_
-#define _CORE_H_
+#ifndef CORE_H
+#define CORE_H
 
 typedef enum Bool {
     FALSE = 0,
@@ -79,4 +79,4 @@ typedef struct Contract {
 
 const int CARD_POINTS_TABLE[4][8];
 
-#endif
+#endif // CORE_H

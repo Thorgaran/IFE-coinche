@@ -1,5 +1,5 @@
-#ifndef _AI_H_
-#define _AI_H_
+#ifndef AI_H
+#define AI_H
 #include "core.h"
 
 /* Returns the first playable card in the AI's hand
@@ -29,4 +29,4 @@ Card getAICardStandard(Card cardsInHand[], int nbOfCardsInHand, Card trickCards[
 */
 Bool getAIContractStandard(Card cardsInHand[], int nbOfCardsInHand, Contract *contract);
 
-#endif
+#endif // AI_H
