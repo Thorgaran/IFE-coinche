@@ -38,4 +38,9 @@ void playRound(Player players[], Position startingPlayer, Color trump);
 */
 void awardTeamPoints(Player players[], Contract contract);
 
+/* Plays a full game until a team wins
+*   @param players[]: array of 4 players
+*/
+void playGame(Player players[]);
+
 #endif

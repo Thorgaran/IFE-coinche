@@ -42,10 +42,6 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
     Position trickWinner;
     for (int i = 0; i < 4; i++) { //4 iterations because each player will play a card
         findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump); //Find valid cards in the hand of the current player
-        for (int j = 0; j < players[(i+startingPlayer)%4].nbOfCards; j++) { //TEMP DEBUG FEEDBACK
-            printf("%d ", players[(i+startingPlayer)%4].cards[j].canPlay);  //TEMP DEBUG FEEDBACK
-        }                                                                   //TEMP DEBUG FEEDBACK
-        printf("\n");                                                       //TEMP DEBUG FEEDBACK
         trickCards[i] = getPlayerCard(&(players[(i+startingPlayer)%4]), trickCards, i, trump, roundColor);
         if (i == 0) {
             roundColor = trickCards[0].color;
@@ -54,7 +50,6 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
     trickWinner = (getStrongestCard(trickCards, 4, trump, roundColor) + startingPlayer) % 4;
     //getStrongestCard returns a relative value while trickWinner an absolute position, hence the conversion with startingPlayer and a modulo
     players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump); //Increase the score of the trick winner
-    printf("Player %d wins the trick and gets %d points, for a total of %d!\n", trickWinner, getCardArrayPoints(trickCards, 4, trump), players[trickWinner].score); //TEMP DEBUG FEEDBACK
     return trickWinner;
 }
 
@@ -101,4 +96,25 @@ void awardTeamPoints(Player players[], Contract contract) {
         }
         increaseTeamTotalScore(players, defendant, defendantTeamScore); //Increase the defendant's team total score, and the issuer's team gets nothing
     }
+}
+
+void playGame(Player players[]) {
+    Contract contract;
+    Position startingPlayer = rand() % 4;
+    do {
+        startingPlayer = (startingPlayer + 1) % 4;
+        for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
+            players[pos].score = 0;                         //reset its score,
+            players[pos].nbOfCards = 8;                     //and its number of cards
+        }
+        printf("-------------- NEW ROUND --------------\n");                        //TEMP DEBUG FEEDBACK
+        contract = bidUntilContract(players, startingPlayer);   //Do bidding until a contract is made
+        playRound(players, startingPlayer, contract.trump);     //Play an 8-tricks round
+        for (int i = 0; i < 4; i++) {                                               //TEMP DEBUG FEEDBACK
+            printf("Player %d has %d points!\n", i, players[i].score);              //TEMP DEBUG FEEDBACK
+        }                                                                           //TEMP DEBUG FEEDBACK
+        awardTeamPoints(players, contract); //Award team points depending on whether or not the contract was fulfilled
+        printf("Team SOUTH + NORTH has a score of %d!\n", players[0].teamScore);    //TEMP DEBUG FEEDBACK
+        printf("Team  WEST + EAST  has a score of %d!\n\n", players[1].teamScore);  //TEMP DEBUG FEEDBACK
+    } while ((players[0].teamScore < 700) && (players[1].teamScore < 700)); //Repeat until a team reaches 700 points
 }
