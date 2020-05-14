@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include "core.h"
 
 int getCardStrength(Card card, Color trump, Color roundColor) {
@@ -71,9 +70,9 @@ Bool removeCard(Card cardArray[], int *nbOfCards, Card cardToRemove) {
 int getPlayableCards(Card cardArray[], int nbOfCards, Card playableCards[]) {
     int nbOfPlayableCards = 0;
     for (int i = 0; i < nbOfCards; i++) {
-        if (cardArray[i].canPlay == TRUE) {
-            playableCards[nbOfPlayableCards] = cardArray[i];
-            nbOfPlayableCards++;
+        if (cardArray[i].canPlay == TRUE) {                     //If the card can be played,
+            playableCards[nbOfPlayableCards] = cardArray[i];    //add it to the playableCards array,
+            nbOfPlayableCards++;                                //and increment the number of playable cards
         }
     }
     return nbOfPlayableCards;
@@ -85,22 +84,21 @@ void createDeck(Card cardDeck[]) {
         for(int value = SEVEN; value <= ACE; value++) {
             cardDeck[cardNb].color = color;
             cardDeck[cardNb].value = value;
-            cardNb ++;
+            cardNb ++; //CardNb is needed to keep track of where the program needs to add the following card
         }
     }
 }
 
-void cardsDistribution(Player *players) {
-    srand(time(0));
+void cardsDistribution(Player players[]) {
     Card cardDeck[32];
     int randomCardNb;
     int nbOfRemainingCards = 32;
-    createDeck(cardDeck);
-    for (Position player = SOUTH; player <= EAST; player++) {
-        for (int cardIndex = 0; cardIndex < 8; cardIndex++) {
-            randomCardNb = rand()%(nbOfRemainingCards);
-            players[player].cards[cardIndex] = cardDeck[randomCardNb];
-            removeCard(cardDeck, &nbOfRemainingCards, cardDeck[randomCardNb]);
+    createDeck(cardDeck); //Prepare the full deck that will be dealed
+    for (int cardIndex = 0; cardIndex < 8; cardIndex++) {
+        for (Position player = SOUTH; player <= EAST; player++) {
+            randomCardNb = rand()%(nbOfRemainingCards);                         //Choose a card among the remaining ones
+            players[player].cards[cardIndex] = cardDeck[randomCardNb];          //Give that card to the player,
+            removeCard(cardDeck, &nbOfRemainingCards, cardDeck[randomCardNb]);  //and remove it from the deck
         } 
     }
 }

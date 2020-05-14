@@ -7,6 +7,8 @@
 #include "cardUtils.h"
 
 int main (int argc, char* argv[]) {
+    srand(time(0)); //Initialize the random function
+
     Card playersCards[4][8];
     Player player0 = {.type = AI_STANDARD, .pos = SOUTH, .score = 0, .nbOfCards = 8, .cards = playersCards[0]};
     Player player1 = {.type = AI_STANDARD, .pos = WEST,  .score = 0, .nbOfCards = 8, .cards = playersCards[1]};
