@@ -187,14 +187,18 @@ void test_createDeck()
     {
         cardDeck[i].canPlay = FALSE;
     }
-    TEST_ASSERT_EQUAL_MEMORY_ARRAY_MESSAGE(expectedCardDeck, cardDeck, sizeof(Card), 32, "createDeck isn't working");
+    TEST_ASSERT_EQUAL_MEMORY_ARRAY_MESSAGE(expectedCardDeck, cardDeck, sizeof(Card), 32, "Full deck wasn't generated properly");
 }
 
 void test_cardsDistribution()
 {
     Bool foundCard;
-    Card cardDeck[32];
-    Player players[4];
+    Card cardDeck[32], playerCards[4][8];
+    Player players[4] =
+        {{.nbOfCards = 8, .cards = playerCards[0]},
+         {.nbOfCards = 8, .cards = playerCards[1]},
+         {.nbOfCards = 8, .cards = playerCards[2]},
+         {.nbOfCards = 8, .cards = playerCards[3]}};
     int nbOfCardsLeft = 32;
     createDeck(cardDeck);
     cardsDistribution(players);
@@ -203,8 +207,8 @@ void test_cardsDistribution()
         for (int j = 0; j < 8; j++)
         {
             foundCard = removeCard(cardDeck, &nbOfCardsLeft, players[i].cards[j]);
-            TEST_ASSERT_TRUE_MESSAGE(foundCard, "the card has not been found");
+            TEST_ASSERT_TRUE_MESSAGE(foundCard, "The card has not been found");
         }
     }
-    TEST_ASSERT_EQUAL_INT_MESSAGE(0, nbOfCardsLeft, "there are some cards left");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, nbOfCardsLeft, "There are some cards left");
 }

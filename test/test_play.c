@@ -43,14 +43,8 @@ void test_getCardPoints()
 void test_getCardArrayPoints()
 {
     Card cardDeck[32];
-    int cardArrayPoints[6], index = 0;
-    for (Color color = SPADE; color <= CLUB; color++) {
-        for (Value value = SEVEN; value <= ACE; value++) {
-            cardDeck[index].color = color;
-            cardDeck[index].value = value;
-            index++;
-        }
-    }
+    int cardArrayPoints[6];
+    createDeck(cardDeck);
     for (Color trump = SPADE; trump <= NOTRUMP; trump++) {
         cardArrayPoints[trump - 1] = getCardArrayPoints(cardDeck, 32, trump);
     }

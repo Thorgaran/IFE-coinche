@@ -79,27 +79,28 @@ int getPlayableCards(Card cardArray[], int nbOfCards, Card playableCards[]) {
     return nbOfPlayableCards;
 }
 
-void createDeck(Card cardDeck[]){
+void createDeck(Card cardDeck[]) {
     int cardNb = 0;
-    for(int color = SPADE; color <= CLUB; color++){
-        for(int value = SEVEN; value <= ACE; value++){
+    for(int color = SPADE; color <= CLUB; color++) {
+        for(int value = SEVEN; value <= ACE; value++) {
             cardDeck[cardNb].color = color;
             cardDeck[cardNb].value = value;
             cardNb ++;
         }
     }
 }
-void cardsDistribution (Player *players){
+
+void cardsDistribution(Player *players) {
     srand(time(0));
     Card cardDeck[32];
     int randomCardNb;
     int nbOfRemainingCards = 32;
     createDeck(cardDeck);
-    for (int i = 0; i < 4; i++){
-        for (int j = 0; j < 8; j++){
+    for (Position player = SOUTH; player <= EAST; player++) {
+        for (int j = 0; j < 8; j++) {
             randomCardNb = rand()%(nbOfRemainingCards);
-            players[i].cards[j] = cardDeck[randomCardNb];
-            removeCard(cardDeck,&nbOfRemainingCards,cardDeck[randomCardNb]);
+            players[player].cards[j] = cardDeck[randomCardNb];
+            removeCard(cardDeck, &nbOfRemainingCards, cardDeck[randomCardNb]);
         } 
     }
 }
