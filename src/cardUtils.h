@@ -19,6 +19,32 @@ int getCardStrength(Card card, Color trump, Color roundColor);
 */
 int getStrongestCard(Card cardArray[], int nbOfCards, Color trump, Color roundColor);
 
+/* Finds the point value of a card depending on the current trump
+*   @param card: the evaluated card
+*   @param trump: the current trump
+*   @return cardPoints -> the point value of the card
+*/
+int getCardPoints(Card card, Color trump);
+
+/* Computes the total point value of an Array of cards
+*   @param cardArray[]: array containing the cards
+*   @param nbOfCards: how many cards are in cardArray
+*   @param trump: the current trump
+*   @return totalPoints -> the sum of the point value of each card in cardArray
+*/
+int getCardArrayPoints(Card cardArray[], int nbOfCards, Color trump);
+
+/* Sets the canPlay property of each card if it meets a color criteria and if it's not a weaker trump than the current best one
+*   @param cardArray[]: array containing the cards
+*   @param nbOfCards: how many cards are in cardArray
+*   @param conditionalColor: the canPlay property of each card will be set if its color is conditionalColor. Set to NULL_COLOR to bypass the condition
+*   @param trump: the current trump. Note: this cannot be ALLTRUMP. If it is, replace ALLTRUMP with the current trick color
+*   @param bestTrumpStrength: the current best trump's Strength. A card will not be set if it's a trump weaker than this. Set to 0 to bypass the condition
+*   @param canPlay: the Bool value canPlay property should be set to
+*   @return conditionMet -> FALSE if no canPlay property was changed, TRUE otherwise
+*/
+Bool setCanPlay(Card cardArray[], int nbOfCards, Color conditionalColor, Color trump, int bestTrumpStrength, Bool canPlay);
+
 /* Sorts the cards in an array from weakest to strongest
 *   @param cardArray[]: array containing the cards to sort
 *   @param nbToSort: the first N cards of the array that will be sorted. Usually set to the array length to sort the whole array

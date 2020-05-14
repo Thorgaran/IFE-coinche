@@ -33,6 +33,44 @@ int getStrongestCard(Card cardArray[], int nbOfCards, Color trump, Color roundCo
     return strongestCardPos;
 }
 
+int getCardPoints(Card card, Color trump) {
+    int cardPoints;
+    if (trump == ALLTRUMP) {                    //If ALLTRUMP
+        cardPoints = CARD_POINTS_TABLE[0][card.value - 1];
+    }
+    else if (trump == NOTRUMP) {                //If NOTRUMP
+        cardPoints = CARD_POINTS_TABLE[1][card.value - 1];
+    }
+    else if (card.color == trump) {             //If the card is a trump
+        cardPoints = CARD_POINTS_TABLE[2][card.value - 1];
+    }
+    else {                                      //If the card is not a trump
+        cardPoints = CARD_POINTS_TABLE[3][card.value - 1]; 
+    }
+    return cardPoints;
+}
+
+int getCardArrayPoints(Card cardArray[], int nbOfCards, Color trump) {
+    int totalPoints = 0;
+    for (int i = 0; i < nbOfCards; i++) {
+        totalPoints += getCardPoints(cardArray[i], trump);
+    }
+    return totalPoints;
+}
+
+Bool setCanPlay(Card cardArray[], int nbOfCards, Color conditionalColor, Color trump, int bestTrumpStrength, Bool canPlay) {
+    Bool conditionMet = FALSE;
+    for (int i = 0; i < nbOfCards; i++) {
+        if (((conditionalColor == NULL_COLOR) || (conditionalColor == cardArray[i].color)) &&
+        ((cardArray[i].color != trump) || (getCardStrength(cardArray[i], trump, NULL_COLOR) > bestTrumpStrength))) {
+            //If the card is the right color (or if the condition is bypassed with NULL_COLOR), AND if the card isn't a trump weaker than the best one on the table
+            cardArray[i].canPlay = canPlay;
+            conditionMet = TRUE;
+        }
+    }
+    return conditionMet;
+}
+
 void sortCards(Card cardArray[], int nbToSort, Color trump, Color roundColor) { //Bubble sort algorithm
     Card previousCard;
     int newNbToSort;
