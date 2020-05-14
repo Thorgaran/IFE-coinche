@@ -59,6 +59,137 @@ void test_getStrongestCard()
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, strongestCard, "ALLTRUMP round color");
 }
 
+void test_getCardPoints()
+{
+    Card cardArray[3] =
+        {{.value = SEVEN, .color = HEART},
+        { .value = JACK,  .color = HEART},
+        { .value = ACE,   .color = HEART}};
+    int cardPoints, expectedPoints[3][4] =
+        {{0, 0, 0, 0},
+        {2, 20, 2, 14},
+        {11, 11, 19, 6}};
+    char string[13];
+    for (int i = 0; i <= 2; i++) {
+        sprintf(string, "%d: not trump", i);
+        cardPoints = getCardPoints(cardArray[i], NULL_COLOR);
+        TEST_ASSERT_EQUAL_INT_MESSAGE(expectedPoints[i][0], cardPoints, string);
+        sprintf(string, "%d: trump", i);
+        cardPoints = getCardPoints(cardArray[i], HEART);
+        TEST_ASSERT_EQUAL_INT_MESSAGE(expectedPoints[i][1], cardPoints, string);
+        sprintf(string, "%d: NOTRUMP", i);
+        cardPoints = getCardPoints(cardArray[i], NOTRUMP);
+        TEST_ASSERT_EQUAL_INT_MESSAGE(expectedPoints[i][2], cardPoints, string);
+        sprintf(string, "%d: ALLTRUMP", i);
+        cardPoints = getCardPoints(cardArray[i], ALLTRUMP);
+        TEST_ASSERT_EQUAL_INT_MESSAGE(expectedPoints[i][3], cardPoints, string);
+    }
+}
+
+void test_getCardArrayPoints()
+{
+    Card cardDeck[32];
+    int cardArrayPoints[6];
+    createDeck(cardDeck);
+    for (Color trump = SPADE; trump <= NOTRUMP; trump++) {
+        cardArrayPoints[trump - 1] = getCardArrayPoints(cardDeck, 32, trump);
+    }
+    TEST_ASSERT_EACH_EQUAL_INT_MESSAGE(152, cardArrayPoints, 6, "Total sum must be 152");
+}
+
+void test_setCanPlay()
+{
+    Card cardArray[4] =
+        {{.value = SEVEN, .color = SPADE, .canPlay = TRUE},
+        { .value = JACK,  .color = HEART, .canPlay = TRUE},
+        { .value = QUEEN, .color = HEART, .canPlay = TRUE},
+        { .value = ACE,   .color = CLUB,  .canPlay = TRUE}};
+    Bool conditionMet, cardArrayCanPlay[4], expectedCanPlay[4] = {FALSE, TRUE, FALSE, FALSE};
+    conditionMet = setCanPlay(cardArray, 4, NULL_COLOR, HEART, 0, FALSE);
+    TEST_ASSERT_TRUE_MESSAGE(conditionMet, "conditionMet set all to FALSE");
+    for (int i = 0; i <= 3; i++) {
+        TEST_ASSERT_FALSE_MESSAGE(cardArray[i].canPlay, "Set all to FALSE");
+    }
+    conditionMet = setCanPlay(cardArray, 4, DIAMOND, HEART, 0, TRUE);
+    TEST_ASSERT_FALSE_MESSAGE(conditionMet, "conditionMet keep all to FALSE");
+    for (int i = 0; i <= 3; i++) {
+        TEST_ASSERT_FALSE_MESSAGE(cardArray[i].canPlay, "Keep all to FALSE");
+    }
+    conditionMet = setCanPlay(cardArray, 4, CLUB, CLUB, 27, TRUE);
+    TEST_ASSERT_FALSE_MESSAGE(conditionMet, "conditionMet only weaker trump");
+    for (int i = 0; i <= 3; i++) {
+        TEST_ASSERT_FALSE_MESSAGE(cardArray[i].canPlay, "Only weaker trump");
+    }
+    conditionMet = setCanPlay(cardArray, 4, HEART, HEART, 25, TRUE);
+    TEST_ASSERT_TRUE_MESSAGE(conditionMet, "conditionMet only stronger trump");
+    for (int i = 0; i <= 3; i++) {
+        cardArrayCanPlay[i] = cardArray[i].canPlay;
+    }
+    TEST_ASSERT_EQUAL_INT_ARRAY_MESSAGE(expectedCanPlay, cardArrayCanPlay, 4, "Only stronger trump");
+}
+
+void test_findValidCardsInHand() {
+    Card cardsInHand[8] =
+        {{.value = ACE,   .color = DIAMOND},
+        { .value = JACK,  .color = SPADE  },
+        { .value = KING,  .color = HEART  },
+        { .value = SEVEN, .color = HEART  },
+        { .value = TEN,   .color = HEART  },
+        { .value = ACE,   .color = HEART  },
+        { .value = NINE,  .color = CLUB   },
+        { .value = SEVEN, .color = CLUB  }};
+    Card trickCards[3] = 
+        {{.value = EIGHT,  .color = CLUB  },
+        { .value = JACK,  .color = DIAMOND},
+        { .value = QUEEN, .color = HEART }};
+    Bool expectedCanPlay[12][8] =
+        {{TRUE,  TRUE,  FALSE, FALSE, FALSE, FALSE, FALSE, FALSE},
+        { FALSE, TRUE,  FALSE, FALSE, FALSE, FALSE, FALSE, FALSE},
+        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE},
+        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE},
+        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE},
+        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE},
+        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE},
+        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE },
+        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  TRUE },
+        { FALSE, FALSE, TRUE,  FALSE, TRUE,  TRUE,  FALSE, FALSE},
+        { TRUE,  TRUE,  TRUE,  TRUE,  TRUE,  TRUE,  FALSE, FALSE},
+        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE}};
+    findValidCardsInHand(cardsInHand, 8, trickCards, 0, SPADE);
+    for (int i = 0; i <= 7; i++) {
+        TEST_ASSERT_TRUE_MESSAGE(cardsInHand[i].canPlay, "First player");
+    }
+    for (int i = 0; i <= 7; i++) {
+        findValidCardsInHand(cardsInHand, 8 - i, trickCards, 3, SPADE);
+        for (int j = 7; j >= i; j--) {
+            TEST_ASSERT_EQUAL_MESSAGE(expectedCanPlay[i][j], cardsInHand[7 - j].canPlay, "Reducing number of cards");
+        }
+    }
+    trickCards[1].color = CLUB; //The partner is now winning
+    findValidCardsInHand(cardsInHand, 6, trickCards, 3, SPADE);
+    for (int i = 0; i <= 6; i++) {
+        TEST_ASSERT_TRUE_MESSAGE(cardsInHand[i].canPlay, "Partner winning");
+    }
+    findValidCardsInHand(cardsInHand, 8, trickCards, 3, HEART);
+    for (int i = 0; i <= 7; i++) {
+        TEST_ASSERT_EQUAL_MESSAGE(expectedCanPlay[8][i], cardsInHand[i].canPlay, "Trump played but can play in trick color");
+    }
+    findValidCardsInHand(cardsInHand, 6, trickCards, 3, HEART);
+    for (int i = 0; i <= 5; i++) {
+        TEST_ASSERT_EQUAL_MESSAGE(expectedCanPlay[9][i], cardsInHand[i].canPlay, "Trump played and can play a better trump");
+    }
+    trickCards[2].value = JACK; //The trump card is now too strong to be played against
+    findValidCardsInHand(cardsInHand, 6, trickCards, 3, HEART);
+    for (int i = 0; i <= 5; i++) {
+        TEST_ASSERT_EQUAL_MESSAGE(expectedCanPlay[10][i], cardsInHand[i].canPlay, "Trump played and can't play a better trump");
+    }
+    trickCards[1].color = DIAMOND; //Revert back to diamond
+    findValidCardsInHand(cardsInHand, 8, trickCards, 3, ALLTRUMP);
+    for (int i = 0; i <= 7; i++) {
+        TEST_ASSERT_EQUAL_MESSAGE(expectedCanPlay[11][i], cardsInHand[i].canPlay, "ALLTRUMP and can play a better trump");
+    }
+}
+
 void test_sortCards()
 {
     Card cardArray[4] =
@@ -188,25 +319,4 @@ void test_createDeck()
         cardDeck[i].canPlay = FALSE;
     }
     TEST_ASSERT_EQUAL_MEMORY_ARRAY_MESSAGE(expectedCardDeck, cardDeck, sizeof(Card), 32, "Full deck wasn't generated properly");
-}
-
-void test_cardsDistribution()
-{
-    Bool foundCard;
-    Card cardDeck[32], playerCards[4][8];
-    Player players[4] =
-        {{.nbOfCards = 8, .cards = playerCards[0]},
-         {.nbOfCards = 8, .cards = playerCards[1]},
-         {.nbOfCards = 8, .cards = playerCards[2]},
-         {.nbOfCards = 8, .cards = playerCards[3]}};
-    int nbOfCardsLeft = 32;
-    createDeck(cardDeck);
-    cardsDistribution(players);
-    for (Position player = SOUTH; player <= EAST; player++) {
-        for (int cardIndex = 0; cardIndex < 8; cardIndex++) {
-            foundCard = removeCard(cardDeck, &nbOfCardsLeft, players[player].cards[cardIndex]);
-            TEST_ASSERT_TRUE_MESSAGE(foundCard, "The card has not been found");
-        }
-    }
-    TEST_ASSERT_EQUAL_INT_MESSAGE(0, nbOfCardsLeft, "There are some cards left");
 }

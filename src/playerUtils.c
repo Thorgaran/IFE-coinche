@@ -42,6 +42,27 @@ Bool getPlayerContract(Player player, Contract *contract) {
     return hasPassed;
 }
 
-int getTeamPoints(Player players[], Position trickWinner) {
-    return 0;
+void cardsDistribution(Player players[]) {
+    Card cardDeck[32];
+    int randomCardNb;
+    int nbOfRemainingCards = 32;
+    createDeck(cardDeck); //Prepare the full deck that will be dealed
+    for (int cardIndex = 0; cardIndex < 8; cardIndex++) {
+        for (Position player = SOUTH; player <= EAST; player++) {
+            randomCardNb = rand()%(nbOfRemainingCards);                         //Choose a card among the remaining ones
+            players[player].cards[cardIndex] = cardDeck[randomCardNb];          //Give that card to the player,
+            removeCard(cardDeck, &nbOfRemainingCards, cardDeck[randomCardNb]);  //and remove it from the deck
+        } 
+    }
+}
+
+int getTeamRoundPoints(Player players[], Position player) {
+    int roundPoints = players[player].score;        //Get the player's points
+    roundPoints += players[(player + 2) % 4].score; //Get its partner's points
+    return roundPoints;
+}
+
+void increaseTeamTotalScore(Player players[], Position player, int roundScore) {
+    players[player].teamScore += roundScore;            //Increase the player's total team score
+    players[(player + 2) % 4].teamScore += roundScore;  //Increase its partner's total team score
 }
