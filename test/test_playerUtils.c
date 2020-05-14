@@ -1,6 +1,8 @@
 #include "unity.h"
-
+#include "cardUtils.h"
 #include "playerUtils.h"
+#include "userIO.h"
+#include "ai.h"
 
 void setUp(void)
 {

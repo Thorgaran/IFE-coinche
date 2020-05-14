@@ -2,6 +2,7 @@
 #include "core.h"
 #include "play.h"
 #include "cardUtils.h"
+#include "playerUtils.h"
 #include "userIO.h"
 #include "ai.h"
 
@@ -204,7 +205,7 @@ void test_playRound()
                 { .type = AI_FIRSTAVAILABLE, .pos = WEST,  .score = 0, .nbOfCards = 8, .cards = playerCards[1]},
                 { .type = AI_FIRSTAVAILABLE, .pos = NORTH, .score = 0, .nbOfCards = 8, .cards = playerCards[2]},
                 { .type = AI_FIRSTAVAILABLE, .pos = EAST,  .score = 0, .nbOfCards = 8, .cards = playerCards[3]}};
-            play(players, startingPlayer, trump);
+            playRound(players, startingPlayer, trump);
             for(Position player = SOUTH; player <= EAST; player++) {
                 TEST_ASSERT_EQUAL_INT_MESSAGE(0, players[player].nbOfCards, "NbOfCards not null");
                 TEST_ASSERT_EQUAL_INT_MESSAGE(expectedScore[trump - 1][player], players[player].score, "Wrong score");
