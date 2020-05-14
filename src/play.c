@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include "core.h"
 #include "cardUtils.h"
-#include "userIO.h"
-#include "ai.h"
+#include "playerUtils.h"
 
 int getCardPoints(Card card, Color trump) {
     int cardPoints;
@@ -76,25 +75,6 @@ void findValidCardsInHand(Card cardsInHand[], int nbOfCardsInHand, Card trickCar
             }
         }
     }    
-}
-
-Card getPlayerCard(Player *player, Card trickCards[], int nbOfTrickCards, Color trump, Color roundColor) {
-    Card chosenCard;
-    switch ((*player).type) {
-        case USER: //If the player is the User
-            chosenCard = askUserCard((*player).cards, (*player).nbOfCards);
-            break;
-        case AI_FIRSTAVAILABLE: //If the player is an AI of type FIRSTAVAILABLE
-            chosenCard = getAICardFirstAvailable((*player).cards, (*player).nbOfCards);
-            break;
-        case AI_STANDARD: //If the player is an AI of type STANDARD
-            chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
-            break;
-        default: //Default behaviour if this AI type has no dedicated card function
-            chosenCard = getAICardStandard((*player).cards, (*player).nbOfCards, trickCards, nbOfTrickCards, trump, roundColor);
-    }
-    removeCard((*player).cards, &((*player).nbOfCards), chosenCard); //Once a card has been chosen, remove it from the player's hand
-    return chosenCard;
 }
 
 Position playTrick(Player players[], Position startingPlayer, Color trump) {

@@ -143,12 +143,6 @@ void test_findValidCardsInHand() {
         TEST_ASSERT_EQUAL_MESSAGE(expectedCanPlay[11][i], cardsInHand[i].canPlay, "ALLTRUMP and can play a better trump");
     }
 }
-
-void test_getPlayerCard()
-{
-    TEST_IGNORE_MESSAGE("To do after each individual getCard test");
-}
-
 void test_playTrick()
 {
     Position trickWinner, expectedWinner[4][6] =
