@@ -13,68 +13,6 @@ void setUp(void)
 void tearDown(void)
 {
 }
-
-void test_findValidCardsInHand() {
-    Card cardsInHand[8] =
-        {{.value = ACE,   .color = DIAMOND},
-        { .value = JACK,  .color = SPADE  },
-        { .value = KING,  .color = HEART  },
-        { .value = SEVEN, .color = HEART  },
-        { .value = TEN,   .color = HEART  },
-        { .value = ACE,   .color = HEART  },
-        { .value = NINE,  .color = CLUB   },
-        { .value = SEVEN, .color = CLUB  }};
-    Card trickCards[3] = 
-        {{.value = EIGHT,  .color = CLUB  },
-        { .value = JACK,  .color = DIAMOND},
-        { .value = QUEEN, .color = HEART }};
-    Bool expectedCanPlay[12][8] =
-        {{TRUE,  TRUE,  FALSE, FALSE, FALSE, FALSE, FALSE, FALSE},
-        { FALSE, TRUE,  FALSE, FALSE, FALSE, FALSE, FALSE, FALSE},
-        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE},
-        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE},
-        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE},
-        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE},
-        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE},
-        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE },
-        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  TRUE },
-        { FALSE, FALSE, TRUE,  FALSE, TRUE,  TRUE,  FALSE, FALSE},
-        { TRUE,  TRUE,  TRUE,  TRUE,  TRUE,  TRUE,  FALSE, FALSE},
-        { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,  FALSE}};
-    findValidCardsInHand(cardsInHand, 8, trickCards, 0, SPADE);
-    for (int i = 0; i <= 7; i++) {
-        TEST_ASSERT_TRUE_MESSAGE(cardsInHand[i].canPlay, "First player");
-    }
-    for (int i = 0; i <= 7; i++) {
-        findValidCardsInHand(cardsInHand, 8 - i, trickCards, 3, SPADE);
-        for (int j = 7; j >= i; j--) {
-            TEST_ASSERT_EQUAL_MESSAGE(expectedCanPlay[i][j], cardsInHand[7 - j].canPlay, "Reducing number of cards");
-        }
-    }
-    trickCards[1].color = CLUB; //The partner is now winning
-    findValidCardsInHand(cardsInHand, 6, trickCards, 3, SPADE);
-    for (int i = 0; i <= 6; i++) {
-        TEST_ASSERT_TRUE_MESSAGE(cardsInHand[i].canPlay, "Partner winning");
-    }
-    findValidCardsInHand(cardsInHand, 8, trickCards, 3, HEART);
-    for (int i = 0; i <= 7; i++) {
-        TEST_ASSERT_EQUAL_MESSAGE(expectedCanPlay[8][i], cardsInHand[i].canPlay, "Trump played but can play in trick color");
-    }
-    findValidCardsInHand(cardsInHand, 6, trickCards, 3, HEART);
-    for (int i = 0; i <= 5; i++) {
-        TEST_ASSERT_EQUAL_MESSAGE(expectedCanPlay[9][i], cardsInHand[i].canPlay, "Trump played and can play a better trump");
-    }
-    trickCards[2].value = JACK; //The trump card is now too strong to be played against
-    findValidCardsInHand(cardsInHand, 6, trickCards, 3, HEART);
-    for (int i = 0; i <= 5; i++) {
-        TEST_ASSERT_EQUAL_MESSAGE(expectedCanPlay[10][i], cardsInHand[i].canPlay, "Trump played and can't play a better trump");
-    }
-    trickCards[1].color = DIAMOND; //Revert back to diamond
-    findValidCardsInHand(cardsInHand, 8, trickCards, 3, ALLTRUMP);
-    for (int i = 0; i <= 7; i++) {
-        TEST_ASSERT_EQUAL_MESSAGE(expectedCanPlay[11][i], cardsInHand[i].canPlay, "ALLTRUMP and can play a better trump");
-    }
-}
 void test_playTrick()
 {
     Position trickWinner, expectedWinner[4][6] =

@@ -4,41 +4,36 @@
 #include "cardUtils.h"
 #include "playerUtils.h"
 
+Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
+    Position currentPlayer = startingPlayer; //Transferring startingPlayer to currentPlayer
+    Bool hasPassed, everyonePassed = TRUE; //everyonePassed starts at TRUE and will be set to FALSE as soon as someone makes a contract
+    int nbOfConsecutivePass = 0;
+    printf("New bid attempt...\n"); //TEMP DEBUG FEEDBACK
+    do {
+        hasPassed = getPlayerContract(players[currentPlayer], &(*contract)); //Get the player to decide on a contract or pass
+        if (hasPassed == TRUE) {        //If the player passed,
+            nbOfConsecutivePass++;      //increase the number of consecutive pass
+            printf("Player %d didn't make a contract.\n", currentPlayer); //TEMP DEBUG FEEDBACK
+        }
+        else {                          //If the player didn't pass,
+            nbOfConsecutivePass = 0;    //Reset the number of consecutive pass
+            everyonePassed = FALSE;     //If everyonePassed is still on TRUE, set it to FALSE
+            printf("Player %d decided to make a %d \"%d\" contract!\n", currentPlayer, (*contract).points, (*contract).trump - 1); //TEMP DEBUG FEEDBACK
+        }
+        currentPlayer = (currentPlayer + 1) % 4; //Go to next player
+    } while (((nbOfConsecutivePass < 3) || ((everyonePassed == TRUE) && (nbOfConsecutivePass < 4))) && ((*contract).coinche != OVERCOINCHED));
+    //While no three players passed in a row OR it's still the first turn AND no four players passed in a row, AND there was no overcoinche
+    return everyonePassed;
+}
 
-
-void findValidCardsInHand(Card cardsInHand[], int nbOfCardsInHand, Card trickCards[], int nbOfTrickCards, Color trump) {
-    Bool canFollow;
-    Card bestCard;
-    int bestTrumpStrength = 0;
-
-    if (nbOfTrickCards == 0) {                                                                                      //The first player of a trick
-        setCanPlay(cardsInHand, nbOfCardsInHand, NULL_COLOR, trump, 0, TRUE);                                       //can play any card.
-    }
-    else {
-        if (trump == ALLTRUMP) {
-            trump = trickCards[0].color;                                                                            //This line is what makes this function work when the trump is ALLTRUMP
-        }
-        bestCard = trickCards[getStrongestCard(trickCards, nbOfTrickCards, trump, NULL_COLOR)];                     //Find the best card on the table
-        if (bestCard.color == trump) {                                                                              //If it's a trump,
-            bestTrumpStrength = getCardStrength(bestCard, trump, NULL_COLOR);                                       //update bestTrumpStrength
-        }
-        setCanPlay(cardsInHand, nbOfCardsInHand, NULL_COLOR, trump, 0, FALSE);                                      //Each card is initialised to canPlay = FALSE
-        canFollow = setCanPlay(cardsInHand, nbOfCardsInHand, trickCards[0].color, trump, bestTrumpStrength, TRUE);  //A player must follow in the right color. If that color is a trump, the player has to play a stronger card. 
-        if ((trickCards[0].color == trump) && (canFollow == FALSE)) {                                               //If the trick was started with a trump AND playing a higher trump than the current best one is impossible,
-            canFollow = setCanPlay(cardsInHand, nbOfCardsInHand, trump, trump, 0, TRUE);                            //the player has to follow with a lower trump.
-        }
-        if (canFollow == FALSE) {                                                                                   //If playing in the right color is impossible:
-            if (getStrongestCard(trickCards, nbOfTrickCards, trump, trickCards[0].color) == (nbOfTrickCards - 2)) { //If the player's partner is the current trick winner,
-                setCanPlay(cardsInHand, nbOfCardsInHand, NULL_COLOR, trump, 0, TRUE);                               //any card can be played.
-            }
-            else {
-                canFollow = setCanPlay(cardsInHand, nbOfCardsInHand, trump, trump, bestTrumpStrength, TRUE);        //A player must play a stronger trump card than the current best one if its partner isn't winning.
-                if (canFollow == FALSE) {                                                                           //If all of the above are impossible,
-                    setCanPlay(cardsInHand, nbOfCardsInHand, NULL_COLOR, trump, 0, TRUE);                           //the player can play any card.
-                }
-            }
-        }
-    }    
+Contract bidUntilContract(Player players[], Position startingPlayer) {
+    Contract contract = {.points = 0, .coinche = NOT_COINCHED, .type = POINTS}; //Contract is initialized
+    Bool everyonePassed;
+    do {
+        cardsDistribution(players);
+        everyonePassed = bidAttempt(players, startingPlayer, &contract); //Do a bid attempt
+    } while (everyonePassed == TRUE); //As long as no contract is made, repeat the loop
+    return contract;
 }
 
 Position playTrick(Player players[], Position startingPlayer, Color trump) {

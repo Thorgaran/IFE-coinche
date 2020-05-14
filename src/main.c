@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include "core.h"
-#include "bid.h"
 #include "play.h"
 #include "cardUtils.h"
 
@@ -19,7 +18,7 @@ int main (int argc, char* argv[]) {
     Contract contract;
     Position startingPlayer = SOUTH;
 
-    contract = bid(players, startingPlayer);
+    contract = bidUntilContract(players, startingPlayer);
 
     playRound(players, startingPlayer, contract.trump);
     for (int i = 0; i < 4; i++) {

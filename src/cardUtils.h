@@ -45,6 +45,15 @@ int getCardArrayPoints(Card cardArray[], int nbOfCards, Color trump);
 */
 Bool setCanPlay(Card cardArray[], int nbOfCards, Color conditionalColor, Color trump, int bestTrumpStrength, Bool canPlay);
 
+/* Sets the canPlay property of each card in an Array to find which ones can be played depending on the cards currently on the table
+*   @param cardsInHand[]: the cards in this array will be evaluated to find the valid ones to play according to the coinche rules
+*   @param nbOfCardsInHand: the number of cards this function should look at to see which ones are valid
+*   @param trickCards[]: the cards already played by the previous players. Only the first N cards matter, where N is nbOfTrickCards
+*   @param nbOfTrickCards: the number of cards played by the previous players. Can be 0
+*   @param trump: the current trump
+*/
+void findValidCardsInHand(Card cardsInHand[], int nbOfCardsInHand, Card trickCards[], int nbOfTrickCards, Color trump);
+
 /* Sorts the cards in an array from weakest to strongest
 *   @param cardArray[]: array containing the cards to sort
 *   @param nbToSort: the first N cards of the array that will be sorted. Usually set to the array length to sort the whole array
