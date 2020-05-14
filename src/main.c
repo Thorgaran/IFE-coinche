@@ -22,10 +22,15 @@ int main (int argc, char* argv[]) {
     contract = bid(players, startingPlayer);
 
     playRound(players, startingPlayer, contract.trump);
-    
     for (int i = 0; i < 4; i++) {
         printf("Player %d has %d points!\n", i, players[i].score);    
     }
+    printf("\n");
+
+    awardTeamPoints(players, contract);
+    printf("Team SOUTH + NORTH has a score of %d!\n", players[0].teamScore);
+    printf("Team  WEST + EAST  has a score of %d!\n", players[1].teamScore);
+
     getchar();
     return EXIT_SUCCESS;
 }

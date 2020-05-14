@@ -100,8 +100,46 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
 }
 
 void playRound(Player players[], Position startingPlayer, Color trump) {
-    for (int i = 0; i < 8; i++) {   //plays the 8 tricks of a game
-        startingPlayer = playTrick(players, startingPlayer, trump); //the previous trick winner becomes the starting player
+    for (int i = 0; i < 8; i++) { //Plays the 8 tricks of a round
+        startingPlayer = playTrick(players, startingPlayer, trump); //The previous trick winner becomes the starting player
     }
     players[startingPlayer].score += 10; //10 bonus points for the last trick's winner
+}
+
+void awardTeamPoints(Player players[], Contract contract) {
+    Position defendant = (contract.issuer + 1) % 4;
+    int issuerTeamScore, defendantTeamScore;
+    int issuerTeamPoints = getTeamRoundPoints(players, contract.issuer);
+    if (((contract.type == POINTS) && (issuerTeamPoints >= contract.points)) ||
+        ((contract.type == CAPOT) && (issuerTeamPoints == 162)) ||
+        ((contract.type == GENERAL) && (players[contract.issuer].score == 162))) {  //If the contract is fulfilled,
+        issuerTeamScore = issuerTeamPoints + contract.points;                       //total issuer score = trick points + contract point value
+        switch (contract.coinche) {
+            case COINCHED:                              //If the contract was coinched,
+                issuerTeamScore = issuerTeamScore * 2;  //double the score,
+                break;                                  //and the defendant team gets nothing
+            case OVERCOINCHED:                          //If the contract was overcoinched,
+                issuerTeamScore = issuerTeamScore * 4;  //multiply the score by 4,
+                break;                                  //and the defendant team gets nothing
+            default:                                                            //Otherwise,
+                defendantTeamScore = getTeamRoundPoints(players, defendant);    //the defendant team gets it's round points
+                increaseTeamTotalScore(players, defendant, defendantTeamScore);
+                break;
+        }
+        increaseTeamTotalScore(players, contract.issuer, issuerTeamScore); //Increase the issuer's team total score
+    }
+    else { //If the contract isn't fulfilled
+        defendantTeamScore =  getTeamRoundPoints(players, defendant) + 162;    //total defendant score = trick points + 162
+        switch (contract.coinche) {
+            case COINCHED:                                      //If the contract was coinched,
+                defendantTeamScore = defendantTeamScore * 2;    //double the score
+                break;
+            case OVERCOINCHED:                                  //If the contract was overcoinched,
+                defendantTeamScore = defendantTeamScore * 4;    //multiply the score by 4
+                break;
+            default:                                            //Otherwise, do nothing
+                break;
+        }
+        increaseTeamTotalScore(players, defendant, defendantTeamScore); //Increase the defendant's team total score, and the issuer's team gets nothing
+    }
 }

@@ -27,7 +27,7 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
 }
 
 Contract bid(Player players[], Position startingPlayer) {
-    Contract contract = {.points = 0, .coinche = NOT_COINCHED}; //Contract is initialized
+    Contract contract = {.points = 0, .coinche = NOT_COINCHED, .type = POINTS}; //Contract is initialized
     Bool everyonePassed;
     do {
         cardsDistribution(players);

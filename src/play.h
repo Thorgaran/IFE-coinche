@@ -52,4 +52,10 @@ Position playTrick(Player players[], Position startingPlayer, Color trump);
 */
 void playRound(Player players[], Position startingPlayer, Color trump);
 
+/* Do the aftermaths of a round: check whether or not the contract issuer's team fulfilled the contract, and award points accordingly
+*   @param players[]: array of 4 players
+*   @param contract: the contract that was previously made
+*/
+void awardTeamPoints(Player players[], Contract contract);
+
 #endif
