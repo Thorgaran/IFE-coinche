@@ -1,4 +1,5 @@
 DEBUG := true
+PROFILING := false
 
 CC := gcc
 
@@ -13,18 +14,29 @@ else
 endif
 
 ifeq ($(DEBUG),true)
+ifeq ($(PROFILING),true)
+	CFLAGS := -g -pg -Wall -Werror
+	LFLAGS := -pg
+else
 	CFLAGS := -g -Wall -Werror
+	LFLAGS :=
+endif
 else
 	CFLAGS := -Wall -Werror
+	LFLAGS :=
 endif
 
 coinche.exe: $(OBJS)
 ifeq ($(DEBUG),true)
+ifeq ($(PROFILING),true)
+	@echo "Profiling compilation"
+else
 	@echo "Debug compilation"
+endif
 else
 	@echo "Release compilation"
 endif
-	$(CC) -o $@ $^
+	$(CC) $(LFLAGS) -o $@ $^
 
 %.o: src/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
