@@ -42,6 +42,13 @@ Bool getPlayerContract(Player player, Contract *contract) {
     return hasPassed;
 }
 
-int getTeamPoints(Player players[], Position trickWinner) {
-    return 0;
+int getTeamRoundPoints(Player players[], Position player) {
+    int roundPoints = players[player].score;        //Get the player's points
+    roundPoints += players[(player + 2) % 4].score; //Get its partner's points
+    return roundPoints;
+}
+
+void increaseTeamTotalScore(Player players[], Position player, int roundScore) {
+    players[player].teamScore += roundScore;            //Increase the player's total team score
+    players[(player + 2) % 4].teamScore += roundScore;  //Increase its partner's total team score
 }

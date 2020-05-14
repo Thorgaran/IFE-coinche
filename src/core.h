@@ -54,6 +54,7 @@ typedef struct Player {
     Card *cards;
     int nbOfCards;
     int score;
+    int teamScore;
 } Player;
 
 typedef enum Coinche {
