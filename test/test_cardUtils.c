@@ -202,11 +202,9 @@ void test_cardsDistribution()
     int nbOfCardsLeft = 32;
     createDeck(cardDeck);
     cardsDistribution(players);
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 8; j++)
-        {
-            foundCard = removeCard(cardDeck, &nbOfCardsLeft, players[i].cards[j]);
+    for (Position player = SOUTH; player <= EAST; player++) {
+        for (int cardIndex = 0; cardIndex < 8; cardIndex++) {
+            foundCard = removeCard(cardDeck, &nbOfCardsLeft, players[player].cards[cardIndex]);
             TEST_ASSERT_TRUE_MESSAGE(foundCard, "The card has not been found");
         }
     }

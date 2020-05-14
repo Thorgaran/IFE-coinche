@@ -97,9 +97,9 @@ void cardsDistribution(Player *players) {
     int nbOfRemainingCards = 32;
     createDeck(cardDeck);
     for (Position player = SOUTH; player <= EAST; player++) {
-        for (int j = 0; j < 8; j++) {
+        for (int cardIndex = 0; cardIndex < 8; cardIndex++) {
             randomCardNb = rand()%(nbOfRemainingCards);
-            players[player].cards[j] = cardDeck[randomCardNb];
+            players[player].cards[cardIndex] = cardDeck[randomCardNb];
             removeCard(cardDeck, &nbOfRemainingCards, cardDeck[randomCardNb]);
         } 
     }
