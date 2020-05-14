@@ -17,6 +17,27 @@ void test_getPlayerCard()
     TEST_IGNORE_MESSAGE("To do after each individual getCard test");
 }
 
+void test_cardsDistribution()
+{
+    Bool foundCard;
+    Card cardDeck[32], playerCards[4][8];
+    Player players[4] =
+        {{.nbOfCards = 8, .cards = playerCards[0]},
+         {.nbOfCards = 8, .cards = playerCards[1]},
+         {.nbOfCards = 8, .cards = playerCards[2]},
+         {.nbOfCards = 8, .cards = playerCards[3]}};
+    int nbOfCardsLeft = 32;
+    createDeck(cardDeck);
+    cardsDistribution(players);
+    for (Position player = SOUTH; player <= EAST; player++) {
+        for (int cardIndex = 0; cardIndex < 8; cardIndex++) {
+            foundCard = removeCard(cardDeck, &nbOfCardsLeft, players[player].cards[cardIndex]);
+            TEST_ASSERT_TRUE_MESSAGE(foundCard, "The card has not been found");
+        }
+    }
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, nbOfCardsLeft, "There are some cards left");
+}
+
 void test_getTeamRoundPoints()
 {
     Player players[4] = {{.score = 0}, {.score = 0}, {.score = 0}, {.score = 0}};

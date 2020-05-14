@@ -74,9 +74,4 @@ int getPlayableCards(Card cardArray[], int nbOfCards, Card playableCards[]);
 */
 void createDeck(Card cardDeck[]);
 
-/* Function that randomly deals 8 of the 32 cards to each player at the beginning of bidding
-*  @param players[]: array of 4 players
-*/
-void cardsDistribution(Player players[]);
-
 #endif

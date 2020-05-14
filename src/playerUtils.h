@@ -19,6 +19,11 @@ Card getPlayerCard(Player *player, Card trickCards[], int nbOfTrickCards, Color 
 */
 Bool getPlayerContract(Player player, Contract *contract);
 
+/* Function that randomly deals 8 of the 32 cards to each player at the beginning of bidding
+*  @param players[]: array of 4 players
+*/
+void cardsDistribution(Player players[]);
+
 /* Get a team's total trick points from the previous round
 *   @param players[]: array of 4 players
 *   @param player: position of a player in the team of interest
