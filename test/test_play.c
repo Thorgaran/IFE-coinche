@@ -33,10 +33,10 @@ void test_playTrick()
                 {{.value = QUEEN, .color = DIAMOND}},
                 {{.value = ACE,   .color = CLUB   }}};
             Player players[] = 
-                {{.type = AI_FIRSTAVAILABLE, .pos = SOUTH, .score = 0, .nbOfCards = 1, .cards = playerCards[0]},
-                { .type = AI_FIRSTAVAILABLE, .pos = WEST,  .score = 0, .nbOfCards = 1, .cards = playerCards[1]},
-                { .type = AI_FIRSTAVAILABLE, .pos = NORTH, .score = 0, .nbOfCards = 1, .cards = playerCards[2]},
-                { .type = AI_FIRSTAVAILABLE, .pos = EAST,  .score = 0, .nbOfCards = 1, .cards = playerCards[3]}};
+                {{.cardAI = CARD_AI_FIRSTAVAILABLE, .pos = SOUTH, .score = 0, .nbOfCards = 1, .cards = playerCards[0]},
+                { .cardAI = CARD_AI_FIRSTAVAILABLE, .pos = WEST,  .score = 0, .nbOfCards = 1, .cards = playerCards[1]},
+                { .cardAI = CARD_AI_FIRSTAVAILABLE, .pos = NORTH, .score = 0, .nbOfCards = 1, .cards = playerCards[2]},
+                { .cardAI = CARD_AI_FIRSTAVAILABLE, .pos = EAST,  .score = 0, .nbOfCards = 1, .cards = playerCards[3]}};
             trickWinner = playTrick(players, startingPlayer, trump);
             TEST_ASSERT_EQUAL_MEMORY_MESSAGE(expectedWinner[startingPlayer][trump - 1], trickWinner, sizeof(Position), "Wrong winner");
             for(Position player = SOUTH; player <= EAST; player++) {
@@ -70,10 +70,10 @@ void test_playRound()
                 { .value = EIGHT, .color = DIAMOND}, {.value = NINE,  .color = DIAMOND},
                 { .value = EIGHT, .color = CLUB   }, {.value = KING,  .color = CLUB   }}};
             Player players[] = 
-                {{.type = AI_FIRSTAVAILABLE, .pos = SOUTH, .score = 0, .nbOfCards = 8, .cards = playerCards[0]},
-                { .type = AI_FIRSTAVAILABLE, .pos = WEST,  .score = 0, .nbOfCards = 8, .cards = playerCards[1]},
-                { .type = AI_FIRSTAVAILABLE, .pos = NORTH, .score = 0, .nbOfCards = 8, .cards = playerCards[2]},
-                { .type = AI_FIRSTAVAILABLE, .pos = EAST,  .score = 0, .nbOfCards = 8, .cards = playerCards[3]}};
+                {{.cardAI = CARD_AI_FIRSTAVAILABLE, .pos = SOUTH, .score = 0, .nbOfCards = 8, .cards = playerCards[0]},
+                { .cardAI = CARD_AI_FIRSTAVAILABLE, .pos = WEST,  .score = 0, .nbOfCards = 8, .cards = playerCards[1]},
+                { .cardAI = CARD_AI_FIRSTAVAILABLE, .pos = NORTH, .score = 0, .nbOfCards = 8, .cards = playerCards[2]},
+                { .cardAI = CARD_AI_FIRSTAVAILABLE, .pos = EAST,  .score = 0, .nbOfCards = 8, .cards = playerCards[3]}};
             playRound(players, startingPlayer, trump);
             for(Position player = SOUTH; player <= EAST; player++) {
                 TEST_ASSERT_EQUAL_INT_MESSAGE(0, players[player].nbOfCards, "NbOfCards not null");

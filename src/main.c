@@ -11,7 +11,8 @@ int main (int argc, char* argv[]) {
     Card playersCards[4][8];
     Player players[4];
     for (Position pos = SOUTH; pos <= EAST; pos++) {
-        players[pos].type = AI_STANDARD;
+        players[pos].cardAI = CARD_AI_STANDARD;
+        players[pos].contractAI = CONTRACT_AI_STANDARD;
         players[pos].pos = pos;
         players[pos].teamScore = 0;
         players[pos].cards = playersCards[pos];
