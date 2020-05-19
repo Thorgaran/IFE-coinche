@@ -126,7 +126,7 @@ void sortCards(Card cardArray[], int nbToSort, Color trump, Color roundColor) { 
 
 Bool removeCard(Card cardArray[], int *nbOfCards, Card cardToRemove) {
     Bool foundCard = FALSE;
-    for (int i = 0; i < (*nbOfCards); i++) {
+    for (int i = 0; i < *nbOfCards; i++) {
         if (foundCard == TRUE) { //The card has been found
             cardArray[i-1] = cardArray[i]; //Move this card to replace the previous one
         }
