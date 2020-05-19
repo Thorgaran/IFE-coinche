@@ -41,8 +41,9 @@ typedef enum cardAI {
 } cardAI;
 
 typedef enum contractAI {
-    CONTRACT_USER              = 0,
-    CONTRACT_AI_STANDARD       = 2
+    CONTRACT_USER            = 0,
+    CONTRACT_AI_ALWAYSEIGHTY = 1,
+    CONTRACT_AI_STANDARD     = 2
 } contractAI;
 
 typedef enum Position {

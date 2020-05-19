@@ -19,8 +19,8 @@ int main (int argc, char* argv[]) {
             players[pos].contractAI = CONTRACT_AI_STANDARD;
         }
         else {
-            players[pos].cardAI = CARD_AI_STANDARD;
-            players[pos].contractAI = CONTRACT_AI_STANDARD;
+            players[pos].cardAI = CARD_AI_FIRSTAVAILABLE;
+            players[pos].contractAI = CONTRACT_AI_ALWAYSEIGHTY;
         }
         players[pos].pos = pos;
         players[pos].cards = playersCards[pos];

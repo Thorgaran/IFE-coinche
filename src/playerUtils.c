@@ -30,6 +30,9 @@ Bool getPlayerContract(Player player, Contract *contract) {
         case CONTRACT_USER: //If the player is the User
             hasPassed = askUserContract(player.cards, player.nbOfCards, contract);
             break;
+        case CONTRACT_AI_ALWAYSEIGHTY: //If the player is an AI of type ALWAYSEIGHTY
+            hasPassed = getAIContractAlwaysEighty(player.cards, contract);
+            break;
         case CONTRACT_AI_STANDARD: //If the player is an AI of type STANDARD
             hasPassed = getAIContractStandard(player.cards, player.nbOfCards, contract);
             break;

@@ -30,11 +30,21 @@ Card getAICardStandard(Card cardsInHand[], int nbOfCardsInHand, Card trickCards[
     return chosenCard;
 }
 
+Bool getAIContractAlwaysEighty(Card cardsInHand[], Contract *contract) {
+    Bool hasPassed = TRUE;
+    if ((contract->coinche == NOT_COINCHED) && (contract->points < 80)) {   //A player can't make another contract once one is coinched
+        hasPassed = FALSE;                                                  //If it can, the AI makes a 80 points contract in its first card's color
+        contract->trump = cardsInHand[0].color;
+        contract->points = 80;
+    }
+    return hasPassed;
+}
+
 Bool getAIContractStandard(Card cardsInHand[], int nbOfCardsInHand, Contract *contract) {
     Bool hasPassed = TRUE;
     Color strongestColor = SPADE;
     int nbOfStrongCards[] = {0, 0, 0, 0};                                               //Will contain the number of strong cards in each color, from SPADE to CLUB
-    if (contract->coinche == NOT_COINCHED) {                                            //A player can't do another contract once one is coinched
+    if (contract->coinche == NOT_COINCHED) {                                            //A player can't make another contract once one is coinched
         for (int i = 0; i < nbOfCardsInHand; i++) {                                     //Browse through each hand card
             if (getCardStrength(cardsInHand[i], ALLTRUMP, NULL_COLOR) >= 23) {          //A "strong card" is defined to be a Queen or better, in trump order (a trump queen has a strength of 23)
                 nbOfStrongCards[cardsInHand[i].color - 1]++;                            //Increment the number of strong cards by one in the right color
@@ -46,12 +56,12 @@ Bool getAIContractStandard(Card cardsInHand[], int nbOfCardsInHand, Contract *co
             }
         }
         if ((nbOfStrongCards[strongestColor - 1] >= 4) && (contract->points < 120)) {   //If the AI has 4 strongs cards or more AND the current contract points are less than 120,
-            hasPassed = FALSE;                                                          //it takes the contract in this color with 120 points
+            hasPassed = FALSE;                                                          //it makes the contract in this color with 120 points
             contract->trump = strongestColor;
             contract->points = 120;
         }
         else if ((nbOfStrongCards[strongestColor - 1] == 3) && (contract->points < 80)) { //If the AI has 3 strongs cards AND the current contract points are less than 80,
-            hasPassed = FALSE;                                                          //it takes the contract in this color with 80 points
+            hasPassed = FALSE;                                                          //it makes the contract in this color with 80 points
             contract->trump = strongestColor;
             contract->points = 80;
         }
