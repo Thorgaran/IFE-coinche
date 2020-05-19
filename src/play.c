@@ -8,17 +8,14 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
     Position currentPlayer = startingPlayer; //Transferring startingPlayer to currentPlayer
     Bool hasPassed, everyonePassed = TRUE; //everyonePassed starts at TRUE and will be set to FALSE as soon as someone makes a contract
     int nbOfConsecutivePass = 0;
-    printf("New bid attempt...\n"); //TEMP DEBUG FEEDBACK
     do {
         hasPassed = getPlayerContract(players[currentPlayer], &(*contract)); //Get the player to decide on a contract or pass
         if (hasPassed == TRUE) {        //If the player passed,
             nbOfConsecutivePass++;      //increase the number of consecutive pass
-            printf("Player %d didn't make a contract.\n", currentPlayer); //TEMP DEBUG FEEDBACK
         }
         else {                          //If the player didn't pass,
             nbOfConsecutivePass = 0;    //Reset the number of consecutive pass
             everyonePassed = FALSE;     //If everyonePassed is still on TRUE, set it to FALSE
-            printf("Player %d decided to make a %d \"%d\" contract!\n", currentPlayer, (*contract).points, (*contract).trump - 1); //TEMP DEBUG FEEDBACK
         }
         currentPlayer = (currentPlayer + 1) % 4; //Go to next player
     } while (((nbOfConsecutivePass < 3) || ((everyonePassed == TRUE) && (nbOfConsecutivePass < 4))) && ((*contract).coinche != OVERCOINCHED));
@@ -98,23 +95,39 @@ void awardTeamPoints(Player players[], Contract contract) {
     }
 }
 
-void playGame(Player players[]) {
+int playGame(Player players[]) {
     Contract contract;
     Position startingPlayer = rand() % 4;
+    int nbOfRounds = 0;
     do {
         startingPlayer = (startingPlayer + 1) % 4;
-        for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
-            players[pos].score = 0;                         //reset its score,
-            players[pos].nbOfCards = 8;                     //and its number of cards
+        for (Position pos = SOUTH; pos <= EAST; pos++) {        //For each player,
+            players[pos].score = 0;                             //reset its score,
+            players[pos].nbOfCards = 8;                         //and its number of cards
         }
-        printf("-------------- NEW ROUND --------------\n");                        //TEMP DEBUG FEEDBACK
         contract = bidUntilContract(players, startingPlayer);   //Do bidding until a contract is made
         playRound(players, startingPlayer, contract.trump);     //Play an 8-tricks round
-        for (int i = 0; i < 4; i++) {                                               //TEMP DEBUG FEEDBACK
-            printf("Player %d has %d points!\n", i, players[i].score);              //TEMP DEBUG FEEDBACK
-        }                                                                           //TEMP DEBUG FEEDBACK
-        awardTeamPoints(players, contract); //Award team points depending on whether or not the contract was fulfilled
-        printf("Team SOUTH + NORTH has a score of %d!\n", players[0].teamScore);    //TEMP DEBUG FEEDBACK
-        printf("Team  WEST + EAST  has a score of %d!\n\n", players[1].teamScore);  //TEMP DEBUG FEEDBACK
-    } while ((players[0].teamScore < 700) && (players[1].teamScore < 700)); //Repeat until a team reaches 700 points
+        awardTeamPoints(players, contract);                     //Award team points depending on whether or not the contract was fulfilled
+        nbOfRounds++;                                           //Increase the number of rounds
+    } while ((players[0].teamScore <= 700) && (players[1].teamScore <= 700)); //Repeat until a team reaches 701 points
+    return nbOfRounds;
+}
+
+float playAIGames(Player players[], int nbOfGames, int nbOfGamesWon[]) {
+    long totalNbOfRounds = 0;
+    float averageGameLength;
+    for (int game = 0; game < nbOfGames; game++) {          //Play "nbOfGames" games
+        for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
+            players[pos].teamScore = 0;                     //reset its team score
+        }
+        totalNbOfRounds += playGame(players);   //Play a game and increase the total number of rounds
+        if (players[0].teamScore > 700) {       //If the first team won,
+            nbOfGamesWon[0] += 1;               //Increase its number of wins
+        }
+        else {
+            nbOfGamesWon[1] += 1;               //Else, increase the second team's number of wins
+        }
+    }
+    averageGameLength = totalNbOfRounds / (float)nbOfGames;
+    return averageGameLength;
 }

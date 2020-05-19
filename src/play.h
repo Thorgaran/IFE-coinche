@@ -38,9 +38,18 @@ void playRound(Player players[], Position startingPlayer, Color trump);
 */
 void awardTeamPoints(Player players[], Contract contract);
 
-/* Plays a full game until a team wins
+/* Plays a full game until a team wins (it reaches 701 points)
 *   @param players[]: array of 4 players
+*   @return nbOfRounds: the number of rounds played
 */
-void playGame(Player players[]);
+int playGame(Player players[]);
+
+/* Plays a given number of AI games and returns some stats
+*   @param players[]: array of 4 players
+*   @param nbOfGames: the number of games to be played
+*   @param nbOfGamesWon[]: empty array of length 2. The number of game won by each team will be written in it
+*   @return averageGameLength: average number of rounds played for each game
+*/
+float playAIGames(Player players[], int nbOfGames, int nbOfGamesWon[]);
 
 #endif // PLAY_H
