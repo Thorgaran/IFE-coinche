@@ -9,7 +9,7 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
     Bool hasPassed, everyonePassed = TRUE; //everyonePassed starts at TRUE and will be set to FALSE as soon as someone makes a contract
     int nbOfConsecutivePass = 0;
     do {
-        hasPassed = getPlayerContract(players[currentPlayer], &(*contract)); //Get the player to decide on a contract or pass
+        hasPassed = getPlayerContract(players[currentPlayer], contract); //Get the player to decide on a contract or pass
         if (hasPassed == TRUE) {        //If the player passed,
             nbOfConsecutivePass++;      //increase the number of consecutive pass
         }
@@ -18,7 +18,7 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
             everyonePassed = FALSE;     //If everyonePassed is still on TRUE, set it to FALSE
         }
         currentPlayer = (currentPlayer + 1) % 4; //Go to next player
-    } while (((nbOfConsecutivePass < 3) || ((everyonePassed == TRUE) && (nbOfConsecutivePass < 4))) && ((*contract).coinche != OVERCOINCHED));
+    } while (((nbOfConsecutivePass < 3) || ((everyonePassed == TRUE) && (nbOfConsecutivePass < 4))) && (contract->coinche != OVERCOINCHED));
     //While no three players passed in a row OR it's still the first turn AND no four players passed in a row, AND there was no overcoinche
     return everyonePassed;
 }
