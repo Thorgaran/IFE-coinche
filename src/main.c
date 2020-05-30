@@ -3,13 +3,13 @@
 #include <time.h>
 #include "core.h"
 #include "play.h"
-#include "cardUtils.h"
+#include "userIO.h"
 
 int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function
 
     float averageGameLength;
-    int nbOfGamesWon[] = {0, 0};
+    int test, nbOfGamesWon[] = {0, 0};
 
     Card playersCards[4][8];
     Player players[4];
@@ -25,6 +25,9 @@ int main (int argc, char* argv[]) {
         players[pos].pos = pos;
         players[pos].cards = playersCards[pos];
     }
+
+    test = inputUserInt(0, 5, "Entre un truc lol\n");
+    printf("%d", test);
 
     averageGameLength = playAIGames(players, 1000, nbOfGamesWon);
 
