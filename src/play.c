@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "core.h"
+#include "play.h"
 #include "cardUtils.h"
 #include "playerUtils.h"
 #include "userIO.h"
