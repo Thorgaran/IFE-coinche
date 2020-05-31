@@ -3,6 +3,7 @@
 #include "core.h"
 #include "cardUtils.h"
 #include "playerUtils.h"
+#include "userIO.h"
 
 Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
     Position currentPlayer = startingPlayer; //Transferring startingPlayer to currentPlayer
@@ -106,6 +107,10 @@ int playGame(Player players[]) {
             players[pos].nbOfCards = 8;                         //and its number of cards
         }
         contract = bidUntilContract(players, startingPlayer);   //Do bidding until a contract is made
+        if (players[SOUTH].cardAI == CARD_USER) {
+            displayTrick(players, contract.trump, contract);
+            getchar();
+        }
         playRound(players, startingPlayer, contract.trump);     //Play an 8-tricks round
         awardTeamPoints(players, contract);                     //Award team points depending on whether or not the contract was fulfilled
         nbOfRounds++;                                           //Increase the number of rounds

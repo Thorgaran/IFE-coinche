@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <time.h>
 #include "core.h"
 #include "play.h"
@@ -7,9 +8,13 @@
 
 int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function
+    char *locale;
 
-    float averageGameLength;
-    int nbOfGamesWon[] = {0, 0};
+    locale = setlocale(LC_CTYPE, "UTF-8");
+    printf("The current locale is %s\n",locale);
+
+    /*float averageGameLength;
+    int nbOfGamesWon[] = {0, 0};*/
 
     Card playersCards[4][8];
     Player players[4];
@@ -26,12 +31,16 @@ int main (int argc, char* argv[]) {
         players[pos].cards = playersCards[pos];
     }
 
-    averageGameLength = playAIGames(players, 1000, nbOfGamesWon);
+    players[SOUTH].cardAI = CARD_USER;
+    players[SOUTH].contractAI = CONTRACT_USER;
+    printf("\u2510\u256b\u2660\u2663\u2665\u2666\n");
+    playGame(players);
+    /*averageGameLength = playAIGames(players, 1000, nbOfGamesWon);
 
     printf("Team SOUTH - NORTH won %d games!\n", nbOfGamesWon[0]);
     printf("Team  WEST - EAST  won %d games!\n", nbOfGamesWon[1]);
     printf("The games lasted %f rounds on average.\n", averageGameLength);
-
+    */
     getchar();
     return EXIT_SUCCESS;
 }
