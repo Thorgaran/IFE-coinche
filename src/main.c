@@ -6,13 +6,11 @@
 #include "play.h"
 #include "cardUtils.h"
 #include "userIO.h"
+#include "ansi.h"
 
 int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function
-    char *locale;
-
-    locale = setlocale(LC_CTYPE, "UTF-8");
-    printf("The current locale is %s\n",locale);
+    setupConsole();
 
     /*float averageGameLength;
     int nbOfGamesWon[] = {0, 0};*/
