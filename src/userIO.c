@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "core.h"
+#include "userIO.h"
 
 Card askUserCard(Card cardArray[], int nbOfCards) {
     Card chosenCard = {.color = SPADE, .value = SEVEN};
