@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "core.h"
+#include "userIO.h"
 
 int inputUserInt(int minBound, int maxBound, char* displayStr) {
     char buffer[5];

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "core.h"
+#include "ai.h"
 #include "cardUtils.h"
 
 Card getAICardFirstAvailable(Card cardsInHand[], int nbOfCardsInHand) {
