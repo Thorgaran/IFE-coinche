@@ -86,4 +86,8 @@ typedef struct Contract {
 
 const int CARD_POINTS_TABLE[4][8];
 
+const char* VALUE_STR_TABLE[9];
+
+const char* COLOR_STR_TABLE[7];
+
 #endif // CORE_H

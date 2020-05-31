@@ -5,6 +5,7 @@
 #include "core.h"
 #include "play.h"
 #include "cardUtils.h"
+#include "userIO.h"
 
 int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function
@@ -30,11 +31,21 @@ int main (int argc, char* argv[]) {
         players[pos].pos = pos;
         players[pos].cards = playersCards[pos];
     }
-
     players[SOUTH].cardAI = CARD_USER;
     players[SOUTH].contractAI = CONTRACT_USER;
-    printf("\u2510\u256b\u2660\u2663\u2665\u2666\n");
-    playGame(players);
+    for (Color color = SPADE; color <= CLUB; color++) {
+        for (Value value = SEVEN; value <= ACE; value++) {
+            players[0].cards[0].color = color;
+            players[0].cards[0].value = value;
+            displayCard(players[0].cards[0]);
+            getchar();
+            printf("\033[1A");
+        }
+    }
+    
+    
+    printf("\033[4B");
+    //playGame(players);
     /*averageGameLength = playAIGames(players, 1000, nbOfGamesWon);
 
     printf("Team SOUTH - NORTH won %d games!\n", nbOfGamesWon[0]);

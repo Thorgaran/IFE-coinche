@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "core.h"
+#include "userIO.h"
 
 Card askUserCard(Card cardArray[], int nbOfCards) {
     Card chosenCard = {.color = SPADE, .value = SEVEN};
@@ -10,6 +10,19 @@ Card askUserCard(Card cardArray[], int nbOfCards) {
 Bool askUserContract(Card cardArray[], int nbOfCards, Contract *contract) {
     Bool hasPassed = TRUE;
     return hasPassed;
+}
+
+void displayCard(Card card) {
+    printf("\u256d\u2500\u2500\u2500\u256e\033[5D\033[1B"); //╭───╮
+    printf("\u2502   \u2502\033[5D\033[1B");                //│   │
+    printf("\u2502   \u2502\033[5D\033[1B");                //│   │
+    printf("\u2570\u2500\u2500\u2500\u256f\033[5D\033[3A"); //╰───╯
+    changeCardDisplay(card); //Fill in the card
+}
+
+void changeCardDisplay(Card card) {
+    printf("\033[1C\033[1B%s\033[1B%s\033[4D\033[2A", VALUE_STR_TABLE[card.value], COLOR_STR_TABLE[card.color]);
+    //Change the value, then the color, then return the cursor to the top-left of the card
 }
 
 void displayTrick(Player* players, Color trump, Contract contract) {
