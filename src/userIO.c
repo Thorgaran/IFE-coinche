@@ -37,7 +37,7 @@ void displayTrick(Player* players, Color trump, Contract contract) {
     }
     printf("\t\t\t\tNorth\n\n\t\t\t\t \nWest\t \t\t\t\t \tEast\n\t\t\t\t \n\t\t\t   %s", players[SOUTH].name);
     printf("\n\nYour hand : ");
-    for (int cardNb = 0; cardNb < 8; cardNb++) {
+    for (int cardNb = 0; cardNb < 8; cardNb++) {                                                 // At the beginning of the round, the user's hand has 8 cards
         printf("%d%d ", players[SOUTH].cards[cardNb].value, players[SOUTH].cards[cardNb].color);
     }
 }
