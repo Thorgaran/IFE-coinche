@@ -13,10 +13,10 @@ Bool askUserContract(Card cardArray[], int nbOfCards, Contract *contract) {
 }
 
 void displayCard(Card card) {
-    printf("╭───╮");
-    printf("│   │");
-    printf("│   │");
-    printf("╰───╯");
+    printf("╭───╮\033[5D\033[1B");
+    printf("│   │\033[5D\033[1B");
+    printf("│   │\033[5D\033[1B");
+    printf("╰───╯\033[5D\033[3A");
     changeCardDisplay(card); //Fill in the card
 }
 
@@ -25,7 +25,7 @@ void changeCardDisplay(Card card) {
     //Change the value, then the color, then return the cursor to the top-left of the card
 }
 void blankTable(void){
-    printf("\n╔═══════════════╤═════════════════════╤═══════════════╗\n");
+    printf("╔═══════════════╤═════════════════════╤═══════════════╗\n");
     printf("║Contract:      │                     │  Last trick:  ║\n");
     printf("║               │     ╭┈┈┈┈┈┈┈┈┈╮     │               ║\n");
     printf("║               │     ┊ Round   ┊     │               ║\n");
