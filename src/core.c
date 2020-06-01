@@ -27,3 +27,15 @@ const char* COLOR_STR_TABLE[7] = { //Array used to convert between color types a
     "All trump",//ALLTRUMP
     "No trump"  //NOTRUMP
 };
+
+const char* COINCHE_STR_TABLE[3] = { //Array used to convert between coinche types and their string representations. Read only
+    "",             //NOT_COINCHED
+    "Coinched",     //COINCHED
+    "Overcoinched"  //OVERCOINCHED
+};
+
+const char* CONTRACTTYPE_STR_TABLE[3] = { //Array used to convert between contractType types and their string representations. Read only
+    "",         //POINTS
+    "Capot",    //CAPOT
+    "General"   //GENERAL
+};
