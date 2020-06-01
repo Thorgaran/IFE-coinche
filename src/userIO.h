@@ -16,6 +16,10 @@ void displayCard(Card card);
 */
 void changeCardDisplay(Card card);
 
+/* Displays the table with no informations
+*/
+void blankTable(void);
+
 /* Displays the trick that is being played. This display contains the color of the trump, the number of the trick, the game table and the user's hand
 *   @param players: the array of the four players
 *   @param trump: the color of the trump
