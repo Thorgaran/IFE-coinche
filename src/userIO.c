@@ -13,16 +13,45 @@ Bool askUserContract(Card cardArray[], int nbOfCards, Contract *contract) {
 }
 
 void displayCard(Card card) {
-    printf("╭───╮\033[5D\033[1B");
-    printf("│   │\033[5D\033[1B");
-    printf("│   │\033[5D\033[1B");
-    printf("╰───╯\033[5D\033[3A");
+    printf("╭───╮");
+    printf("│   │");
+    printf("│   │");
+    printf("╰───╯");
     changeCardDisplay(card); //Fill in the card
 }
 
 void changeCardDisplay(Card card) {
     printf("\033[1C\033[1B%s\033[1B%s\033[4D\033[2A", VALUE_STR_TABLE[card.value], COLOR_STR_TABLE[card.color]);
     //Change the value, then the color, then return the cursor to the top-left of the card
+}
+void blankTable(void){
+    printf("\n╔═══════════════╤═════════════════════╤═══════════════╗\n");
+    printf("║Contract:      │                     │  Last trick:  ║\n");
+    printf("║               │     ╭┈┈┈┈┈┈┈┈┈╮     │               ║\n");
+    printf("║               │     ┊ Round   ┊     │               ║\n");
+    printf("║               │     ┊Trick  /8┊     │               ║\n");
+    printf("╟───────┬───────┤     ╰┈┈┈┈┈┈┈┈┈╯     │               ║\n");
+    printf("║Your   │Rival  │                     │               ║\n");
+    printf("║team   │team   │                     │               ║\n");
+    printf("║score: │score: │                     │               ║\n");
+    printf("║   /700│   /700│                     │               ║\n");
+    printf("╟───────┴───────╯                     ╰───────────────╢\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║     1     2     3     4     5     6     7     8     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                      Your hand                      ║\n");
+    printf("╚═════════════════════════════════════════════════════╝\n");
 }
 
 void displayTrick(Player* players, Color trump, Contract contract) {
@@ -37,7 +66,7 @@ void displayTrick(Player* players, Color trump, Contract contract) {
     }
     printf("\t\t\t\tNorth\n\n\t\t\t\t \nWest\t \t\t\t\t \tEast\n\t\t\t\t \n\t\t\t   %s", players[SOUTH].name);
     printf("\n\nYour hand : ");
-    for (int cardNb = 0; cardNb < 8; cardNb++) {
+    for (int cardNb = 0; cardNb < 8; cardNb++) {                                                 // At the beginning of the round, the user's hand has 8 cards
         printf("%d%d ", players[SOUTH].cards[cardNb].value, players[SOUTH].cards[cardNb].color);
     }
 }
