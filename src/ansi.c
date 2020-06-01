@@ -10,11 +10,6 @@ between doing this or scraping every display function we had so far and start ov
 #include "ansi.h"
 
 #ifdef _WIN32
-// Some old MinGW/CYGWIN distributions don't define this:
-#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
-#define ENABLE_VIRTUAL_TERMINAL_PROCESSING  0x0004
-#endif
-
 static HANDLE stdoutHandle;
 static DWORD outModeInit;
 

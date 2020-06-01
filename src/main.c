@@ -10,7 +10,6 @@
 
 int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function
-    setlocale (LC_ALL, "");
     setupConsole();
 
     /*float averageGameLength;
