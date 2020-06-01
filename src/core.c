@@ -20,10 +20,10 @@ const char* VALUE_STR_TABLE[9] = { //Array used to convert between valur types a
 
 const char* COLOR_STR_TABLE[7] = { //Array used to convert between color types and their string representations. Read only
     " ",        //NULL_COLOR
-    "\u2660",   //SPADE:    ♠
-    "\u2665",   //HEART:    ♥
-    "\u2666",   //DIAMOND:  ♦
-    "\u2663",   //CLUB:     ♣
+    "♠",        //SPADE
+    "♥",        //HEART
+    "♦",        //DIAMOND
+    "♣",        //CLUB
     "All trump",//ALLTRUMP
     "No trump"  //NOTRUMP
 };

@@ -1,17 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 #include <time.h>
 #include "core.h"
 #include "play.h"
 #include "cardUtils.h"
 #include "userIO.h"
-#include "ansi.h"
 
 int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function
-    setlocale (LC_ALL, "");
-    setupConsole();
 
     /*float averageGameLength;
     int nbOfGamesWon[] = {0, 0};*/

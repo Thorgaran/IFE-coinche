@@ -13,10 +13,10 @@ Bool askUserContract(Card cardArray[], int nbOfCards, Contract *contract) {
 }
 
 void displayCard(Card card) {
-    printf("\u256d\u2500\u2500\u2500\u256e\033[5D\033[1B"); //╭───╮
-    printf("\u2502   \u2502\033[5D\033[1B");                //│   │
-    printf("\u2502   \u2502\033[5D\033[1B");                //│   │
-    printf("\u2570\u2500\u2500\u2500\u256f\033[5D\033[3A"); //╰───╯
+    printf("╭───╮\033[5D\033[1B");
+    printf("│   │\033[5D\033[1B");
+    printf("│   │\033[5D\033[1B");
+    printf("╰───╯\033[5D\033[3A");
     changeCardDisplay(card); //Fill in the card
 }
 
