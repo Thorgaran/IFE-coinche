@@ -90,4 +90,8 @@ const char* VALUE_STR_TABLE[9];
 
 const char* COLOR_STR_TABLE[7];
 
+const char* COINCHE_STR_TABLE[3];
+
+const char* CONTRACTTYPE_STR_TABLE[3];
+
 #endif // CORE_H
