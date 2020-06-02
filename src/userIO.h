@@ -59,6 +59,16 @@ void updateContractDisplay(char playerName[], Contract contract);
 */
 void displayPlayerName(Player player, Bool underline);
 
+/* Replace the old displayed round value with a new one
+*   @param roundNb: the current round number. This shouldn't be a three digits number
+*/
+void updateRoundNbDisplay(int roundNb);
+
+/* Update the trick number display
+*   @param trickNb: the trick number from 1 to 8. 0 is a valid value meaning that the bidding phase is starting
+*/
+void updateTrickNbDisplay(int trickNb);
+
 /* Displays the trick that is being played. This display contains the color of the trump, the number of the trick, the game table and the user's hand
 *   @param players: the array of the four players
 *   @param trump: the color of the trump

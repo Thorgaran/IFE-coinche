@@ -3,8 +3,6 @@
 #include <time.h>
 #include "core.h"
 #include "play.h"
-#include "cardUtils.h"
-#include "userIO.h"
 
 int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function

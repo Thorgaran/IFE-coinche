@@ -188,6 +188,27 @@ void displayPlayerName(Player player, Bool underline) {
     printf("\033[u"); //Restore cursor position
 }
 
+void updateRoundNbDisplay(int roundNb) {
+    printf("\033[s\033[4;31H  \033[2D%d\033[u", roundNb);
+    //Save cursor position, move it to the round number, clear it, move back to the round number, display the new one, restore cursor position
+}
+
+void updateTrickNbDisplay(int trickNb) {
+    printf("\033[s"); //Save cursor position
+    switch (trickNb) {
+        case 0:                             //If the bidding phase is starting,
+            printf("\033[5;24H Bidding ");  //go to the second line of the round display and write " Bidding "
+            break;
+        case 1:                             //If this is the first trick of the round,
+            printf("\033[5;24HTrick 1/8");  //go to the second line of the round display and replace " Bidding " with this
+            break;
+        default:
+            printf("\033[5;30H%d", trickNb); //Else, go to the trick number display and update the value
+            break;
+    }
+    printf("\033[u"); //Restore cursor position
+}
+
 void displayTrick(Player* players, Color trump, Contract contract) {
     printf("Trick 1/8\nTrump : %d", trump);
     switch (contract.type) {
