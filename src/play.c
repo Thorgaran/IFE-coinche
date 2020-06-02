@@ -31,6 +31,7 @@ Contract bidUntilContract(Player players[], Position startingPlayer) {
         cardsDistribution(players);
         everyonePassed = bidAttempt(players, startingPlayer, &contract); //Do a bid attempt
     } while (everyonePassed == TRUE); //As long as no contract is made, repeat the loop
+    updateContractDisplay(players[contract.issuer].name, contract);
     return contract;
 }
 
@@ -100,6 +101,12 @@ int playGame(Player players[]) {
     Contract contract;
     Position startingPlayer = rand() % 4;
     int nbOfRounds = 0;
+    if (players[SOUTH].cardAI == CARD_USER) { //Display stuff only if the game has a playing user
+        displayTable();
+        for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
+            displayPlayerName(players[pos], FALSE);         //display their name
+        }
+    }
     do {
         startingPlayer = (startingPlayer + 1) % 4;
         for (Position pos = SOUTH; pos <= EAST; pos++) {        //For each player,
@@ -108,8 +115,8 @@ int playGame(Player players[]) {
         }
         contract = bidUntilContract(players, startingPlayer);   //Do bidding until a contract is made
         if (players[SOUTH].cardAI == CARD_USER) {
-            displayTrick(players, contract.trump, contract);
             getchar();
+            printf("\033[1A;");
         }
         playRound(players, startingPlayer, contract.trump);     //Play an 8-tricks round
         awardTeamPoints(players, contract);                     //Award team points depending on whether or not the contract was fulfilled

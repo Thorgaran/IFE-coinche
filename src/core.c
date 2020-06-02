@@ -7,7 +7,7 @@ const int CARD_POINTS_TABLE[4][8] = { //Array used to determine the point value 
 };
 
 const char* VALUE_STR_TABLE[9] = { //Array used to convert between valur types and their string representations. Read only
-    " ",    //NULL_VALUE
+    "",     //NULL_VALUE
     "7 ",   //SEVEN
     "8 ",   //EIGHT
     "9 ",   //NINE
@@ -19,7 +19,7 @@ const char* VALUE_STR_TABLE[9] = { //Array used to convert between valur types a
 };
 
 const char* COLOR_STR_TABLE[7] = { //Array used to convert between color types and their string representations. Read only
-    " ",        //NULL_COLOR
+    "",         //NULL_COLOR
     "♠",        //SPADE
     "♥",        //HEART
     "♦",        //DIAMOND

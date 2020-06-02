@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "userIO.h"
+
+#define UNDERLINE_SEQUENCE_LENGTH 9
 
 Card askUserCard(Card cardArray[], int nbOfCards) {
     Card chosenCard = {.color = SPADE, .value = SEVEN};
@@ -12,29 +15,104 @@ Bool askUserContract(Card cardArray[], int nbOfCards, Contract *contract) {
     return hasPassed;
 }
 
-void displayCard(Card card) {
+char* cropStr(char string[], int maxLength) {
+    char* croppedString = (char*) malloc((maxLength + 3) * sizeof(char)); //Create the return pointer and allocate enough memory
+    strncpy(croppedString, string, maxLength);  //Copy the input string into the output string (limited to maxLength)
+    if (strlen(string) > maxLength) {           //If the input string is too long,
+        croppedString[maxLength - 1] = '\0';    //put the terminating \0 in croppedString,
+        strcat(croppedString, "…");             //and put dots at the end
+    }
+    return croppedString;
+}
+
+char* formatStr(char string[], int maxLength, TextPosition textPosition, Bool underline) {
+    char* formattedString; //Create the return pointer
+    char* croppedString = cropStr(string, maxLength); //Crop the input string if it's too long
+    int additionalStrLength = 0, nbOfStartSpaces, nbOfEndSpaces, croppedStringLength = strlen(croppedString);
+    if (croppedStringLength  < maxLength) { //Align the string if it's shorter than the maximum length
+        formattedString = (char*) malloc((maxLength + 3 + UNDERLINE_SEQUENCE_LENGTH) * sizeof(char)); //Allocate memory for the return pointer
+        switch (textPosition) { //Select the right number of spaces at the start and at the end depending on textPosition
+            case TEXT_LEFT:
+                nbOfStartSpaces = 0;
+                nbOfEndSpaces = maxLength - croppedStringLength;
+                break;
+            case TEXT_CENTER:
+                nbOfStartSpaces = (maxLength - croppedStringLength)/2;
+                nbOfEndSpaces = (maxLength + croppedStringLength)/2;
+                break;
+            case TEXT_RIGHT:
+                nbOfStartSpaces = maxLength - croppedStringLength;
+                nbOfEndSpaces = maxLength;
+                break;
+        }
+        for(int i = 0; i < nbOfStartSpaces; i++) { //Put the right number of spaces at the start of formattedString
+            formattedString[i] = ' ';
+        }
+        formattedString[nbOfStartSpaces] = '\0';    //Prepare formattedString for concatenation
+        if (underline == TRUE) {                    //If underline mode,
+            strcat(formattedString, "\033[4m");     //append opening underline sequence
+            strcat(formattedString, croppedString); //Paste croppedString at the end of formattedString
+            strcat(formattedString, "\033[24m");    //Append closing underline sequence
+            additionalStrLength = UNDERLINE_SEQUENCE_LENGTH;
+        }
+        else {                                      //If not underline mode,
+            strcat(formattedString, croppedString); //paste croppedString at the end of formattedString
+        }
+        free(croppedString); //CroppedString is not needed anymore, free it
+        for(int i = nbOfEndSpaces + additionalStrLength; i < maxLength + additionalStrLength; i++) { //Put the right number of spaces at the end of formattedString
+            formattedString[i] = ' ';
+        }
+        formattedString[maxLength + additionalStrLength] = '\0'; //Put the terminating \0
+    }
+    else {
+        if (underline == TRUE) {                    //If underline mode,
+            formattedString = (char*) malloc((maxLength + 3 + UNDERLINE_SEQUENCE_LENGTH) * sizeof(char)); //Allocate memory for the return pointer
+            formattedString[0] = '\0';              //prepare formattedString for concatenation
+            strcat(formattedString, "\033[4m");     //Append opening underline sequence
+            strcat(formattedString, croppedString); //Paste croppedString at the end of formattedString
+            strcat(formattedString, "\033[24m");    //Append closing underline sequence
+            free(croppedString); //CroppedString is not needed anymore, free it
+        }
+        else {                                  //If not underline mode,
+            formattedString = croppedString;    //formattedString is set to be the cropped string pointer
+        }
+    }
+    return formattedString;
+}
+
+void displayEmptyCard(void) {
     printf("╭───╮\033[5D\033[1B");
     printf("│   │\033[5D\033[1B");
     printf("│   │\033[5D\033[1B");
     printf("╰───╯\033[5D\033[3A");
-    changeCardDisplay(card); //Fill in the card
+}
+
+void deleteCardDisplay(void) {
+    printf("     \033[5D\033[1B");
+    printf("     \033[5D\033[1B");
+    printf("     \033[5D\033[1B");
+    printf("     \033[5D\033[3A");
+}
+
+void clearCardDisplay(void) {
+    printf("\033[1C\033[1B  \033[1B \033[4D\033[2A"); //Clear the card content
 }
 
 void changeCardDisplay(Card card) {
     printf("\033[1C\033[1B%s\033[1B%s\033[4D\033[2A", VALUE_STR_TABLE[card.value], COLOR_STR_TABLE[card.color]);
     //Change the value, then the color, then return the cursor to the top-left of the card
 }
-void blankTable(void){
+void displayTable(){
     printf("╔═══════════════╤═════════════════════╤═══════════════╗\n");
     printf("║Contract:      │                     │  Last trick:  ║\n");
-    printf("║               │     ╭┈┈┈┈┈┈┈┈┈╮     │               ║\n");
-    printf("║               │     ┊ Round   ┊     │               ║\n");
-    printf("║               │     ┊Trick  /8┊     │               ║\n");
-    printf("╟───────┬───────┤     ╰┈┈┈┈┈┈┈┈┈╯     │               ║\n");
-    printf("║Your   │Rival  │                     │               ║\n");
-    printf("║team   │team   │                     │               ║\n");
-    printf("║score: │score: │                     │               ║\n");
-    printf("║   /700│   /700│                     │               ║\n");
+    printf("║               │     ╭┈┈┈┈┈┈┈┈┈╮     │     ╭───╮     ║\n");
+    printf("║               │     ┊ Round   ┊     │     │   │     ║\n");
+    printf("║               │     ┊Trick  /8┊     │╭───╮│   │╭───╮║\n");
+    printf("╟───────┬───────┤     ╰┈┈┈┈┈┈┈┈┈╯     ││   │╰───╯│   │║\n");
+    printf("║Your   │Rival  │                     ││   │╭───╮│   │║\n");
+    printf("║team   │team   │                     │╰───╯│   │╰───╯║\n");
+    printf("║score: │score: │                     │     │   │     ║\n");
+    printf("║  0/700│  0/700│                     │     ╰───╯     ║\n");
     printf("╟───────┴───────╯                     ╰───────────────╢\n");
     printf("║                                                     ║\n");
     printf("║                                                     ║\n");
@@ -46,12 +124,68 @@ void blankTable(void){
     printf("║                                                     ║\n");
     printf("║                                                     ║\n");
     printf("║     1     2     3     4     5     6     7     8     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
+    printf("║   ╭───╮ ╭───╮ ╭───╮ ╭───╮ ╭───╮ ╭───╮ ╭───╮ ╭───╮   ║\n");
+    printf("║   │   │ │   │ │   │ │   │ │   │ │   │ │   │ │   │   ║\n");
+    printf("║   │   │ │   │ │   │ │   │ │   │ │   │ │   │ │   │   ║\n");
+    printf("║   ╰───╯ ╰───╯ ╰───╯ ╰───╯ ╰───╯ ╰───╯ ╰───╯ ╰───╯   ║\n");
     printf("║                      Your hand                      ║\n");
     printf("╚═════════════════════════════════════════════════════╝\n");
+}
+
+void clearContractDisplay(void) {
+    printf("\033[s\033[3;2H"); //Save cursor position and move cursor to the contract corner
+    for (int i = 0; i < 3; i++) {
+        printf("               \033[1E\033[1C"); //Clear line (inside the contract box)
+    }
+    printf("\033[u"); //Restore cursor position
+}
+
+void updateContractDisplay(char playerName[], Contract contract) {
+    char* shortName = cropStr(playerName, 15); //Get the player name cropped to 15 characters if needed
+    clearContractDisplay(); //Clear contract display to avoid having leftover characters
+    printf("\033[s\033[3;2H"); //Save cursor position and move cursor to the contract corner
+    printf(shortName); //Print the contract issuer's name
+    free(shortName); //Free the short name;
+    printf("\033[1E\033[1C"); //Move cursor to the value and color field
+    if (contract.type == POINTS) {      //If the contract is of type POINTS,
+        printf("%d ", contract.points); //print the contract value
+    }
+    else {
+        printf("%s ", CONTRACTTYPE_STR_TABLE[contract.type]); //Else, print the contract type string
+    }
+    printf("%s", COLOR_STR_TABLE[contract.trump]); //Then, print the color character
+    printf("\033[1E\033[1C"); //Move cursor to the coinche field
+    printf("%s", COINCHE_STR_TABLE[contract.coinche]); //Print the coinche state
+    printf("\033[u"); //Restore cursor position
+}
+
+void displayPlayerName(Player player, Bool underline) {
+    char* formattedPlayerName;
+    printf("\033[s"); //Save cursor position
+    switch (player.pos) { //More efficient than using arrays, given how much varies between the different player positions
+        case SOUTH:
+            printf("\033[18;2H"); //Move cursor to the player's display name location
+            formattedPlayerName = formatStr(player.name, 53, TEXT_CENTER, underline); //Get the formatted name
+            printf(formattedPlayerName); //Print the formatted name
+            break;
+        case WEST:
+            printf("\033[13;2H"); //Move cursor to the player's display name location
+            formattedPlayerName = formatStr(player.name, 17, TEXT_RIGHT, underline); //Get the formatted name
+            printf(formattedPlayerName); //Print the formatted name
+            break;
+        case NORTH:
+            printf("\033[9;18H"); //Move cursor to the player's display name location
+            formattedPlayerName = formatStr(player.name, 21, TEXT_CENTER, underline); //Get the formatted name
+            printf(formattedPlayerName); //Print the formatted name
+            break;
+        case EAST:
+            printf("\033[13;38H"); //Move cursor to the player's display name location
+            formattedPlayerName = formatStr(player.name, 17, TEXT_LEFT, underline); //Get the formatted name
+            printf(formattedPlayerName); //Print the formatted name
+            break;
+    }
+    free(formattedPlayerName); //Free the pointer after its use
+    printf("\033[u"); //Restore cursor position
 }
 
 void displayTrick(Player* players, Color trump, Contract contract) {

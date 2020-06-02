@@ -11,8 +11,12 @@ int main (int argc, char* argv[]) {
 
     /*float averageGameLength;
     int nbOfGamesWon[] = {0, 0};*/
-
     Card playersCards[4][8];
+    char playerNames[4][MAX_PLAYER_NAME_LENGTH] = 
+        {"Player",
+         "AI-West",
+         "AI-North",
+         "AI-East"};
     Player players[4];
     for (Position pos = SOUTH; pos <= EAST; pos++) {
         if ((pos == SOUTH) || (pos == NORTH)) {
@@ -25,22 +29,12 @@ int main (int argc, char* argv[]) {
         }
         players[pos].pos = pos;
         players[pos].cards = playersCards[pos];
+        players[pos].name = playerNames[pos];
     }
     players[SOUTH].cardAI = CARD_USER;
     players[SOUTH].contractAI = CONTRACT_USER;
-    for (Color color = SPADE; color <= CLUB; color++) {
-        for (Value value = SEVEN; value <= ACE; value++) {
-            players[0].cards[0].color = color;
-            players[0].cards[0].value = value;
-            displayCard(players[0].cards[0]);
-            getchar();
-            printf("\033[1A");
-        }
-    }
     
-    
-    printf("\033[4B");
-    //playGame(players);
+    playGame(players);
     /*averageGameLength = playAIGames(players, 1000, nbOfGamesWon);
 
     printf("Team SOUTH - NORTH won %d games!\n", nbOfGamesWon[0]);
