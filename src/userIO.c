@@ -7,8 +7,8 @@
 #define UNDERLINE_SEQUENCE_LENGTH 9
 
 Card askUserCard(Card cardArray[], int nbOfCards) {
+    displayNumbersAbovePlayerHand(nbOfCards);
     Card chosenCard = getAICardFirstAvailable(cardArray, nbOfCards);
-    displayPlayerHand(cardArray, nbOfCards, TRUE);
     return chosenCard;
 }
 
@@ -39,7 +39,7 @@ char* formatStr(char string[], int maxLength, TextPosition textPosition, Bool un
         switch (textPosition) { //Select the right number of spaces at the start and at the end depending on textPosition
             case TEXT_LEFT:
                 nbOfStartSpaces = 0;
-                nbOfEndSpaces = maxLength - croppedStringLength;
+                nbOfEndSpaces = croppedStringLength;
                 break;
             case TEXT_CENTER:
                 nbOfStartSpaces = (maxLength - croppedStringLength)/2;
@@ -129,11 +129,11 @@ void displayTable(void) {
     printf("║                                                     ║\n");
     printf("║                                                     ║\n");
     printf("║                                                     ║\n");
-    printf("║     1     2     3     4     5     6     7     8     ║\n");
-    printf("║   ╭───╮ ╭───╮ ╭───╮ ╭───╮ ╭───╮ ╭───╮ ╭───╮ ╭───╮   ║\n");
-    printf("║   │   │ │   │ │   │ │   │ │   │ │   │ │   │ │   │   ║\n");
-    printf("║   │   │ │   │ │   │ │   │ │   │ │   │ │   │ │   │   ║\n");
-    printf("║   ╰───╯ ╰───╯ ╰───╯ ╰───╯ ╰───╯ ╰───╯ ╰───╯ ╰───╯   ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
     printf("║                      Your hand                      ║\n");
     printf("╚═════════════════════════════════════════════════════╝\n");
 }
@@ -292,16 +292,22 @@ void deleteDisplayedTrickCards(void) {
     printf("\033[u"); //Restore cursor position
 }
 
-void displayPlayerHand(Card cardsInHand[], int nbOfCardsInHand, Bool displayNumbersAbove) {
+void displayNumbersAbovePlayerHand(int nbOfCardsInHand) {
+    printf("\033[s\033[21;%dH", 7 + 3 * (8 - nbOfCardsInHand));
+    //Save cursor position, and move cursor to the leftmost position of the player's hand on the numbers line, depending on the number of cards to display
+    for (int i = 1; i <= nbOfCardsInHand; i++) {    //For each card in hand,
+        printf("%d\033[5C", i);                     //display a number above it
+    }
+    printf("\033[u"); //Restore cursor position
+}
+
+void displayPlayerHand(Card cardsInHand[], int nbOfCardsInHand) {
     deletePlayerHand(); //Needed to avoid having leftover characters from the previous hand
     printf("\033[s\033[22;%dH", 5 + 3 * (8 - nbOfCardsInHand));
     //Save cursor position, and move cursor to the leftmost position of the player's hand, depending on the number of cards to display
     for (int i = 1; i <= nbOfCardsInHand; i++) {
         displayEmptyCard();
         changeCardDisplay(cardsInHand[i-1]);
-        if (displayNumbersAbove) {                          //If the function is called in numbers display mode,
-            printf("\033[2C\033[1A%d\033[1B\033[3D", i);    //move cursor above the card, display the number, move cursor back to the card
-        }
         printf("\033[6C"); //Move cursor over to the next card
     }
     printf("\033[u"); //Restore cursor position
@@ -315,38 +321,34 @@ void deletePlayerHand(void) {
     printf("\033[u"); //Restore cursor position
 }
 
-void displayTrick(Player* players, Color trump, Contract contract) {
-    printf("Trick 1/8\nTrump : %d", trump);
-    switch (contract.type) {
-        case POINTS:
-            printf("\n%d points %d contract in %d made by %d\n\n", contract.points, contract.coinche, contract.trump, contract.issuer);
+void updatePlayerTrickPoints(int points, Position playerPos) {
+    char* formattedTrickPoints;
+    char playerTrickPointsStr[4];
+    printf("\033[s"); //Save cursor position
+    sprintf(playerTrickPointsStr, "%d", points); //Store the player's trick points in a string
+    switch (playerPos) {
+        case SOUTH:
+            formattedTrickPoints = formatStr(playerTrickPointsStr, 3, TEXT_CENTER, FALSE); //Format the trick points string with centered text
+            printf("\033[19;27H%s", formattedTrickPoints); //Move cursor to the SOUTH player's trick points and print the points
             break;
-        default:
-            printf("\n%d %d contract in %d made by %d\n\n", contract.type, contract.coinche, contract.trump, contract.issuer);
+        case WEST:
+            formattedTrickPoints = formatStr(playerTrickPointsStr, 3, TEXT_RIGHT, FALSE); //Format the trick points string with right text
+            printf("\033[14;16H%s", formattedTrickPoints); //Move cursor to the WEST player's trick points and print the points
+            break;
+        case NORTH:
+            formattedTrickPoints = formatStr(playerTrickPointsStr, 3, TEXT_CENTER, FALSE); //Format the trick points string with centered text
+            printf("\033[8;27H%s", formattedTrickPoints); //Move cursor to the NORTH player's trick points and print the points
+            break;
+        case EAST:
+            formattedTrickPoints = formatStr(playerTrickPointsStr, 3, TEXT_LEFT, FALSE); //Format the trick points string with left text
+            printf("\033[14;38H%s", formattedTrickPoints); //Move cursor to the EAST player's trick points and print the points
             break;
     }
-    printf("\t\t\t\tNorth\n\n\t\t\t\t \nWest\t \t\t\t\t \tEast\n\t\t\t\t \n\t\t\t   %s", players[SOUTH].name);
-    printf("\n\nYour hand : ");
-    for (int cardNb = 0; cardNb < 8; cardNb++) {                                                 // At the beginning of the round, the user's hand has 8 cards
-        printf("%d%d ", players[SOUTH].cards[cardNb].value, players[SOUTH].cards[cardNb].color);
-    }
+    free(formattedTrickPoints); //Free formattedTrickPoints as it's not needed anymore
+    printf("\033[u"); //Restore cursor position
 }
 
-void updateTrickDisplay(Position playerPosition, Card playedCard, Card* playerHand, int nbOfCardsInHand) {
-    switch (playerPosition)
-    {
-        case NORTH: printf("\e[5;18H");
-            break;
-        case SOUTH: printf("\e[10;18H");
-            break;
-        case WEST: printf("\e[8;10H");
-            break;
-        case EAST: printf("\e[8;24H");
-            break;
-    }
-    printf("%d%d",playedCard.value,playedCard.color);
-    printf("\e[13;13H");
-    for (int cardNb = 0; cardNb < nbOfCardsInHand; cardNb++){
-    printf("%d%d ",playerHand[cardNb].value,playerHand[cardNb].color);
-    }
+void clearDisplayedTrickPoints(void) {
+    printf("\033[s\033[19;27H   \033[14D\033[5A   \033[6A\033[8C   \033[8C\033[6B   \033[u");
+    //Save cursor position, move to each player's displayed trick points in clockwise order starting with the SOUTH player then clear it, restore cursor position
 }

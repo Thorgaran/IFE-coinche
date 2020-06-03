@@ -94,30 +94,29 @@ void displayTrickCard(Card playedCard, Position currentPlayer);
 */
 void deleteDisplayedTrickCards(void);
 
-/* Displays the player's hand, centered, and eventually with sequential numbers above the cards
+/* Displays a line of sequencial numbers above the player's hand cards
+*   @param nbOfCardsInHand: the number of cards in the SOUTH player's hand
+*/
+void displayNumbersAbovePlayerHand(int nbOfCardsInHand);
+
+/* Displays the player's hand, centered
 *   @param cardsInHand[]: array containing the player's cards
 *   @param nbOfCardsInHand: the number of cards in cardsInHand
-*   @param displayNumbersAbove: TRUE if sequencial numbers should be displayed above the cards, FALSE otherwise
 */
-void displayPlayerHand(Card cardsInHand[], int nbOfCardsInHand, Bool displayNumbersAbove);
+void displayPlayerHand(Card cardsInHand[], int nbOfCardsInHand);
 
-/* deletes the content of the five lines containing the displayed player hand
+/* Deletes the content of the five lines (including the numbers line) containing the displayed player hand
 */
 void deletePlayerHand(void);
 
-/* Displays the trick that is being played. This display contains the color of the trump, the number of the trick, the game table and the user's hand
-*   @param players: the array of the four players
-*   @param trump: the color of the trump
-*   @param contract: the contract of the round
+/* Displays the current trick points of a player near its name 
+*   @param points: the player's trick points
+*   @param playerPos: the position the player
 */
-void displayTrick(Player* players, Color trump, Contract contract);
+void updatePlayerTrickPoints(int points, Position playerPos);
 
-/* Changes the trick display by updating the hand of the user and the cards played on the table
-*   @param playerPosition: the position of the player whp just played
-*   @param playerCard: the card played by the player concerned
-*   @param playerHand: the user's hand
-*   @param nbOfCardsInHand: how many cards left in the user's hand
+/* Clears all 4 displayed trick points
 */
-void updateTrickDisplay(Position playerPosition, Card playedCard, Card* playerHand, int nbOfCardsInHand);
+void clearDisplayedTrickPoints(void);
 
 #endif // USERIO_H
