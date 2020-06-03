@@ -105,7 +105,7 @@ void changeCardDisplay(Card card) {
     printf("\033[1C\033[1B%s\033[1B%s\033[4D\033[2A", VALUE_STR_TABLE[card.value], COLOR_STR_TABLE[card.color]);
     //Change the value, then the color, then return the cursor to the top-left of the card
 }
-void displayTable(){
+void displayTable(void) {
     printf("╔═══════════════╤═════════════════════╤═══════════════╗\n");
     printf("║Contract:      │                     │  Last trick:  ║\n");
     printf("║               │     ╭┈┈┈┈┈┈┈┈┈╮     │     ╭───╮     ║\n");
@@ -238,7 +238,7 @@ void updateLastTrickDisplay(Card lastTrickCards[], Position startingPlayer) {
     printf("\033[u"); //Restore cursor position
 }
 
-void clearLastTrickDisplay() {
+void clearLastTrickDisplay(void) {
     printf("\033[s\033[7;45H"); //Save cursor position, and move cursor to the SOUTH card in the last trick display
     clearCardDisplay();
     printf("\033[5D\033[2A"); //Move cursor to the WEST card
@@ -247,6 +247,45 @@ void clearLastTrickDisplay() {
     clearCardDisplay();
     printf("\033[2B\033[5C"); //Move cursor to the EAST card
     clearCardDisplay();
+    printf("\033[u"); //Restore cursor position
+}
+
+void displayTrickCard(Card playedCard, Position currentPlayer) {
+    printf("\033[s"); //Save cursor position
+    switch (currentPlayer) {
+        case SOUTH:
+            printf("\033[14;26H"); //Move cursor to the SOUTH trick card location
+            displayEmptyCard();
+            changeCardDisplay(playedCard);
+            break;
+        case WEST:
+            printf("\033[12;20H"); //Move cursor to the WEST trick card location
+            displayEmptyCard();
+            changeCardDisplay(playedCard);
+            break;
+        case NORTH:
+            printf("\033[10;26H"); //Move cursor to the NORTH trick card location
+            displayEmptyCard();
+            changeCardDisplay(playedCard);
+            break;
+        case EAST:
+            printf("\033[12;32H"); //Move cursor to the EAST trick card location
+            displayEmptyCard();
+            changeCardDisplay(playedCard);
+            break;
+    }
+    printf("\033[u"); //Restore cursor position
+}
+
+void deleteDisplayedTrickCards(void) {
+    printf("\033[s\033[14;26H"); //Save cursor position, and move cursor to the SOUTH trick card location
+    deleteCardDisplay();
+    printf("\033[12;20H"); //Move cursor to the WEST trick card location
+    deleteCardDisplay();
+    printf("\033[10;26H"); //Move cursor to the NORTH trick card location
+    deleteCardDisplay();
+    printf("\033[12;32H"); //Move cursor to the EAST trick card location
+    deleteCardDisplay();
     printf("\033[u"); //Restore cursor position
 }
 

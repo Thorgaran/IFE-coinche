@@ -41,48 +41,58 @@ void changeCardDisplay(Card card);
 
 /* Displays an empty play table
 */
-void displayTable();
+void displayTable(void);
 
-/* Clear contract display. The cursor is left untouched
+/* Clears contract display. The cursor is left untouched
 */
 void clearContractDisplay(void);
 
-/* Fill in the contract table corner with a given contract
+/* Fills in the contract table corner with a given contract
 *   @param playerName: the contract issuer's name
 *   @param contract: the contract to display
 */
 void updateContractDisplay(char playerName[], Contract contract);
 
-/* Display a centered, cropped player name at the right place on the table, optionnally underlined
+/* Displays a centered, cropped player name at the right place on the table, optionnally underlined
 *   @param player: the player whose name should be displayed
 *   @param underline: TRUE if the name sould be underlined, FALSE otherwise
 */
 void displayPlayerName(Player player, Bool underline);
 
-/* Replace the old displayed round value with a new one
+/* Replaces the old displayed round value with a new one
 *   @param roundNb: the current round number. This shouldn't be a three digits number
 */
 void updateRoundNbDisplay(int roundNb);
 
-/* Update the trick number display
+/* Updates the trick number display
 *   @param trickNb: the trick number from 1 to 8. 0 is a valid value meaning that the bidding phase is starting
 */
 void updateTrickNbDisplay(int trickNb);
 
-/* Update the team score display
+/* Updates the team score display
 *   @param players[]: array of 4 players
 */
 void updateTeamScore(Player players[]);
 
-/* Update the last trick display with new cards
+/* Updates the last trick display with new cards
 *   @param lastTrickCards[]: 4-card array containing the previous trick cards
 *   @param startingPlayer: position of the starting player of the previous trick
 */
 void updateLastTrickDisplay(Card lastTrickCards[], Position startingPlayer);
 
-/* Clear the 4 cards in the last trick display
+/* Clears the 4 cards in the last trick display
 */
-void clearLastTrickDisplay();
+void clearLastTrickDisplay(void);
+
+/* Displays a trick card in the middle of the table
+*   @param playedCard: the card to display
+*   @param currentPlayer: position of the player who just played the last card
+*/
+void displayTrickCard(Card playedCard, Position currentPlayer);
+
+/* Deletes all 4 currently displayed trick cards
+*/
+void deleteDisplayedTrickCards(void);
 
 /* Displays the trick that is being played. This display contains the color of the trump, the number of the trick, the game table and the user's hand
 *   @param players: the array of the four players

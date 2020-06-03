@@ -64,7 +64,7 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
             roundColor = trickCards[0].color;   //change the round color to its actual value
         }
         if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
-            //Add line here to display the played card
+            displayTrickCard(trickCards[i], (i+startingPlayer)%4);
             getchar();
             printf("\033[1A");
             displayPlayerName(players[(i+startingPlayer)%4], FALSE); //Remove underline from the active player
@@ -75,6 +75,7 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
     players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump); //Increase the score of the trick winner
     if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
         updateLastTrickDisplay(trickCards, startingPlayer);
+        deleteDisplayedTrickCards();
     }
     return trickWinner;
 }
