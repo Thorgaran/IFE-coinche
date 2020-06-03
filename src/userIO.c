@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "userIO.h"
+#include "ai.h" //TO DELETE
 
 #define UNDERLINE_SEQUENCE_LENGTH 9
 
 Card askUserCard(Card cardArray[], int nbOfCards) {
-    Card chosenCard = {.color = SPADE, .value = SEVEN};
+    Card chosenCard = getAICardFirstAvailable(cardArray, nbOfCards);
+    displayPlayerHand(cardArray, nbOfCards, TRUE);
     return chosenCard;
 }
 
@@ -105,12 +107,13 @@ void changeCardDisplay(Card card) {
     printf("\033[1C\033[1B%s\033[1B%s\033[4D\033[2A", VALUE_STR_TABLE[card.value], COLOR_STR_TABLE[card.color]);
     //Change the value, then the color, then return the cursor to the top-left of the card
 }
+
 void displayTable(void) {
     printf("╔═══════════════╤═════════════════════╤═══════════════╗\n");
     printf("║Contract:      │                     │  Last trick:  ║\n");
     printf("║               │     ╭┈┈┈┈┈┈┈┈┈╮     │     ╭───╮     ║\n");
     printf("║               │     ┊ Round   ┊     │     │   │     ║\n");
-    printf("║               │     ┊Trick  /8┊     │╭───╮│   │╭───╮║\n");
+    printf("║               │     ┊         ┊     │╭───╮│   │╭───╮║\n");
     printf("╟───────┬───────┤     ╰┈┈┈┈┈┈┈┈┈╯     ││   │╰───╯│   │║\n");
     printf("║Your   │Rival  │                     ││   │╭───╮│   │║\n");
     printf("║team   │team   │                     │╰───╯│   │╰───╯║\n");
@@ -286,6 +289,29 @@ void deleteDisplayedTrickCards(void) {
     deleteCardDisplay();
     printf("\033[12;32H"); //Move cursor to the EAST trick card location
     deleteCardDisplay();
+    printf("\033[u"); //Restore cursor position
+}
+
+void displayPlayerHand(Card cardsInHand[], int nbOfCardsInHand, Bool displayNumbersAbove) {
+    deletePlayerHand(); //Needed to avoid having leftover characters from the previous hand
+    printf("\033[s\033[22;%dH", 5 + 3 * (8 - nbOfCardsInHand));
+    //Save cursor position, and move cursor to the leftmost position of the player's hand, depending on the number of cards to display
+    for (int i = 1; i <= nbOfCardsInHand; i++) {
+        displayEmptyCard();
+        changeCardDisplay(cardsInHand[i-1]);
+        if (displayNumbersAbove) {                          //If the function is called in numbers display mode,
+            printf("\033[2C\033[1A%d\033[1B\033[3D", i);    //move cursor above the card, display the number, move cursor back to the card
+        }
+        printf("\033[6C"); //Move cursor over to the next card
+    }
+    printf("\033[u"); //Restore cursor position
+}
+
+void deletePlayerHand(void) {
+    printf("\033[s\033[21;5H"); //Save cursor position, and move cursor to the leftmost position of the player's hand (on the line with the numbers)
+    for (int i = 0; i < 5; i++) { //Five iterations because the line with the numbers must be deleted as well
+        printf("                                               \033[47D\033[1B"); //Clear the line and move to beginning of the next line
+    }
     printf("\033[u"); //Restore cursor position
 }
 

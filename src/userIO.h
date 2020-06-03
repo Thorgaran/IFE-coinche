@@ -94,6 +94,17 @@ void displayTrickCard(Card playedCard, Position currentPlayer);
 */
 void deleteDisplayedTrickCards(void);
 
+/* Displays the player's hand, centered, and eventually with sequential numbers above the cards
+*   @param cardsInHand[]: array containing the player's cards
+*   @param nbOfCardsInHand: the number of cards in cardsInHand
+*   @param displayNumbersAbove: TRUE if sequencial numbers should be displayed above the cards, FALSE otherwise
+*/
+void displayPlayerHand(Card cardsInHand[], int nbOfCardsInHand, Bool displayNumbersAbove);
+
+/* deletes the content of the five lines containing the displayed player hand
+*/
+void deletePlayerHand(void);
+
 /* Displays the trick that is being played. This display contains the color of the trump, the number of the trick, the game table and the user's hand
 *   @param players: the array of the four players
 *   @param trump: the color of the trump

@@ -44,6 +44,9 @@ Contract bidUntilContract(Player players[], Position startingPlayer) {
     Bool everyonePassed;
     do {
         cardsDistribution(players);
+        if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            displayPlayerHand(players[SOUTH].cards, 8, FALSE); //Display the hand without numbers above it
+        }
         everyonePassed = bidAttempt(players, startingPlayer, &contract); //Do a bid attempt
     } while (everyonePassed == TRUE); //As long as no contract is made, repeat the loop
     updateContractDisplay(players[contract.issuer].name, contract);
