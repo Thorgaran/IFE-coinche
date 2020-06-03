@@ -73,6 +73,9 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
     trickWinner = (getStrongestCard(trickCards, 4, trump, roundColor) + startingPlayer) % 4;
     //getStrongestCard returns a relative value while trickWinner an absolute position, hence the conversion with startingPlayer and a modulo
     players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump); //Increase the score of the trick winner
+    if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+        updateLastTrickDisplay(trickCards, startingPlayer);
+    }
     return trickWinner;
 }
 
@@ -153,6 +156,7 @@ int playGame(Player players[]) {
             updateRoundNbDisplay(currentRound);
             updateTrickNbDisplay(0); //Display " Bidding "
             clearContractDisplay();
+            clearLastTrickDisplay();
             getchar();
             printf("\033[1A");
         }

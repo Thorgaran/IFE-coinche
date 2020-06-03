@@ -74,6 +74,16 @@ void updateTrickNbDisplay(int trickNb);
 */
 void updateTeamScore(Player players[]);
 
+/* Update the last trick display with new cards
+*   @param lastTrickCards[]: 4-card array containing the previous trick cards
+*   @param startingPlayer: position of the starting player of the previous trick
+*/
+void updateLastTrickDisplay(Card lastTrickCards[], Position startingPlayer);
+
+/* Clear the 4 cards in the last trick display
+*/
+void clearLastTrickDisplay();
+
 /* Displays the trick that is being played. This display contains the color of the trump, the number of the trick, the game table and the user's hand
 *   @param players: the array of the four players
 *   @param trump: the color of the trump

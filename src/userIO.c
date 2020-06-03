@@ -226,6 +226,30 @@ void updateTeamScore(Player players[]) {
     printf("\033[u");                                               //Restore cursor position
 }
 
+void updateLastTrickDisplay(Card lastTrickCards[], Position startingPlayer) {
+    printf("\033[s\033[7;45H"); //Save cursor position, and move cursor to the SOUTH card in the last trick display
+    changeCardDisplay(lastTrickCards[(4 - startingPlayer)%4]);
+    printf("\033[5D\033[2A"); //Move cursor to the WEST card
+    changeCardDisplay(lastTrickCards[(5 - startingPlayer)%4]);
+    printf("\033[5C\033[2A"); //Move cursor to the NORTH card
+    changeCardDisplay(lastTrickCards[(6 - startingPlayer)%4]);
+    printf("\033[2B\033[5C"); //Move cursor to the EAST card
+    changeCardDisplay(lastTrickCards[3 - startingPlayer]);
+    printf("\033[u"); //Restore cursor position
+}
+
+void clearLastTrickDisplay() {
+    printf("\033[s\033[7;45H"); //Save cursor position, and move cursor to the SOUTH card in the last trick display
+    clearCardDisplay();
+    printf("\033[5D\033[2A"); //Move cursor to the WEST card
+    clearCardDisplay();
+    printf("\033[5C\033[2A"); //Move cursor to the NORTH card
+    clearCardDisplay();
+    printf("\033[2B\033[5C"); //Move cursor to the EAST card
+    clearCardDisplay();
+    printf("\033[u"); //Restore cursor position
+}
+
 void displayTrick(Player* players, Color trump, Contract contract) {
     printf("Trick 1/8\nTrump : %d", trump);
     switch (contract.type) {
