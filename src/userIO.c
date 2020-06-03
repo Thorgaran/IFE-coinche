@@ -22,6 +22,9 @@ char* cropStr(char string[], int maxLength) {
         croppedString[maxLength - 1] = '\0';    //put the terminating \0 in croppedString,
         strcat(croppedString, "…");             //and put dots at the end
     }
+    else if (strlen(string) == maxLength) {
+        croppedString[maxLength] = '\0'; //Put the terminating \0 in croppedString
+    }
     return croppedString;
 }
 
@@ -112,7 +115,7 @@ void displayTable(){
     printf("║Your   │Rival  │                     ││   │╭───╮│   │║\n");
     printf("║team   │team   │                     │╰───╯│   │╰───╯║\n");
     printf("║score: │score: │                     │     │   │     ║\n");
-    printf("║  0/700│  0/700│                     │     ╰───╯     ║\n");
+    printf("║  0/701│  0/701│                     │     ╰───╯     ║\n");
     printf("╟───────┴───────╯                     ╰───────────────╢\n");
     printf("║                                                     ║\n");
     printf("║                                                     ║\n");
@@ -207,6 +210,20 @@ void updateTrickNbDisplay(int trickNb) {
             break;
     }
     printf("\033[u"); //Restore cursor position
+}
+
+void updateTeamScore(Player players[]) {
+    char* formattedScore;
+    char teamScoreStr[5];
+    sprintf(teamScoreStr, "%d", players[SOUTH].teamScore);          //Store the user team's score in a string
+    formattedScore = formatStr(teamScoreStr, 3, TEXT_RIGHT, FALSE); //Format this score string
+    printf("\033[s\033[10;2H%s", formattedScore);                   //Save cursor position, move cursor to the user team's score display, display formatted score
+    free(formattedScore);                                           //Free the user team's formatted score since it's not needed anymore
+    sprintf(teamScoreStr, "%d", players[EAST].teamScore);           //Store the user rival team's score in a string
+    formattedScore = formatStr(teamScoreStr, 3, TEXT_RIGHT, FALSE); //Format this score string
+    printf("\033[5C%s", formattedScore);                            //Move cursor to the user rival team's score display, display formatted score
+    free(formattedScore);                                           //Free the user rival team's formatted score since it's not needed anymore
+    printf("\033[u");                                               //Restore cursor position
 }
 
 void displayTrick(Player* players, Color trump, Contract contract) {

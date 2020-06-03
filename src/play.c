@@ -124,12 +124,18 @@ void awardTeamPoints(Player players[], Contract contract) {
         }
         increaseTeamTotalScore(players, defendant, defendantTeamScore); //Increase the defendant's team total score, and the issuer's team gets nothing
     }
+    if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+        updateTeamScore(players);
+    }
 }
 
 int playGame(Player players[]) {
     Contract contract;
     Position startingPlayer = rand() % 4;
     int currentRound = 0;
+    for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
+        players[pos].teamScore = 0;                     //Set its team score to 0
+    }
     if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
         displayTable();
         for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
@@ -160,16 +166,13 @@ int playGame(Player players[]) {
 float playAIGames(Player players[], int nbOfGames, int nbOfGamesWon[]) {
     long totalNbOfRounds = 0;
     float averageGameLength;
-    for (int game = 0; game < nbOfGames; game++) {          //Play "nbOfGames" games
-        for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
-            players[pos].teamScore = 0;                     //reset its team score
-        }
-        totalNbOfRounds += playGame(players);   //Play a game and increase the total number of rounds
-        if (players[0].teamScore > 700) {       //If the first team won,
-            nbOfGamesWon[0] += 1;               //Increase its number of wins
+    for (int game = 0; game < nbOfGames; game++) {  //Play "nbOfGames" games
+        totalNbOfRounds += playGame(players);       //Play a game and increase the total number of rounds
+        if (players[0].teamScore > 700) {           //If the first team won,
+            nbOfGamesWon[0] += 1;                   //Increase its number of wins
         }
         else {
-            nbOfGamesWon[1] += 1;               //Else, increase the second team's number of wins
+            nbOfGamesWon[1] += 1;                   //Else, increase the second team's number of wins
         }
     }
     averageGameLength = totalNbOfRounds / (float)nbOfGames;

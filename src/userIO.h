@@ -69,6 +69,11 @@ void updateRoundNbDisplay(int roundNb);
 */
 void updateTrickNbDisplay(int trickNb);
 
+/* Update the team score display
+*   @param players[]: array of 4 players
+*/
+void updateTeamScore(Player players[]);
+
 /* Displays the trick that is being played. This display contains the color of the trump, the number of the trick, the game table and the user's hand
 *   @param players: the array of the four players
 *   @param trump: the color of the trump
