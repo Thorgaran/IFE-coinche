@@ -1,6 +1,8 @@
 #ifndef CORE_H
 #define CORE_H
 
+#define MAX_PLAYER_NAME_LENGTH 100
+
 typedef enum Bool {
     FALSE = 0,
     TRUE = 1
@@ -84,6 +86,20 @@ typedef struct Contract {
     Position issuer;
 } Contract;
 
+typedef enum TextPosition {
+    TEXT_LEFT = 0,
+    TEXT_CENTER = 1,
+    TEXT_RIGHT = 2
+} TextPosition;
+
 const int CARD_POINTS_TABLE[4][8];
+
+const char* VALUE_STR_TABLE[9];
+
+const char* COLOR_STR_TABLE[7];
+
+const char* COINCHE_STR_TABLE[3];
+
+const char* CONTRACTTYPE_STR_TABLE[3];
 
 #endif // CORE_H

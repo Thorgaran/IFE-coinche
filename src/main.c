@@ -3,15 +3,18 @@
 #include <time.h>
 #include "core.h"
 #include "play.h"
-#include "userIO.h"
 
 int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function
 
-    float averageGameLength;
-    int test, nbOfGamesWon[] = {0, 0};
-
+    /*float averageGameLength;
+    int nbOfGamesWon[] = {0, 0};*/
     Card playersCards[4][8];
+    char playerNames[4][MAX_PLAYER_NAME_LENGTH] = 
+        {"Player",
+         "AI-West",
+         "AI-North",
+         "AI-East"};
     Player players[4];
     for (Position pos = SOUTH; pos <= EAST; pos++) {
         if ((pos == SOUTH) || (pos == NORTH)) {
@@ -24,17 +27,19 @@ int main (int argc, char* argv[]) {
         }
         players[pos].pos = pos;
         players[pos].cards = playersCards[pos];
+        players[pos].name = playerNames[pos];
     }
 
-    test = inputUserInt(0, 5, "Entre un truc lol\n");
-    printf("%d", test);
-
-    averageGameLength = playAIGames(players, 1000, nbOfGamesWon);
+    players[SOUTH].cardAI = CARD_USER;
+    players[SOUTH].contractAI = CONTRACT_USER;
+    
+    playGame(players);
+    /*averageGameLength = playAIGames(players, 1000, nbOfGamesWon);
 
     printf("Team SOUTH - NORTH won %d games!\n", nbOfGamesWon[0]);
     printf("Team  WEST - EAST  won %d games!\n", nbOfGamesWon[1]);
     printf("The games lasted %f rounds on average.\n", averageGameLength);
-
+    */
     getchar();
     return EXIT_SUCCESS;
 }

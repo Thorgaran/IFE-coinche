@@ -40,7 +40,7 @@ void awardTeamPoints(Player players[], Contract contract);
 
 /* Plays a full game until a team wins (it reaches 701 points)
 *   @param players[]: array of 4 players
-*   @return nbOfRounds: the number of rounds played
+*   @return currentRound: the number of rounds played
 */
 int playGame(Player players[]);
 

@@ -3,19 +3,35 @@
 #include "play.h"
 #include "cardUtils.h"
 #include "playerUtils.h"
+#include "userIO.h"
 
 Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
     Position currentPlayer = startingPlayer; //Transferring startingPlayer to currentPlayer
     Bool hasPassed, everyonePassed = TRUE; //everyonePassed starts at TRUE and will be set to FALSE as soon as someone makes a contract
     int nbOfConsecutivePass = 0;
     do {
+        if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            displayPlayerName(players[currentPlayer], TRUE); //Add underline to the active player
+        }
         hasPassed = getPlayerContract(players[currentPlayer], contract); //Get the player to decide on a contract or pass
         if (hasPassed == TRUE) {        //If the player passed,
             nbOfConsecutivePass++;      //increase the number of consecutive pass
+            if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+                //Here add a line to display that the player passed
+                getchar();
+                printf("\033[1A");
+                displayPlayerName(players[currentPlayer], FALSE); //Remove underline from the active player
+            }
         }
         else {                          //If the player didn't pass,
             nbOfConsecutivePass = 0;    //Reset the number of consecutive pass
             everyonePassed = FALSE;     //If everyonePassed is still on TRUE, set it to FALSE
+            if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+                updateContractDisplay(players[currentPlayer].name, *contract); //Update the contract display with the new contract
+                getchar();
+                printf("\033[1A");
+                displayPlayerName(players[currentPlayer], FALSE); //Remove underline from the active player
+            }
         }
         currentPlayer = (currentPlayer + 1) % 4; //Go to next player
     } while (((nbOfConsecutivePass < 3) || ((everyonePassed == TRUE) && (nbOfConsecutivePass < 4))) && (contract->coinche != OVERCOINCHED));
@@ -28,30 +44,56 @@ Contract bidUntilContract(Player players[], Position startingPlayer) {
     Bool everyonePassed;
     do {
         cardsDistribution(players);
+        if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            displayPlayerHand(players[SOUTH].cards, 8); //Display the hand without numbers above it
+        }
         everyonePassed = bidAttempt(players, startingPlayer, &contract); //Do a bid attempt
     } while (everyonePassed == TRUE); //As long as no contract is made, repeat the loop
+    updateContractDisplay(players[contract.issuer].name, contract);
     return contract;
 }
 
 Position playTrick(Player players[], Position startingPlayer, Color trump) {
     Card trickCards[4];
-    Color roundColor = NULL_COLOR;
+    Color roundColor = NULL_COLOR; //The round color is null at first because the first player can play any card
     Position trickWinner;
     for (int i = 0; i < 4; i++) { //4 iterations because each player will play a card
         findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump); //Find valid cards in the hand of the current player
+        if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            displayPlayerName(players[(i+startingPlayer)%4], TRUE); //Add underline to the active player
+        }
         trickCards[i] = getPlayerCard(&(players[(i+startingPlayer)%4]), trickCards, i, trump, roundColor);
-        if (i == 0) {
-            roundColor = trickCards[0].color;
+        if (i == 0) {                           //If the first card was just played,
+            roundColor = trickCards[0].color;   //change the round color to its actual value
+        }
+        if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            displayTrickCard(trickCards[i], (i+startingPlayer)%4);
+            if (players[(i+startingPlayer)%4].cardAI == CARD_USER) {                 //If the current player is the user,
+                displayPlayerHand(players[SOUTH].cards, players[SOUTH].nbOfCards);   //update its hand with one less card
+            }
+            getchar();
+            printf("\033[1A");
+            displayPlayerName(players[(i+startingPlayer)%4], FALSE); //Remove underline from the active player
         }
     }
     trickWinner = (getStrongestCard(trickCards, 4, trump, roundColor) + startingPlayer) % 4;
-    //getStrongestCard returns a relative value while trickWinner an absolute position, hence the conversion with startingPlayer and a modulo
+    //getStrongestCard returns a relative value while trickWinner needs an absolute position, hence the conversion with startingPlayer and a modulo
     players[trickWinner].score += getCardArrayPoints(trickCards, 4, trump); //Increase the score of the trick winner
+    if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+        updatePlayerTrickPoints(players[trickWinner].score, trickWinner);
+        updateLastTrickDisplay(trickCards, startingPlayer);
+        deleteDisplayedTrickCards();
+    }
     return trickWinner;
 }
 
 void playRound(Player players[], Position startingPlayer, Color trump) {
     for (int i = 0; i < 8; i++) { //Plays the 8 tricks of a round
+        if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            updateTrickNbDisplay(i + 1); //Update the displayed trick number
+            getchar();
+            printf("\033[1A");
+        }
         startingPlayer = playTrick(players, startingPlayer, trump); //The previous trick winner becomes the starting player
     }
     players[startingPlayer].score += 10; //10 bonus points for the last trick's winner
@@ -98,34 +140,58 @@ void awardTeamPoints(Player players[], Contract contract) {
 int playGame(Player players[]) {
     Contract contract;
     Position startingPlayer = rand() % 4;
-    int nbOfRounds = 0;
+    int currentRound = 0;
+    for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
+        players[pos].teamScore = 0;                     //Set its team score to 0
+    }
+    if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+        displayTable();
+        for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
+            displayPlayerName(players[pos], FALSE);         //display their name
+        }
+    }
     do {
-        startingPlayer = (startingPlayer + 1) % 4;
+        currentRound++;                                         //Increment the current round
+        startingPlayer = (startingPlayer + 1) % 4;              //Change the starting player
         for (Position pos = SOUTH; pos <= EAST; pos++) {        //For each player,
             players[pos].score = 0;                             //reset its score,
             players[pos].nbOfCards = 8;                         //and its number of cards
         }
+        if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            updateRoundNbDisplay(currentRound);
+            updateTrickNbDisplay(0); //Display " Bidding "
+            clearContractDisplay();
+            clearLastTrickDisplay();
+            getchar();
+            printf("\033[1A");
+        }
         contract = bidUntilContract(players, startingPlayer);   //Do bidding until a contract is made
+        if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            prepareLastTrickDisplay();
+            for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
+                updatePlayerTrickPoints(0, pos);                //Display a score of 0
+            }
+        }
         playRound(players, startingPlayer, contract.trump);     //Play an 8-tricks round
         awardTeamPoints(players, contract);                     //Award team points depending on whether or not the contract was fulfilled
-        nbOfRounds++;                                           //Increase the number of rounds
+        if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            updateTeamScore(players);
+            clearDisplayedTrickPoints();
+        }
     } while ((players[0].teamScore <= 700) && (players[1].teamScore <= 700)); //Repeat until a team reaches 701 points
-    return nbOfRounds;
+    return currentRound;
 }
 
 float playAIGames(Player players[], int nbOfGames, int nbOfGamesWon[]) {
     long totalNbOfRounds = 0;
     float averageGameLength;
-    for (int game = 0; game < nbOfGames; game++) {          //Play "nbOfGames" games
-        for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
-            players[pos].teamScore = 0;                     //reset its team score
-        }
-        totalNbOfRounds += playGame(players);   //Play a game and increase the total number of rounds
-        if (players[0].teamScore > 700) {       //If the first team won,
-            nbOfGamesWon[0] += 1;               //Increase its number of wins
+    for (int game = 0; game < nbOfGames; game++) {  //Play "nbOfGames" games
+        totalNbOfRounds += playGame(players);       //Play a game and increase the total number of rounds
+        if (players[0].teamScore > 700) {           //If the first team won,
+            nbOfGamesWon[0] += 1;                   //Increase its number of wins
         }
         else {
-            nbOfGamesWon[1] += 1;               //Else, increase the second team's number of wins
+            nbOfGamesWon[1] += 1;                   //Else, increase the second team's number of wins
         }
     }
     averageGameLength = totalNbOfRounds / (float)nbOfGames;
