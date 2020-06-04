@@ -4,11 +4,9 @@
 
 int getCardStrength(Card card, Color trump, Color roundColor) {
     int cardStrength = card.value;
-
     if (card.color == roundColor) {
         cardStrength += 10;                             // If the card has the right color, its strength increases
     }
-
     if ((trump == card.color) || (trump == ALLTRUMP)) {
         cardStrength += 18;                             // If the card is a trump, its strength increases
         if ((card.value == NINE) || (card.value == JACK)) {
@@ -22,7 +20,6 @@ int getStrongestCard(Card cardArray[], int nbOfCards, Color trump, Color roundCo
     int greatestStrength = getCardStrength(cardArray[0], trump, roundColor);
     int cardStrength;
     int strongestCardPos = 0;
-
     for (int i = 1; i < nbOfCards; i++) {
         cardStrength = getCardStrength(cardArray[i], trump, roundColor); //cardStrength is needed to avoid calling getCardStrength twice
         if (cardStrength > greatestStrength) {

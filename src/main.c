@@ -29,6 +29,7 @@ int main (int argc, char* argv[]) {
         players[pos].cards = playersCards[pos];
         players[pos].name = playerNames[pos];
     }
+
     players[SOUTH].cardAI = CARD_USER;
     players[SOUTH].contractAI = CONTRACT_USER;
     
