@@ -43,6 +43,14 @@ void changeCardDisplay(Card card);
 */
 void displayTable(void);
 
+/* Clears top-right box. The cursor is left untouched
+*/
+void clearTopRightBox(void);
+
+/* Displays an empty "Last trick" template in the top-right box. The cursor is left untouched
+*/
+void prepareLastTrickDisplay(void);
+
 /* Clears contract display. The cursor is left untouched
 */
 void clearContractDisplay(void);

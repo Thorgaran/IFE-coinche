@@ -111,14 +111,14 @@ void changeCardDisplay(Card card) {
 void displayTable(void) {
     printf("╔═══════════════╤═════════════════════╤═══════════════╗\n");
     printf("║Contract:      │                     │  Last trick:  ║\n");
-    printf("║               │     ╭┈┈┈┈┈┈┈┈┈╮     │     ╭───╮     ║\n");
-    printf("║               │     ┊ Round   ┊     │     │   │     ║\n");
-    printf("║               │     ┊         ┊     │╭───╮│   │╭───╮║\n");
-    printf("╟───────┬───────┤     ╰┈┈┈┈┈┈┈┈┈╯     ││   │╰───╯│   │║\n");
-    printf("║Your   │Rival  │                     ││   │╭───╮│   │║\n");
-    printf("║team   │team   │                     │╰───╯│   │╰───╯║\n");
-    printf("║score: │score: │                     │     │   │     ║\n");
-    printf("║  0/701│  0/701│                     │     ╰───╯     ║\n");
+    printf("║               │     ╭┈┈┈┈┈┈┈┈┈╮     │               ║\n");
+    printf("║               │     ┊ Round   ┊     │               ║\n");
+    printf("║               │     ┊         ┊     │               ║\n");
+    printf("╟───────┬───────┤     ╰┈┈┈┈┈┈┈┈┈╯     │               ║\n");
+    printf("║Your   │Rival  │                     │               ║\n");
+    printf("║team   │team   │                     │               ║\n");
+    printf("║score: │score: │                     │               ║\n");
+    printf("║  0/701│  0/701│                     │               ║\n");
     printf("╟───────┴───────╯                     ╰───────────────╢\n");
     printf("║                                                     ║\n");
     printf("║                                                     ║\n");
@@ -136,6 +136,28 @@ void displayTable(void) {
     printf("║                                                     ║\n");
     printf("║                      Your hand                      ║\n");
     printf("╚═════════════════════════════════════════════════════╝\n");
+}
+
+void clearTopRightBox(void) {
+    printf("\033[s\033[2;40H"); //Save cursor position and move cursor to the top left of the top right box
+    for (int i = 0; i < 9; i++) {
+        printf("               \033[15D\033[1B"); //Clear line (inside the top right box), then move cursor to the next line
+    }
+    printf("\033[u"); //Restore cursor position
+}
+
+void prepareLastTrickDisplay(void) {
+    clearTopRightBox(); //Needed to avoid having any leftover characters
+    printf("\033[s\033[2;42HLast trick:\033[1B\033[8D");
+    //Save cursor position, move cursor near the top left of the top right box, print "Last trick:", move cursor to the first card
+    displayEmptyCard();
+    printf("\033[2B\033[5D"); //Move cursor to the second card
+    displayEmptyCard();
+    printf("\033[10C"); //Move cursor to the third card
+    displayEmptyCard();
+    printf("\033[2B\033[5D"); //Move cursor to the fourth card
+    displayEmptyCard();
+    printf("\033[u"); //Restore cursor position
 }
 
 void clearContractDisplay(void) {

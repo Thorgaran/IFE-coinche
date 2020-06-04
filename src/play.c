@@ -167,6 +167,7 @@ int playGame(Player players[]) {
         }
         contract = bidUntilContract(players, startingPlayer);   //Do bidding until a contract is made
         if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            prepareLastTrickDisplay();
             for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
                 updatePlayerTrickPoints(0, pos);                //Display a score of 0
             }
