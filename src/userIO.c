@@ -2,32 +2,86 @@
 #include <stdlib.h>
 #include <string.h>
 #include "userIO.h"
-#include "ai.h" //TO DELETE
 
 #define UNDERLINE_SEQUENCE_LENGTH 9
 
-int inputUserInt(int minBound, int maxBound, char* displayStr) {
-    char buffer[5];
-    char* endPtr;
-    int userVal = -1;
-    long userValLong;
-    do {
-        printf("\e[1;1H\e[2J");
-        printf(displayStr);
-        if (fgets(buffer, 5, stdin) != NULL) {
-            userValLong = strtol(buffer, &endPtr, 10);
-            if ((endPtr != buffer) && (userValLong >= minBound) && (userValLong <= maxBound)) { //The condition order is very important!
-            //If the address pointed to by endPtr isn't the first one of the buffer (so if reading a long was successful), and the value is between the bounds
-                userVal = userValLong;
-            }
+char* inputUserStr(int maxStrLength, char displayStrline1[], char displayStrline2[], Bool useSecondLineAsInput) {
+    char c;
+    char* inputStr = NULL;
+    char* fgetcReturnPtr = NULL;
+    int inputStrLength;
+    inputStr = (char*) malloc(maxStrLength);    //Allocate enough memory for the input string
+    if (useSecondLineAsInput) {                 //If using the second line as input,
+        displayInfoMsg(displayStrline1, "");    //Display only on the first line
+        printf("\033[1E\033[2C");               //Move cursor to the next line to have more room to write the string
+    }
+    else {
+        displayInfoMsg(displayStrline1, displayStrline2); //Else, display on both lines
+    }
+    fgetcReturnPtr = fgets(inputStr, maxStrLength, stdin); //Ask user for a string
+    while (fgetcReturnPtr == NULL) {
+        if (useSecondLineAsInput) {     //If using the second line as input
+            displayInfoMsg("Couldn't read the input string. Please try again.", ""); //Display an error message on the first line only
+            printf("\033[1E\033[2C");   //Move cursor to the next line to have more room to write the string
         }
-    } while (userVal == -1);
+        else {
+            displayInfoMsg("Couldn't read the input string. Please try again.", displayStrline1); //Else, display things on both lines
+        }
+        fgetcReturnPtr = fgets(inputStr, maxStrLength, stdin); //Ask user for a string
+    }
+    inputStrLength = strlen(inputStr);  //This will be used multiple times
+    c = inputStr[inputStrLength-1];     //Store the last char of the string in c
+    while ((c != '\n') && (c != EOF)) {
+        c = getchar();                  //Flush leftover input
+    }
+    if (inputStr[inputStrLength-1] == '\n') {   //If there's an \n at the end of the string,
+        inputStr[inputStrLength-1] = '\0';      //remove it
+    }
+    clearInfoMsg();
+    return inputStr;
+}
+
+int inputUserInt(int minBound, int maxBound, char displayStr[]) {
+    char formattedErrorMsg[30];
+    char* inputStr = NULL;
+    char* endPtr = NULL;
+    int userVal = __INT_MAX__;
+    long userValLong;
+    inputStr = inputUserStr(5, displayStr, "", FALSE); //Ask the user for an input
+    userValLong = strtol(inputStr, &endPtr, 10); //Try to convert the string to a long
+    while ((endPtr == inputStr) || (userValLong < minBound) || (userValLong > maxBound)) { //The condition order is very important!
+        //While the address pointed to by endPtr is the first one of the inputStr (so if reading a long was unsuccessful), or the value is not between the bounds
+        sprintf(formattedErrorMsg, "'%s' is not a valid input.", inputStr); //Construct the error message. inputStr is guaranteed to be 5 chars or less
+        free(inputStr); //Free the last input, as it's a bad input that can be deleted safely
+        inputStr = inputUserStr(5, formattedErrorMsg, displayStr, FALSE); //Ask the user for an input
+        userValLong = strtol(inputStr, &endPtr, 10); //Try to convert the string to a long
+    };
+    free(inputStr); //Free the last input, as it's already converted to an int
+    userVal = userValLong;
+    clearInfoMsg();
     return userVal;
 }
 
+void inputUserAcknowledgement(char displayMsg[]) {
+    printf("\033[?25l"); //Hide cursor
+    if (displayMsg[0] == '\0') { //If there is no message to display
+        free(inputUserStr(2, "Press enter to continue.", "", FALSE)); //The input string pointer, not needed, is immediately freed
+    }
+    else {
+        free(inputUserStr(2, displayMsg, "Press enter to continue.", FALSE)); //The input string pointer, not needed, is immediately freed
+    }
+    printf("\033[?25h"); //Show cursor
+}
+
 Card askUserCard(Card cardArray[], int nbOfCards) {
-    displayNumbersAbovePlayerHand(nbOfCards);
-    Card chosenCard = getAICardFirstAvailable(cardArray, nbOfCards);
+    Card chosenCard;
+    int chosenCardID;
+    displayNumbersAbovePlayerHand(cardArray, nbOfCards);
+    chosenCardID = inputUserInt(1, nbOfCards, "Play a card: enter the card's displayed number ");
+    while (cardArray[chosenCardID-1].canPlay == FALSE) {
+        chosenCardID = inputUserInt(1, nbOfCards, "You can't play this card. Choose another one ");
+    }
+    chosenCard = cardArray[chosenCardID-1];
     return chosenCard;
 }
 
@@ -128,8 +182,9 @@ void changeCardDisplay(Card card) {
 }
 
 void displayTable(void) {
+    resizeCmdWindow(31, 55);
     printf("╔═══════════════╤═════════════════════╤═══════════════╗\n");
-    printf("║Contract:      │                     │  Last trick:  ║\n");
+    printf("║Contract:      │                     │               ║\n");
     printf("║               │     ╭┈┈┈┈┈┈┈┈┈╮     │               ║\n");
     printf("║               │     ┊ Round   ┊     │               ║\n");
     printf("║               │     ┊         ┊     │               ║\n");
@@ -154,7 +209,36 @@ void displayTable(void) {
     printf("║                                                     ║\n");
     printf("║                                                     ║\n");
     printf("║                      Your hand                      ║\n");
-    printf("╚═════════════════════════════════════════════════════╝\n");
+    printf("╠═════════════════════════════════════════════════════╣\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("╚═════════════════════════════════════════════════════╝");
+    printf("\033[28;28H"); //Move cursor to the info box
+}
+
+void clearInfoMsg(void) {
+    printf("\033[28;2H                                                     \033[1E\033[1C");
+    //Move cursor to the info message box, clear the first line, move cursor to the next line
+    printf("                                                     \033[27D\033[1A");
+    //Clear the line, move cursor to the middle of the box
+}
+
+void displayInfoMsg(char messageLine1[], char messageLine2[]) {
+    char* formattedStr;
+    char test[100];
+    clearInfoMsg();
+    formattedStr = formatStr(messageLine1, 53, TEXT_CENTER, FALSE); //The table is 53 characters wide
+    //printf("\033[28;2H%s\033[%ldD", formattedStr, (54 - strlen(messageLine1))/2);
+    sprintf(test, "\033[28;2H%s\033[%ldD", formattedStr, (54 - strlen(messageLine1))/2);
+    printf(test);
+    //Move cursor to the info message box, print the first line, move cursor to the end of message1
+    free(formattedStr); //Free formattedStr as it's not needed anymore
+    if (messageLine2[0] != '\0') { //If the message has a second line
+        formattedStr = formatStr(messageLine2, 53, TEXT_CENTER, FALSE); //The table is 53 characters wide
+        printf("\033[1E\033[1C%s\033[%ldD", formattedStr, (54 - strlen(messageLine2))/2);
+        //Move cursor to the second line, print the second line of the message, move cursor to the end of message2
+        free(formattedStr); //Free formattedStr as it's not needed anymore
+    }
 }
 
 void clearTopRightBox(void) {
@@ -333,11 +417,17 @@ void deleteDisplayedTrickCards(void) {
     printf("\033[u"); //Restore cursor position
 }
 
-void displayNumbersAbovePlayerHand(int nbOfCardsInHand) {
+void displayNumbersAbovePlayerHand(Card cardsInHand[], int nbOfCardsInHand) {
     printf("\033[s\033[21;%dH", 7 + 3 * (8 - nbOfCardsInHand));
     //Save cursor position, and move cursor to the leftmost position of the player's hand on the numbers line, depending on the number of cards to display
-    for (int i = 1; i <= nbOfCardsInHand; i++) {    //For each card in hand,
-        printf("%d\033[5C", i);                     //display a number above it
+    for (int i = 1; i <= nbOfCardsInHand; i++) {    //For each card in hand
+        if (cardsInHand[i-1].canPlay == TRUE) {     //If the card can be played,
+            printf("%d\033[5C", i);                 //display a number above the card
+        }
+        else {
+            printf("\033[6C");                      //Else, move the cursor above the next card
+        }
+        
     }
     printf("\033[u"); //Restore cursor position
 }
@@ -392,4 +482,8 @@ void updatePlayerTrickPoints(int points, Position playerPos) {
 void clearDisplayedTrickPoints(void) {
     printf("\033[s\033[19;27H   \033[14D\033[5A   \033[6A\033[8C   \033[8C\033[6B   \033[u");
     //Save cursor position, move to each player's displayed trick points in clockwise order starting with the SOUTH player then clear it, restore cursor position
+}
+
+void resizeCmdWindow(int nbOfLines, int nbOfColumns) {
+    printf("\033[8;%d;%dt", nbOfLines, nbOfColumns); //Resize the window
 }

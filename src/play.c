@@ -9,6 +9,7 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
     Position currentPlayer = startingPlayer; //Transferring startingPlayer to currentPlayer
     Bool hasPassed, everyonePassed = TRUE; //everyonePassed starts at TRUE and will be set to FALSE as soon as someone makes a contract
     int nbOfConsecutivePass = 0;
+    char displayMsg[53]; //Only used in display mode
     do {
         if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
             displayPlayerName(players[currentPlayer], TRUE); //Add underline to the active player
@@ -17,9 +18,8 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
         if (hasPassed == TRUE) {        //If the player passed,
             nbOfConsecutivePass++;      //increase the number of consecutive pass
             if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
-                //Here add a line to display that the player passed
-                getchar();
-                printf("\033[1A");
+                sprintf(displayMsg, "%s decided to pass.", players[currentPlayer].croppedName);
+                inputUserAcknowledgement(displayMsg);
                 displayPlayerName(players[currentPlayer], FALSE); //Remove underline from the active player
             }
         }
@@ -28,8 +28,8 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
             everyonePassed = FALSE;     //If everyonePassed is still on TRUE, set it to FALSE
             if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
                 updateContractDisplay(players[currentPlayer].name, *contract); //Update the contract display with the new contract
-                getchar();
-                printf("\033[1A");
+                sprintf(displayMsg, "%s decided to make a \"%s\" contract.", players[currentPlayer].croppedName, COLOR_STR_TABLE[contract->trump]);
+                inputUserAcknowledgement(displayMsg);
                 displayPlayerName(players[currentPlayer], FALSE); //Remove underline from the active player
             }
         }
@@ -56,24 +56,28 @@ Contract bidUntilContract(Player players[], Position startingPlayer) {
 Position playTrick(Player players[], Position startingPlayer, Color trump) {
     Card trickCards[4];
     Color roundColor = NULL_COLOR; //The round color is null at first because the first player can play any card
-    Position trickWinner;
+    Position currentPlayer, trickWinner;
+    char displayMsg[53]; //Only used in display mode
     for (int i = 0; i < 4; i++) { //4 iterations because each player will play a card
-        findValidCardsInHand(players[(i+startingPlayer)%4].cards, players[(i+startingPlayer)%4].nbOfCards, trickCards, i, trump); //Find valid cards in the hand of the current player
+        currentPlayer = (i+startingPlayer)%4; //Compute the absolute position of the current player
+        findValidCardsInHand(players[currentPlayer].cards, players[currentPlayer].nbOfCards, trickCards, i, trump); //Find valid cards in the hand of the current player
         if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
-            displayPlayerName(players[(i+startingPlayer)%4], TRUE); //Add underline to the active player
+            displayPlayerName(players[currentPlayer], TRUE); //Add underline to the active player
         }
-        trickCards[i] = getPlayerCard(&(players[(i+startingPlayer)%4]), trickCards, i, trump, roundColor);
+        trickCards[i] = getPlayerCard(&(players[currentPlayer]), trickCards, i, trump, roundColor);
         if (i == 0) {                           //If the first card was just played,
             roundColor = trickCards[0].color;   //change the round color to its actual value
         }
         if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
-            displayTrickCard(trickCards[i], (i+startingPlayer)%4);
-            if (players[(i+startingPlayer)%4].cardAI == CARD_USER) {                 //If the current player is the user,
+            displayTrickCard(trickCards[i], currentPlayer);
+            if (players[currentPlayer].cardAI == CARD_USER) {                 //If the current player is the user,
                 displayPlayerHand(players[SOUTH].cards, players[SOUTH].nbOfCards);   //update its hand with one less card
             }
-            getchar();
-            printf("\033[1A");
-            displayPlayerName(players[(i+startingPlayer)%4], FALSE); //Remove underline from the active player
+            else {
+                sprintf(displayMsg, "%s played a %s of %s.", players[currentPlayer].croppedName, VALUE_STR_TABLE[trickCards[i].value], COLOR_STR_TABLE[trickCards[i].color]);
+                inputUserAcknowledgement(displayMsg);
+            }
+            displayPlayerName(players[currentPlayer], FALSE); //Remove underline from the active player
         }
     }
     trickWinner = (getStrongestCard(trickCards, 4, trump, roundColor) + startingPlayer) % 4;
@@ -88,11 +92,12 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
 }
 
 void playRound(Player players[], Position startingPlayer, Color trump) {
+    char displayMsg[20]; //Only used in display mode
     for (int i = 0; i < 8; i++) { //Plays the 8 tricks of a round
         if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
             updateTrickNbDisplay(i + 1); //Update the displayed trick number
-            getchar();
-            printf("\033[1A");
+            sprintf(displayMsg, "Trick %d begins.", i+1);
+            inputUserAcknowledgement(displayMsg);
         }
         startingPlayer = playTrick(players, startingPlayer, trump); //The previous trick winner becomes the starting player
     }
@@ -141,13 +146,16 @@ int playGame(Player players[]) {
     Contract contract;
     Position startingPlayer = rand() % 4;
     int currentRound = 0;
+    char displayMsg[20]; //Only used in display mode
     for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
         players[pos].teamScore = 0;                     //Set its team score to 0
     }
     if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
         displayTable();
+        inputUserAcknowledgement("Table displayed.");
         for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
             displayPlayerName(players[pos], FALSE);         //display their name
+            createPlayersCroppedNames(players);
         }
     }
     do {
@@ -162,8 +170,8 @@ int playGame(Player players[]) {
             updateTrickNbDisplay(0); //Display " Bidding "
             clearContractDisplay();
             clearLastTrickDisplay();
-            getchar();
-            printf("\033[1A");
+            sprintf(displayMsg, "Round %d begins.", currentRound);
+            inputUserAcknowledgement(displayMsg);
         }
         contract = bidUntilContract(players, startingPlayer);   //Do bidding until a contract is made
         if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user

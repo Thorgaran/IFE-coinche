@@ -6,7 +6,7 @@
 
 int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function
-
+    printf("\033[?1049h"); //Enable alternate screen buffer
     /*float averageGameLength;
     int nbOfGamesWon[] = {0, 0};*/
     Card playersCards[4][8];
@@ -40,6 +40,12 @@ int main (int argc, char* argv[]) {
     printf("Team  WEST - EAST  won %d games!\n", nbOfGamesWon[1]);
     printf("The games lasted %f rounds on average.\n", averageGameLength);
     */
+
+    for (Position pos = SOUTH; pos <= EAST; pos++) {
+        free(players[pos].croppedName);
+    }
+
     getchar();
+    printf("\033[?1049l"); //Return to main screen buffer
     return EXIT_SUCCESS;
 }

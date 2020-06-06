@@ -59,8 +59,9 @@ typedef struct Player {
     cardAI cardAI;
     contractAI contractAI;
     Position pos;
-    char *name;
-    Card *cards;
+    char* name;
+    char* croppedName;
+    Card* cards;
     int nbOfCards;
     int score;
     int teamScore;

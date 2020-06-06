@@ -2,12 +2,27 @@
 #define USERIO_H
 #include "core.h"
 
-/* Ask the user for an int between two positive numbers
-*   @param minBound: the minimum valid value the user can enter (must be a positive int)
-*   @param maxBound: the maximum valid value the user can enter (must be a positive int)
+/* Asks the user to input a string
+*   @param maxStrLength: the maximum length of the input string, including the terminating \0. Anything bigger than that will be cropped
+*   @param displayStrline1[]: first line of the prompt given to the user asking for an input
+*   @param displayStrline2[]: second line of the prompt given to the user. If useSecondLineAsInput is set to true, this is ignored
+*   @param  useSecondLineAsInput: if set to TRUE, the user will input the string on an empty second line instead of the end of the current line
+*   @return inputStr*: pointer to the first char of the user string. Must be freed eventually!
+*/
+char* inputUserStr(int maxStrLength, char displayStrline1[], char displayStrline2[], Bool useSecondLineAsInput);
+
+/* Asks the user for an int between two bounds
+*   @param minBound: the minimum valid value the user can enter
+*   @param maxBound: the maximum valid value the user can enter
+*   @param displayStr[]: the prompt given to the user asking for an input
 *   @return userVal: the value entered by the user, guaranteed to be an int between minBound and maxBound
 */
-int inputUserInt(int minBound, int maxBound, char* displayStr);
+int inputUserInt(int minBound, int maxBound, char displayStr[]);
+
+/* Asks the user to press enter, and eventually display a message along with it
+*   @param displayMsg[]: the optional message to display. To ignore this argument, set it to ""
+*/
+void inputUserAcknowledgement(char displayMsg[]);
 
 Card askUserCard(Card cardArray[], int nbOfCards);
 
@@ -49,6 +64,16 @@ void changeCardDisplay(Card card);
 /* Displays an empty play table
 */
 void displayTable(void);
+
+/* Clears the info box. The cursor is set to the middle of the first line
+*/
+void clearInfoMsg(void);
+
+/* Displays a centered message in the info box. The cursor is left to the end of the message
+*   @param messageLine1[]: the first line of the message to display
+*   @param messageLine2[]: the second line of the message to display
+*/
+void displayInfoMsg(char messageLine1[], char messageLine2[]);
 
 /* Clears top-right box. The cursor is left untouched
 */
@@ -109,10 +134,11 @@ void displayTrickCard(Card playedCard, Position currentPlayer);
 */
 void deleteDisplayedTrickCards(void);
 
-/* Displays a line of sequencial numbers above the player's hand cards
+/* Displays a line of sequencial numbers above the player's hand cards that can be played
+*   @param cardInHand[]: array containing the player's cards (only the canPlay property is looked at)
 *   @param nbOfCardsInHand: the number of cards in the SOUTH player's hand
 */
-void displayNumbersAbovePlayerHand(int nbOfCardsInHand);
+void displayNumbersAbovePlayerHand(Card cardsInHand[], int nbOfCardsInHand);
 
 /* Displays the player's hand, centered
 *   @param cardsInHand[]: array containing the player's cards
@@ -133,5 +159,11 @@ void updatePlayerTrickPoints(int points, Position playerPos);
 /* Clears all 4 displayed trick points
 */
 void clearDisplayedTrickPoints(void);
+
+/* Resizes the command prompt window to a given number of lines and columns
+*   @param nbOfLines: the number of lines that should be displayed
+*   @param nbOfColumns: the number of lines that should be displayed. Microsoft docs recommands a value between 40 and 135
+*/
+void resizeCmdWindow(int nbOfLines, int nbOfColumns);
 
 #endif // USERIO_H
