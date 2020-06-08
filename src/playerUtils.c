@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include "playerUtils.h"
 #include "cardUtils.h"
-#include "userIO.h"
+#include "stringUtils.h"
+#include "userInput.h"
 #include "ai.h"
 
 Card getPlayerCard(Player *player, Card trickCards[], int nbOfTrickCards, Color trump, Color roundColor) {

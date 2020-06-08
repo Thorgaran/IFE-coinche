@@ -2,55 +2,6 @@
 #define USERIO_H
 #include "core.h"
 
-/* Asks the user to input a string
-*   @param maxStrLength: the maximum length of the input string, including the terminating \0. Anything bigger than that will be cropped
-*   @param displayStrline1[]: first line of the prompt given to the user asking for an input
-*   @param displayStrline2[]: second line of the prompt given to the user. If useSecondLineAsInput is set to true, this is ignored
-*   @param  useSecondLineAsInput: if set to TRUE, the user will input the string on an empty second line instead of the end of the current line
-*   @return inputStr*: pointer to the first char of the user string. Must be freed eventually!
-*/
-char* inputUserStr(int maxStrLength, char displayStrline1[], char displayStrline2[], Bool useSecondLineAsInput);
-
-/* Asks the user for an int between two bounds
-*   @param minBound: the minimum valid value the user can enter
-*   @param maxBound: the maximum valid value the user can enter
-*   @param displayStr[]: the prompt given to the user asking for an input
-*   @return userVal: the value entered by the user, guaranteed to be an int between minBound and maxBound
-*/
-int inputUserInt(int minBound, int maxBound, char displayStr[]);
-
-/* Asks the user to press enter, and eventually display a message along with it
-*   @param displayMsg[]: the optional message to display. To ignore this argument, set it to ""
-*/
-void inputUserAcknowledgement(char displayMsg[]);
-
-/* Asks the user for a card to play among the valid ones, according to the Coinche rules
-*   @param cardArray[]: array containing the player's cards
-*   @param nbOfCards: the number of cards in cardArray
-*/
-Card askUserCard(Card cardArray[], int nbOfCards);
-
-/* Asks the user for their action during their bidding turn, according to the Coinche rules
-*   @param *contract: pointer to the contract being debated
-*/
-Bool askUserContract(Contract *contract);
-
-/* Takes a string and returns a cropped version of it with dots at the end if it exceeds a given length
-*   @param string[]: the string to crop
-*   @param maxLength: the maximum length the string can be without cropping
-*   @return croppedString*: pointer to the first char of the cropped string. Must be freed eventually!
-*/
-char* cropStr(const char string[], int maxLength);
-
-/* Takes a string and returns a fixed length, text-aligned version of it, cropped and or underlined if needed
-*   @param string[]: the string to center
-*   @param maxLength: the maximum length of the space the centered string will be displayed in
-*   @param textPosition: text alignement within the string (left, center, right)
-*   @param underline: TRUE if the text sould be underlined, FALSE otherwise
-*   @return formattedString*: pointer to the first char of the centered string. Must be freed eventually!
-*/
-char* formatStr(char string[], int maxLength, TextPosition textPosition, Bool underline);
-
 /* Displays an empty card at the current cursor position (the cursor comes back to that position afterwards)
 */
 void displayEmptyCard(void);
@@ -71,16 +22,6 @@ void changeCardDisplay(Card card);
 /* Displays an empty play table
 */
 void displayTable(void);
-
-/* Clears the info box. The cursor is set to the middle of the first line
-*/
-void clearInfoMsg(void);
-
-/* Displays a centered message in the info box. The cursor is left to the end of the message
-*   @param messageLine1[]: the first line of the message to display
-*   @param messageLine2[]: the second line of the message to display
-*/
-void displayInfoMsg(char messageLine1[], char messageLine2[]);
 
 /* Clears top-right box. The cursor is left untouched
 */
@@ -173,11 +114,5 @@ void updatePlayerTrickPoints(int points, Position playerPos);
 /* Clears all 4 displayed trick points
 */
 void clearDisplayedTrickPoints(void);
-
-/* Resizes the command prompt window to a given number of lines and columns
-*   @param nbOfLines: the number of lines that should be displayed
-*   @param nbOfColumns: the number of lines that should be displayed. Microsoft docs recommands a value between 40 and 135
-*/
-void resizeCmdWindow(int nbOfLines, int nbOfColumns);
 
 #endif // USERIO_H
