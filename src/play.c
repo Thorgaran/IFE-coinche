@@ -74,7 +74,7 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
                 displayPlayerHand(players[SOUTH].cards, players[SOUTH].nbOfCards);   //update its hand with one less card
             }
             else {
-                sprintf(displayMsg, "%s played a %s of %s.", players[currentPlayer].croppedName, VALUE_STR_TABLE[trickCards[i].value], COLOR_STR_TABLE[trickCards[i].color]);
+                sprintf(displayMsg, "%s played a %s of %s.", players[currentPlayer].croppedName, VALUE_STR_TABLE[trickCards[i].value][1], COLOR_STR_TABLE[trickCards[i].color]);
                 inputUserAcknowledgement(displayMsg);
             }
             displayPlayerName(players[currentPlayer], FALSE); //Remove underline from the active player
@@ -87,6 +87,8 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
         updatePlayerTrickPoints(players[trickWinner].score, trickWinner);
         updateLastTrickDisplay(trickCards, startingPlayer);
         deleteDisplayedTrickCards();
+        sprintf(displayMsg, "%s won the trick.", players[trickWinner].croppedName);
+        inputUserAcknowledgement(displayMsg);
     }
     return trickWinner;
 }
@@ -108,6 +110,7 @@ void awardTeamPoints(Player players[], Contract contract) {
     Position defendant = (contract.issuer + 1) % 4;
     int issuerTeamScore, defendantTeamScore;
     int issuerTeamPoints = getTeamRoundPoints(players, contract.issuer);
+    char displayMsg[54];
     if (((contract.type == POINTS) && (issuerTeamPoints >= contract.points)) ||
         ((contract.type == CAPOT) && (issuerTeamPoints == 162)) ||
         ((contract.type == GENERAL) && (players[contract.issuer].score == 162))) {  //If the contract is fulfilled,
@@ -125,9 +128,13 @@ void awardTeamPoints(Player players[], Contract contract) {
                 break;
         }
         increaseTeamTotalScore(players, contract.issuer, issuerTeamScore); //Increase the issuer's team total score
+        if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            sprintf(displayMsg, "%s fulfilled the contract!", players[contract.issuer].croppedName);
+            inputUserAcknowledgement(displayMsg);
+        }
     }
     else { //If the contract isn't fulfilled
-        defendantTeamScore =  getTeamRoundPoints(players, defendant) + 162;    //total defendant score = trick points + 162
+        defendantTeamScore = 162 + contract.points;             //total defendant score = 162 + contract points
         switch (contract.coinche) {
             case COINCHED:                                      //If the contract was coinched,
                 defendantTeamScore = defendantTeamScore * 2;    //double the score
@@ -139,6 +146,10 @@ void awardTeamPoints(Player players[], Contract contract) {
                 break;
         }
         increaseTeamTotalScore(players, defendant, defendantTeamScore); //Increase the defendant's team total score, and the issuer's team gets nothing
+        if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
+            sprintf(displayMsg, "%s didn't fulfill the contract.", players[contract.issuer].croppedName);
+            inputUserAcknowledgement(displayMsg);
+        }
     }
 }
 

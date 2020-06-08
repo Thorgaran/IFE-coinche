@@ -26,7 +26,10 @@ void inputUserAcknowledgement(char displayMsg[]);
 
 Card askUserCard(Card cardArray[], int nbOfCards);
 
-Bool askUserContract(Card cardArray[], int nbOfCards, Contract *contract);
+/* Asks the user for their action during their bidding turn, according to the Coinche rules
+*   @param *contract: pointer to the contract being debated
+*/
+Bool askUserContract(Contract *contract);
 
 /* Takes a string and returns a cropped version of it with dots at the end if it exceeds a given length
 *   @param string[]: the string to crop
@@ -82,6 +85,13 @@ void clearTopRightBox(void);
 /* Displays an empty "Last trick" template in the top-right box. The cursor is left untouched
 */
 void prepareLastTrickDisplay(void);
+
+/* Displays a single line in the top-right box. The cursor is moved to the next line
+*   @param lineToDisplay[]: the string to display, must contain a maximum of 15 characters
+*   @param firstline: set to TRUE if this is the first line of the menu to display, set to FALSE otherwise
+*   @param lastLine: set to TRUE if this is the last line of the menu to display, set to FALSE otherwise
+*/
+void displayBiddingMenuLine(char lineToDisplay[], Bool firstLine, Bool lastLine);
 
 /* Clears contract display. The cursor is left untouched
 */

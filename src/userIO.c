@@ -85,8 +85,85 @@ Card askUserCard(Card cardArray[], int nbOfCards) {
     return chosenCard;
 }
 
-Bool askUserContract(Card cardArray[], int nbOfCards, Contract *contract) {
-    Bool hasPassed = TRUE;
+Bool askUserContract(Contract *contract) {
+    Bool hasPassed = TRUE, secondMenuOptionIsBid = TRUE;
+    int chosenMenuOption, numberOfMenuOptions = 1, minContractPoints = (contract->points == 0) ? 80 : contract->points + 10; //Ternary to make a more concise code
+    char lineToDisplay[53];
+    displayBiddingMenuLine("Bidding options", TRUE, FALSE);
+    displayBiddingMenuLine("1: Pass", FALSE, FALSE); //The player can always decide to pass
+    if ((contract->coinche == NOT_COINCHED) && (contract->type != GENERAL)) { //If the contract isn't coinched and isn't a General
+        displayBiddingMenuLine("2: Bid", FALSE, FALSE); //The player has the option to bid
+        numberOfMenuOptions++; //Increase the number of menu options
+    }
+    else {
+        secondMenuOptionIsBid = FALSE; //No bidding option for the user
+    }
+    if ((contract->coinche == NOT_COINCHED) && (contract->points != 0) && (contract->issuer != NORTH)) {
+    //If the contract isn't coinched, AND someone made a contract already, AND the partner isn't the contract issuer. The condition order is important
+        sprintf(lineToDisplay, "%d: Coinche", numberOfMenuOptions+1); //Prepare the line to display
+        displayBiddingMenuLine(lineToDisplay, FALSE, FALSE); //The player can coinche
+        numberOfMenuOptions++; //Increase the number of menu options
+    }
+    else if ((contract->coinche == COINCHED) && ((contract->issuer == SOUTH) || (contract->issuer == NORTH))) {
+    //If the contract is coinched, AND the contract issuer is of the player's team
+        sprintf(lineToDisplay, "%d: Overcoinche", numberOfMenuOptions+1); //Prepare the line to display
+        displayBiddingMenuLine(lineToDisplay, FALSE, FALSE); //The player can overcoinche
+        numberOfMenuOptions++; //Increase the number of menu options
+    }
+    displayBiddingMenuLine("", FALSE, TRUE); //Stop displaying lines for this menu
+    chosenMenuOption = inputUserInt(1, numberOfMenuOptions, "Bidding: enter an available action number "); //Ask the user to decide what to do
+    if (chosenMenuOption != 1) { //If the player didn't pass
+        hasPassed = FALSE;
+        if (secondMenuOptionIsBid && (chosenMenuOption == 2)) { //If the player decided to bid
+            displayBiddingMenuLine(" Trump options", TRUE, FALSE);
+            displayBiddingMenuLine("1: Spade", FALSE, FALSE);
+            displayBiddingMenuLine("2: Heart", FALSE, FALSE);
+            displayBiddingMenuLine("3: Diamond", FALSE, FALSE);
+            displayBiddingMenuLine("4: Club", FALSE, FALSE);
+            displayBiddingMenuLine("5: All trump", FALSE, FALSE);
+            displayBiddingMenuLine("6: No trump", FALSE, TRUE);
+            chosenMenuOption = inputUserInt(1, 6, "Select a trump: enter its number "); //Ask the user to choose a trump
+            contract->trump = chosenMenuOption; //Change the contract's trump
+            displayBiddingMenuLine(" Value options", TRUE, FALSE);
+            if (contract->points < 160) { //If the contract has a point value inferior to 160 (thus it's also not a Capot or a General)
+                sprintf(lineToDisplay, "1: Points(%d%s)", minContractPoints, (contract->points == 150) ? "" : "+");
+                //Prepare the line to display. Using the ternary operator here to make it more concise
+                displayBiddingMenuLine(lineToDisplay, FALSE, FALSE);
+                displayBiddingMenuLine("2: Capot", FALSE, FALSE);
+                displayBiddingMenuLine("3: General", FALSE, TRUE);
+                numberOfMenuOptions = 3;
+            }
+            else if (contract->points == 160) { //If the contract has a point value of 160
+                displayBiddingMenuLine("1: Capot", FALSE, FALSE);
+                displayBiddingMenuLine("2: General", FALSE, TRUE);
+                numberOfMenuOptions = 2;
+            }
+            else { //The contract is a Capot
+                displayBiddingMenuLine("1: General", FALSE, TRUE);
+                numberOfMenuOptions = 1;
+            }
+            chosenMenuOption = inputUserInt(1, numberOfMenuOptions, "Select a value: enter the corresponding number "); //Ask the user to select the contract value
+            if (chosenMenuOption == numberOfMenuOptions) { //If the user selected General
+                contract->type = GENERAL;
+                contract->points = 500;
+            }
+            else if (chosenMenuOption == numberOfMenuOptions - 1) { //If the user selected Capot
+                contract->type = CAPOT;
+                contract->points = 250;
+            }
+            else { //If the user selected points
+                sprintf(lineToDisplay, "Enter the desired points between %d and 160 ", minContractPoints); //Prepare the line to display
+                contract->points = inputUserInt(minContractPoints, 160, lineToDisplay); //Ask the user for the desired contract points
+                while (contract->points % 10 != 0) { //While the selected value isn't a multiple of 10
+                    contract->points = inputUserInt(minContractPoints, 160, "This isn't divisible by 10. Please try again "); //Ask the user again for the desired contract points
+                }
+            }
+        }
+        else { //The player decided to coinche or overcoinche
+            contract->coinche++; //Set the contract to COINCHED or OVERCOINCHED depending on its previous state
+        }
+    }
+    clearTopRightBox();
     return hasPassed;
 }
 
@@ -173,11 +250,11 @@ void deleteCardDisplay(void) {
 }
 
 void clearCardDisplay(void) {
-    printf("\033[1C\033[1B  \033[1B \033[4D\033[2A"); //Clear the card content
+    printf("\033[1C\033[1B  \033[1B \033[4D\033[2A"); //Clear the card content and return cursor to the top-left of the card
 }
 
 void changeCardDisplay(Card card) {
-    printf("\033[1C\033[1B%s\033[1B%s\033[4D\033[2A", VALUE_STR_TABLE[card.value], COLOR_STR_TABLE[card.color]);
+    printf("\033[1C\033[1B%s\033[1B%s\033[4D\033[2A", VALUE_STR_TABLE[card.value][0], COLOR_STR_TABLE[card.color]);
     //Change the value, then the color, then return the cursor to the top-left of the card
 }
 
@@ -261,6 +338,20 @@ void prepareLastTrickDisplay(void) {
     printf("\033[2B\033[5D"); //Move cursor to the fourth card
     displayEmptyCard();
     printf("\033[u"); //Restore cursor position
+}
+
+void displayBiddingMenuLine(char lineToDisplay[], Bool firstLine, Bool lastLine) {
+    if (firstLine) {
+        clearTopRightBox();
+        printf("\033[s\033[2;40H"); //Save cursor position and move cursor to the top left of the top right box
+    }
+    printf("%s\033[1E\033[39C", lineToDisplay); //Display the line and move over to the next line
+    if (firstLine) {
+        printf("\033[1E\033[39C"); //Skip a line to make the menu look nicer
+    }
+    if (lastLine) {
+        printf("\033[u"); //Restore cursor position
+    }
 }
 
 void clearContractDisplay(void) {
