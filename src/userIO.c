@@ -76,12 +76,12 @@ void inputUserAcknowledgement(char displayMsg[]) {
 Card askUserCard(Card cardArray[], int nbOfCards) {
     Card chosenCard;
     int chosenCardID;
-    displayNumbersAbovePlayerHand(cardArray, nbOfCards);
-    chosenCardID = inputUserInt(1, nbOfCards, "Play a card: enter the card's displayed number ");
-    while (cardArray[chosenCardID-1].canPlay == FALSE) {
-        chosenCardID = inputUserInt(1, nbOfCards, "You can't play this card. Choose another one ");
+    displayNumbersAbovePlayerHand(cardArray, nbOfCards); //Display numbers only above playable cards
+    chosenCardID = inputUserInt(1, nbOfCards, "Play a card: enter the card's displayed number "); //Ask the user to choose a card
+    while (cardArray[chosenCardID-1].canPlay == FALSE) { //While the user selects a wrong card
+        chosenCardID = inputUserInt(1, nbOfCards, "You can't play this card. Choose another one "); //Ask the user again to choose a card
     }
-    chosenCard = cardArray[chosenCardID-1];
+    chosenCard = cardArray[chosenCardID-1]; //Get the chosen card from the player's hand
     return chosenCard;
 }
 

@@ -24,6 +24,10 @@ int inputUserInt(int minBound, int maxBound, char displayStr[]);
 */
 void inputUserAcknowledgement(char displayMsg[]);
 
+/* Asks the user for a card to play among the valid ones, according to the Coinche rules
+*   @param cardArray[]: array containing the player's cards
+*   @param nbOfCards: the number of cards in cardArray
+*/
 Card askUserCard(Card cardArray[], int nbOfCards);
 
 /* Asks the user for their action during their bidding turn, according to the Coinche rules
