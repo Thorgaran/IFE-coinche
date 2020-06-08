@@ -3,8 +3,11 @@
 #include "play.h"
 #include "cardUtils.h"
 #include "playerUtils.h"
-#include "userIO.h"
+#include "stringUtils.h"
+#include "userInput.h"
 #include "ai.h"
+#include "displayMain.h"
+#include "displayRound.h"
 
 void setUp(void)
 {

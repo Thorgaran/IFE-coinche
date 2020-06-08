@@ -38,4 +38,9 @@ int getTeamRoundPoints(Player players[], Position player);
 */
 void increaseTeamTotalScore(Player players[], Position player, int roundScore);
 
+/* Takes each player's name, crop it, and save it
+*   @param players[]: array of 4 players
+*/
+void createPlayersCroppedNames(Player players[]);
+
 #endif // PLAYERUTILS_H

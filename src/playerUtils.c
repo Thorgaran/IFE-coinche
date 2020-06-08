@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include "playerUtils.h"
 #include "cardUtils.h"
-#include "userIO.h"
+#include "stringUtils.h"
+#include "userInput.h"
 #include "ai.h"
 
 Card getPlayerCard(Player *player, Card trickCards[], int nbOfTrickCards, Color trump, Color roundColor) {
@@ -26,9 +27,10 @@ Card getPlayerCard(Player *player, Card trickCards[], int nbOfTrickCards, Color 
 
 Bool getPlayerContract(Player player, Contract *contract) {
     Bool hasPassed = TRUE;
+    Coinche oldCoincheState = contract->coinche;
     switch (player.contractAI) {
         case CONTRACT_USER: //If the player is the User
-            hasPassed = askUserContract(player.cards, player.nbOfCards, contract);
+            hasPassed = askUserContract(contract);
             break;
         case CONTRACT_AI_ALWAYSEIGHTY: //If the player is an AI of type ALWAYSEIGHTY
             hasPassed = getAIContractAlwaysEighty(player.cards, contract);
@@ -39,7 +41,7 @@ Bool getPlayerContract(Player player, Contract *contract) {
         default: //Default behaviour if this AI type has no dedicated contract function
             hasPassed = getAIContractStandard(player.cards, player.nbOfCards, contract);
     }
-    if (hasPassed == FALSE) { //If the player decided to make a contract
+    if ((hasPassed == FALSE) && (contract->coinche == oldCoincheState)) { //If the player decided to make a contract
         contract->issuer = player.pos; //Set the contract issuer as being this player
     }
     return hasPassed;
@@ -68,4 +70,12 @@ int getTeamRoundPoints(Player players[], Position player) {
 void increaseTeamTotalScore(Player players[], Position player, int roundScore) {
     players[player].teamScore += roundScore;            //Increase the player's total team score
     players[(player + 2) % 4].teamScore += roundScore;  //Increase its partner's total team score
+}
+
+void createPlayersCroppedNames(Player players[]) {
+    char* croppedName = NULL;
+    for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
+        croppedName = cropStr(players[pos].name, 15);   //create its cropped name,
+        players[pos].croppedName = croppedName;         //and save it
+    }
 }
