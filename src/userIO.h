@@ -36,7 +36,7 @@ Bool askUserContract(Contract *contract);
 *   @param maxLength: the maximum length the string can be without cropping
 *   @return croppedString*: pointer to the first char of the cropped string. Must be freed eventually!
 */
-char* cropStr(char string[], int maxLength);
+char* cropStr(const char string[], int maxLength);
 
 /* Takes a string and returns a fixed length, text-aligned version of it, cropped and or underlined if needed
 *   @param string[]: the string to center

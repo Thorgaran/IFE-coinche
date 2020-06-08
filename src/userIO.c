@@ -167,7 +167,7 @@ Bool askUserContract(Contract *contract) {
     return hasPassed;
 }
 
-char* cropStr(char string[], int maxLength) {
+char* cropStr(const char string[], int maxLength) {
     char* croppedString = (char*) malloc((maxLength + 3) * sizeof(char)); //Create the return pointer and allocate enough memory
     strncpy(croppedString, string, maxLength);  //Copy the input string into the output string (limited to maxLength)
     if (strlen(string) > maxLength) {           //If the input string is too long,
@@ -364,6 +364,7 @@ void clearContractDisplay(void) {
 
 void updateContractDisplay(char playerName[], Contract contract) {
     char* shortName = cropStr(playerName, 15); //Get the player name cropped to 15 characters if needed
+    char* croppedColor = NULL;
     clearContractDisplay(); //Clear contract display to avoid having leftover characters
     printf("\033[s\033[3;2H"); //Save cursor position and move cursor to the contract corner
     printf(shortName); //Print the contract issuer's name
@@ -375,7 +376,14 @@ void updateContractDisplay(char playerName[], Contract contract) {
     else {
         printf("%s ", CONTRACTTYPE_STR_TABLE[contract.type]); //Else, print the contract type string
     }
-    printf("%s", COLOR_STR_TABLE[contract.trump]); //Then, print the color character
+    if ((contract.type == GENERAL) && (contract.trump >= ALLTRUMP)) {   //If in this very special case (General + All or No trump),
+        croppedColor = cropStr(COLOR_STR_TABLE[contract.trump], 7);     //shorten the color to fit in the contract box
+        printf("%s", croppedColor); //Then, print the color character
+        free(croppedColor); //Free croppedColor as it's not needed anymore
+    }
+    else {
+        printf("%s", COLOR_STR_TABLE[contract.trump]); //Then, print the color character
+    }
     printf("\033[1E\033[1C"); //Move cursor to the coinche field
     printf("%s", COINCHE_STR_TABLE[contract.coinche]); //Print the coinche state
     printf("\033[u"); //Restore cursor position
