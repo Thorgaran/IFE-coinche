@@ -22,15 +22,14 @@ void clearCardDisplay(void) {
 }
 
 void changeCardDisplay(Card card) {
-    if ((card.color == HEART) || (card.color == DIAMOND))
-    {
-        printf("\033[0;31m"); //Set the terminal color in red
-        printf("\033[1C\033[1B%s\033[1B%s\033[4D\033[2A", VALUE_STR_TABLE[card.value][0], COLOR_STR_TABLE[card.color]); //Change the value, then the color, then return the cursor to the top-left of the card
-        printf("\033[0m"); //Reset the terminal color in white
-    } else
-    {
-        printf("\033[1C\033[1B%s\033[1B%s\033[4D\033[2A", VALUE_STR_TABLE[card.value][0], COLOR_STR_TABLE[card.color]); //Displays the card in white
+    printf("\033[1C\033[1B"); //Move cursor to the card displayed value
+    if ((card.color == HEART) || (card.color == DIAMOND)) {
+        printf("\033[0;31m%s\033[0m", VALUE_STR_TABLE[card.value][0]); //Display the value in red
     }
+    else {
+        printf("%s", VALUE_STR_TABLE[card.value][0]); //Display the value in the standard color
+    }
+    printf("\033[1B%s\033[4D\033[2A", COLOR_STR_TABLE[card.color]); //Display the color, then return the cursor to the top-left of the card
 }
 
 void displayTable(void) {
@@ -131,13 +130,7 @@ void updateContractDisplay(char playerName[], Contract contract) {
         free(croppedColor); //Free croppedColor as it's not needed anymore
     }
     else {
-        if ((contract.trump == HEART) || (contract.trump == DIAMOND)){
-            printf("\033[0;31m"); //Sets the terminal color in red
-            printf("%s", COLOR_STR_TABLE[contract.trump]); //Then, print the color character
-            printf("\033[0m"); //Resets the terminal color in white
-        } else {
-            printf("%s", COLOR_STR_TABLE[contract.trump]); //Print the color character
-        }  
+        printf("%s", COLOR_STR_TABLE[contract.trump]); //Print the color character
     }
     printf("\033[1E\033[1C"); //Move cursor to the coinche field
     printf("%s", COINCHE_STR_TABLE[contract.coinche]); //Print the coinche state
