@@ -15,7 +15,7 @@ void deleteCardDisplay(void);
 void clearCardDisplay(void);
 
 /* Changes a card at the current cursor position (the cursor comes back to that position afterwards)
-*   @param card: the card to display. Only its value and color matter
+*   @param card: the card to display. Only its value and color matter. Depending on its color, the card will be displayed in red or white
 */
 void changeCardDisplay(Card card);
 

@@ -29,7 +29,11 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
             everyonePassed = FALSE;     //If everyonePassed is still on TRUE, set it to FALSE
             if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
                 updateContractDisplay(players[currentPlayer].name, *contract); //Update the contract display with the new contract
-                sprintf(displayMsg, "%s decided to make a \"%s\" contract.", players[currentPlayer].croppedName, COLOR_STR_TABLE[contract->trump]);
+                if ((contract->trump == HEART) || (contract->trump == DIAMOND)){
+                    sprintf(displayMsg, "%s decided to make a \"\033[0;31m%s\033[0m\" contract.", players[currentPlayer].croppedName, COLOR_STR_TABLE[contract->trump]); //The color of the contract will be displayed in red
+                } else {
+                    sprintf(displayMsg, "%s decided to make a \"%s\" contract.", players[currentPlayer].croppedName, COLOR_STR_TABLE[contract->trump]); //The color of the contract will be displayed in white
+                }  
                 inputUserAcknowledgement(displayMsg);
                 displayPlayerName(players[currentPlayer], FALSE); //Remove underline from the active player
             }
@@ -75,7 +79,12 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
                 displayPlayerHand(players[SOUTH].cards, players[SOUTH].nbOfCards);   //update its hand with one less card
             }
             else {
-                sprintf(displayMsg, "%s played a %s of %s.", players[currentPlayer].croppedName, VALUE_STR_TABLE[trickCards[i].value][1], COLOR_STR_TABLE[trickCards[i].color]);
+                if ((trickCards[i].color == HEART) || (trickCards[i].color == DIAMOND)){
+                    sprintf(displayMsg, "%s played a %s of \033[0;31m%s\033[0m.", players[currentPlayer].croppedName, VALUE_STR_TABLE[trickCards[i].value][1], COLOR_STR_TABLE[trickCards[i].color]);
+                } //Display the color in red
+                else {
+                    sprintf(displayMsg, "%s played a %s of %s.", players[currentPlayer].croppedName, VALUE_STR_TABLE[trickCards[i].value][1], COLOR_STR_TABLE[trickCards[i].color]);
+                } //Display the color in white
                 inputUserAcknowledgement(displayMsg);
             }
             displayPlayerName(players[currentPlayer], FALSE); //Remove underline from the active player
