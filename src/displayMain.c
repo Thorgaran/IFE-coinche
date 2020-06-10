@@ -93,5 +93,4 @@ void clearMenu(void){
     printf("\033[28;2H                                                     ");
     printf("\033[14;1H║");
     printf("\033[14;55H║");
-    printf("\033[28;45H");
 }
