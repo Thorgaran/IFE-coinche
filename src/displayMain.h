@@ -21,4 +21,12 @@ void displayInfoMsg(char messageLine1[], char messageLine2[]);
 */
 void resizeCmdWindow(int nbOfLines, int nbOfColumns);
 
+/* Displays the menu
+*/
+void displayMenu(void);
+
+/* Clears the menu to display the leaderboard or the credits
+*/
+void clearMenu(void);
+
 #endif // DISPLAYMAIN_H

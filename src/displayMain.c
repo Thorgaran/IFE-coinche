@@ -3,6 +3,8 @@
 #include <string.h>
 #include "displayMain.h"
 #include "stringUtils.h"
+#include "userInput.h"
+#include "play.h"
 
 void displayFrame(void) {
     printf("╔═════════════════════════════════════════════════════╗\n");
@@ -61,4 +63,35 @@ void displayInfoMsg(char messageLine1[], char messageLine2[]) {
 
 void resizeCmdWindow(int nbOfLines, int nbOfColumns) {
     printf("\033[8;%d;%dt", nbOfLines, nbOfColumns); //Resize the window
+}
+
+void displayMenu(void){
+    printf("\033[2;3H░█████╗░░█████╗░██╗███╗░░██╗░█████╗░██╗░░██╗███████╗");
+    printf("\033[3;3H██╔══██╗██╔══██╗██║████╗░██║██╔══██╗██║░░██║██╔════╝");
+    printf("\033[4;3H██║░░╚═╝██║░░██║██║██╔██╗██║██║░░╚═╝███████║█████╗░░");
+    printf("\033[5;3H██║░░██╗██║░░██║██║██║╚████║██║░░██╗██╔══██║██╔══╝░░");
+    printf("\033[6;3H╚█████╔╝╚█████╔╝██║██║░╚███║╚█████╔╝██║░░██║███████╗");
+    printf("\033[7;3H░╚════╝░░╚════╝░╚═╝╚═╝░░╚══╝░╚════╝░╚═╝░░╚═╝╚══════╝");
+    printf("\033[8;11H░██████╗░░█████╗░███╗░░░███╗███████╗");
+    printf("\033[9;11H██╔════╝░██╔══██╗████╗░████║██╔════╝");
+    printf("\033[10;11H██║░░██╗░███████║██╔████╔██║█████╗░░");
+    printf("\033[11;11H██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░");
+    printf("\033[12;11H╚██████╔╝██║░░██║██║░╚═╝░██║███████╗");
+    printf("\033[13;11H░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝");
+    printf("\033[14;1H╠═════════════════════════════════════════════════════╣");
+    printf("\033[17;21H1. Start a game");
+    printf("\033[19;21H2. Leaderboard");
+    printf("\033[21;21H3. Credits");
+    printf("\033[23;21H4. Exit game");
+    printf("\033[28;45H"); //Move cursor to the info box
+}
+
+void clearMenu(void){
+    for (int line = 2; line < 24; line++){
+        printf("\033[%d;2H                                                     ",line);
+    }
+    printf("\033[28;2H                                                     ");
+    printf("\033[14;1H║");
+    printf("\033[14;55H║");
+    printf("\033[28;45H");
 }
