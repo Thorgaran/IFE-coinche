@@ -86,11 +86,17 @@ void displayMenu(void){
     printf("\033[28;45H"); //Move cursor to the info box
 }
 
-void clearMenu(void){
-    for (int line = 2; line < 24; line++){
+void clearTerminal(void){
+    for (int line = 2; line < 27; line++){
         printf("\033[%d;2H                                                     ",line);
     }
     printf("\033[28;2H                                                     ");
+    printf("\033[1;17H═");
+    printf("\033[1;39H═");
+    printf("\033[6;1H║");
+    printf("\033[6;55H║");
+    printf("\033[11;1H║");
+    printf("\033[11;55H║");
     printf("\033[14;1H║");
     printf("\033[14;55H║");
 }

@@ -25,8 +25,8 @@ void resizeCmdWindow(int nbOfLines, int nbOfColumns);
 */
 void displayMenu(void);
 
-/* Clears the menu to display the leaderboard or the credits
+/* Clears the inside of the frame to switch between the different displays
 */
-void clearMenu(void);
+void clearTerminal(void);
 
 #endif // DISPLAYMAIN_H
