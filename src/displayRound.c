@@ -33,36 +33,18 @@ void changeCardDisplay(Card card) {
 }
 
 void displayTable(void) {
-    printf("╔═══════════════╤═════════════════════╤═══════════════╗\n");
-    printf("║Contract:      │                     │               ║\n");
-    printf("║               │     ╭┈┈┈┈┈┈┈┈┈╮     │               ║\n");
-    printf("║               │     ┊ Round   ┊     │               ║\n");
-    printf("║               │     ┊         ┊     │               ║\n");
-    printf("╟───────┬───────┤     ╰┈┈┈┈┈┈┈┈┈╯     │               ║\n");
-    printf("║Your   │Rival  │                     │               ║\n");
-    printf("║team   │team   │                     │               ║\n");
-    printf("║score: │score: │                     │               ║\n");
-    printf("║  0/701│  0/701│                     │               ║\n");
-    printf("╟───────┴───────╯                     ╰───────────────╢\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("║                      Your hand                      ║\n");
-    printf("╠═════════════════════════════════════════════════════╣\n");
-    printf("║                                                     ║\n");
-    printf("║                                                     ║\n");
-    printf("╚═════════════════════════════════════════════════════╝");
+    printf("\033[1;17H╤═════════════════════╤");
+    printf("\033[2;2HContract:      │                     │");
+    printf("\033[3;17H│     ╭┈┈┈┈┈┈┈┈┈╮     │");
+    printf("\033[4;17H│     ┊ Round   ┊     │");
+    printf("\033[5;17H│     ┊         ┊     │");
+    printf("\033[6;1H╟───────┬───────┤     ╰┈┈┈┈┈┈┈┈┈╯     │               ║");
+    printf("\033[7;2HYour   │Rival  │                     │");
+    printf("\033[8;2Hteam   │team   │                     │");
+    printf("\033[9;2Hscore: │score: │                     │");
+    printf("\033[10;2H  0/701│  0/701│                     │");
+    printf("\033[11;1H╟───────┴───────╯                     ╰───────────────╢");
+    printf("\033[26;24HYour hand");
     printf("\033[28;28H"); //Move cursor to the info box
 }
 

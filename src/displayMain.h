@@ -2,6 +2,9 @@
 #define DISPLAYMAIN_H
 #include "core.h"
 
+/* Displays the empty frame, will be used to display the menu and the round display
+*/
+void displayFrame(void);
 /* Clears the info box. The cursor is set to the middle of the first line
 */
 void clearInfoMsg(void);

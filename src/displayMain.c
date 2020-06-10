@@ -4,6 +4,39 @@
 #include "displayMain.h"
 #include "stringUtils.h"
 
+void displayFrame(void) {
+    printf("╔═════════════════════════════════════════════════════╗\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("╠═════════════════════════════════════════════════════╣\n");
+    printf("║                                                     ║\n");
+    printf("║                                                     ║\n");
+    printf("╚═════════════════════════════════════════════════════╝");
+}
+
 void clearInfoMsg(void) {
     printf("\033[28;2H                                                     \033[1E\033[1C");
     //Move cursor to the info message box, clear the first line, move cursor to the next line
