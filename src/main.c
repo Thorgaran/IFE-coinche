@@ -4,6 +4,7 @@
 #include "core.h"
 #include "play.h"
 #include "displayMain.h"
+#include "leaderboard.h"
 
 int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function
@@ -35,6 +36,9 @@ int main (int argc, char* argv[]) {
     players[SOUTH].cardAI = CARD_USER;
     players[SOUTH].contractAI = CONTRACT_USER;
     
+    increaseWins(players[SOUTH].name);
+    getchar();
+
     playGame(players);
     /*averageGameLength = playAIGames(players, 1000, nbOfGamesWon);
 

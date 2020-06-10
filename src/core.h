@@ -1,7 +1,7 @@
 #ifndef CORE_H
 #define CORE_H
 
-#define MAX_PLAYER_NAME_LENGTH 100
+#define MAX_PLAYER_NAME_LENGTH 50
 
 typedef enum Bool {
     FALSE = 0,
