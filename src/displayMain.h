@@ -21,4 +21,12 @@ void displayInfoMsg(char messageLine1[], char messageLine2[]);
 */
 void resizeCmdWindow(int nbOfLines, int nbOfColumns);
 
+/* Displays the menu
+*/
+void displayMenu(void);
+
+/* Clears the inside of the frame to switch between the different displays
+*/
+void clearTerminal(void);
+
 #endif // DISPLAYMAIN_H
