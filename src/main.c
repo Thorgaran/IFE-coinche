@@ -10,6 +10,7 @@ int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function
     printf("\033[?1049h"); //Enable alternate screen buffer
     resizeCmdWindow(31, 55);
+    displayFrame();
     /*float averageGameLength;
     int nbOfGamesWon[] = {0, 0};*/
     Card playersCards[4][8];
