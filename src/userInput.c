@@ -71,6 +71,7 @@ void inputUserAcknowledgement(char displayMsg[]) {
         free(inputUserStr(2, displayMsg, "Press enter to continue.", FALSE)); //The input string pointer, not needed, is immediately freed
     }
     printf("\033[?25h"); //Show cursor
+    clearInfoMsg();
 }
 
 Card askUserCard(Card cardArray[], int nbOfCards) {
