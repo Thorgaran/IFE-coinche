@@ -14,4 +14,11 @@ void writeLine(FILE *leaderboard, char playerName[], int wins);
 */
 void increaseWins(char playerName[]);
 
+/* Retrieves the top ten players in the leaderboard file
+*   @param names[][MAX_PLAYER_NAME_LENGTH+1]: empty two-dimensional array of chars, will be filled with the top ten player names
+*   @param wins[]: empty array of integers, will be filled with the top ten player wins
+*   @return nbOfPlayers: the number of players found in the file, from 0 to 10
+*/
+int getTopTen(char names[][MAX_PLAYER_NAME_LENGTH+1], int wins[]);
+
 #endif // LEADERBOARD_H

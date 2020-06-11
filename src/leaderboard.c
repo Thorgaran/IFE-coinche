@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "leaderboard.h"
@@ -52,4 +53,23 @@ void increaseWins(char playerName[]) {
         }
     }
     fclose(leaderboard); //Close the leaderboard file
+}
+
+int getTopTen(char names[][MAX_PLAYER_NAME_LENGTH+1], int wins[]) {
+    FILE *leaderboard;
+    char *fgetsReturnPtr = NULL;
+    char line[MAX_PLAYER_NAME_LENGTH+8];
+    int nbOfPlayers = 0;
+    leaderboard = fopen("leaderboard.txt", "r"); //Open the file leaderboard.txt in read-only mode
+    if (leaderboard != NULL) { //If the file was found (thus contains at least one line)
+        do {
+            fgetsReturnPtr = fgets(line, MAX_PLAYER_NAME_LENGTH + 9, leaderboard);  //Try to read a line in the file
+            if (fgetsReturnPtr != NULL) {                                           //If the fgets function did read a line (it didn't reach the end of the file)
+                sscanf(line, "%[^;];%3d", names[nbOfPlayers], &wins[nbOfPlayers]);     //Parse the obtained line: name;wins
+                nbOfPlayers++;                                                        //Increment the number of lines
+            }
+        } while ((fgetsReturnPtr != NULL) && (nbOfPlayers < 10));
+        //While the file pointer hasn't reached the end of the file AND it has read less than 10 lines
+    }
+    return nbOfPlayers;
 }
