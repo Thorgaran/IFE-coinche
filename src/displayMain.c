@@ -3,10 +3,10 @@
 #include <string.h>
 #include "displayMain.h"
 #include "stringUtils.h"
-#include "userInput.h"
-#include "play.h"
+#include "leaderboard.h"
 
 void displayFrame(void) {
+    printf("\033[1;1H"); //Move cursor to origin
     printf("╔═════════════════════════════════════════════════════╗\n");
     printf("║                                                     ║\n");
     printf("║                                                     ║\n");
@@ -37,6 +37,7 @@ void displayFrame(void) {
     printf("║                                                     ║\n");
     printf("║                                                     ║\n");
     printf("╚═════════════════════════════════════════════════════╝");
+    printf("\033[28;28H"); //Move cursor to the info box
 }
 
 void clearInfoMsg(void) {
@@ -65,7 +66,7 @@ void resizeCmdWindow(int nbOfLines, int nbOfColumns) {
     printf("\033[8;%d;%dt", nbOfLines, nbOfColumns); //Resize the window
 }
 
-void displayMenu(void){
+void displayMenu(void) {
     printf("\033[2;3H░█████╗░░█████╗░██╗███╗░░██╗░█████╗░██╗░░██╗███████╗");
     printf("\033[3;3H██╔══██╗██╔══██╗██║████╗░██║██╔══██╗██║░░██║██╔════╝");
     printf("\033[4;3H██║░░╚═╝██║░░██║██║██╔██╗██║██║░░╚═╝███████║█████╗░░");
@@ -83,7 +84,7 @@ void displayMenu(void){
     printf("\033[19;21H2. Leaderboard");
     printf("\033[21;21H3. Credits");
     printf("\033[23;21H4. Exit game");
-    printf("\033[28;45H"); //Move cursor to the info box
+    printf("\033[28;28H"); //Move cursor to the info box
 }
 
 void mainMenu(Player players[]){
@@ -105,17 +106,28 @@ void mainMenu(Player players[]){
     }
 }
 
-void clearTerminal(void){
-    for (int line = 2; line < 27; line++){
-        printf("\033[%d;2H                                                     ",line);
+void displayLeaderboard(void) {
+    char names[10][MAX_PLAYER_NAME_LENGTH+1];
+    char *formattedName = NULL;
+    int nbOfPlayers, wins[10];
+    displayFrame();
+    printf("\033[2;6H__            __        __                    __");
+    printf("\033[1E\033[4C/ /__ ___ ____/ /__ ____/ /  ___  ___ ________/ /");
+    printf("\033[1E\033[3C/ / -_) _ `/ _  / -_) __/ _ \\/ _ \\/ _ `/ __/ _  /");
+    printf("\033[1E\033[2C/_/\\__/\\_,_/\\_,_/\\__/_/ /_.__/\\___/\\_,_/_/  \\_,_/");
+    printf("\033[1E╠═════════════════════════════════════════════════════╣");
+    nbOfPlayers = getTopTen(names, wins);
+    if (nbOfPlayers == 0) { //If there are no players to display
+        printf("\033[5E\033[4CWin a game to see your name displayed here!"); //Display placeholder message
     }
-    printf("\033[28;2H                                                     ");
-    printf("\033[1;17H═");
-    printf("\033[1;39H═");
-    printf("\033[6;1H║");
-    printf("\033[6;55H║");
-    printf("\033[11;1H║");
-    printf("\033[11;55H║");
-    printf("\033[14;1H║");
-    printf("\033[14;55H║");
+    else { //If there are players to display
+        printf("\033[4E\033[4C╭────┬───────────────────────────────────┬────╮"); //Display the top of the table
+        printf("\033[1E\033[4C│Rank│               Name                │Wins│");
+        printf("\033[1E\033[4C├────┼───────────────────────────────────┼────┤");
+        for (int i = 0; i < nbOfPlayers; i++) {
+            formattedName = formatStr(names[i], 35, TEXT_CENTER, FALSE);
+            printf("\033[1E\033[4C│ %2d │%s│ %3d│", i+1, formattedName, wins[i]);
+        }
+        printf("\033[1E\033[4C╰────┴───────────────────────────────────┴────╯"); //Display end of the table
+    }
 }
