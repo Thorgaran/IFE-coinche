@@ -2,7 +2,7 @@
 #define DISPLAYMAIN_H
 #include "core.h"
 
-/* Displays the empty frame, will be used to display the menu and the round display
+/* Displays the empty frame needed for every other display (and replaces whatever was there before)
 */
 void displayFrame(void);
 /* Clears the info box. The cursor is set to the middle of the first line
@@ -25,8 +25,8 @@ void resizeCmdWindow(int nbOfLines, int nbOfColumns);
 */
 void displayMenu(void);
 
-/* Clears the inside of the frame to switch between the different displays
+/* Displays the leaderboard of the top ten in number of wins
 */
-void clearTerminal(void);
+void displayLeaderboard(void);
 
 #endif // DISPLAYMAIN_H

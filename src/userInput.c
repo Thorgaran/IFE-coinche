@@ -8,7 +8,7 @@
 char* inputUserStr(int maxStrLength, char displayStrline1[], char displayStrline2[], Bool useSecondLineAsInput) {
     char c;
     char* inputStr = NULL;
-    char* fgetcReturnPtr = NULL;
+    char* fgetsReturnPtr = NULL;
     int inputStrLength;
     inputStr = (char*) malloc(maxStrLength);    //Allocate enough memory for the input string
     if (useSecondLineAsInput) {                 //If using the second line as input,
@@ -18,8 +18,8 @@ char* inputUserStr(int maxStrLength, char displayStrline1[], char displayStrline
     else {
         displayInfoMsg(displayStrline1, displayStrline2); //Else, display on both lines
     }
-    fgetcReturnPtr = fgets(inputStr, maxStrLength, stdin); //Ask user for a string
-    while (fgetcReturnPtr == NULL) {
+    fgetsReturnPtr = fgets(inputStr, maxStrLength, stdin); //Ask user for a string
+    while (fgetsReturnPtr == NULL) {
         if (useSecondLineAsInput) {     //If using the second line as input
             displayInfoMsg("Couldn't read the input string. Please try again.", ""); //Display an error message on the first line only
             printf("\033[1E\033[2C");   //Move cursor to the next line to have more room to write the string
@@ -27,7 +27,7 @@ char* inputUserStr(int maxStrLength, char displayStrline1[], char displayStrline
         else {
             displayInfoMsg("Couldn't read the input string. Please try again.", displayStrline1); //Else, display things on both lines
         }
-        fgetcReturnPtr = fgets(inputStr, maxStrLength, stdin); //Ask user for a string
+        fgetsReturnPtr = fgets(inputStr, maxStrLength, stdin); //Ask user for a string
     }
     inputStrLength = strlen(inputStr);  //This will be used multiple times
     c = inputStr[inputStrLength-1];     //Store the last char of the string in c
@@ -71,6 +71,7 @@ void inputUserAcknowledgement(char displayMsg[]) {
         free(inputUserStr(2, displayMsg, "Press enter to continue.", FALSE)); //The input string pointer, not needed, is immediately freed
     }
     printf("\033[?25h"); //Show cursor
+    clearInfoMsg();
 }
 
 Card askUserCard(Card cardArray[], int nbOfCards) {
