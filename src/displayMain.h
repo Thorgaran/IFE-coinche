@@ -25,6 +25,10 @@ void resizeCmdWindow(int nbOfLines, int nbOfColumns);
 */
 void displayMenu(void);
 
+/* Executes the action selected by the user in the menu
+    @param players[]: the four players that will play a game if the user selected 1. Start a game
+*/
+void mainMenu(Player players[]);
 /* Clears the inside of the frame to switch between the different displays
 */
 void clearTerminal(void);

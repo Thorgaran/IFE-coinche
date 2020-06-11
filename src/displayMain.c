@@ -86,6 +86,25 @@ void displayMenu(void){
     printf("\033[28;45H"); //Move cursor to the info box
 }
 
+void mainMenu(Player players[]){
+    displayMenu();
+    int chosenMenuOption = inputUserInt(1,4,"Select an action: enter its number");
+    switch (chosenMenuOption){
+    case 1: playGame(players);
+        break;
+    
+    case 2: 
+        displayLeaderboard();
+        break;
+    
+    case 3: 
+        displayCredits();
+        break;
+    
+    case 4: break;
+    }
+}
+
 void clearTerminal(void){
     for (int line = 2; line < 27; line++){
         printf("\033[%d;2H                                                     ",line);
