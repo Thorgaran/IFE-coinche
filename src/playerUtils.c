@@ -71,11 +71,3 @@ void increaseTeamTotalScore(Player players[], Position player, int roundScore) {
     players[player].teamScore += roundScore;            //Increase the player's total team score
     players[(player + 2) % 4].teamScore += roundScore;  //Increase its partner's total team score
 }
-
-void createPlayersCroppedNames(Player players[]) {
-    char* croppedName = NULL;
-    for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
-        croppedName = cropStr(players[pos].name, 15);   //create its cropped name,
-        players[pos].croppedName = croppedName;         //and save it
-    }
-}

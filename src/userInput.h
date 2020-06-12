@@ -7,7 +7,7 @@
 *   @param displayStrline1[]: first line of the prompt given to the user asking for an input
 *   @param displayStrline2[]: second line of the prompt given to the user. If useSecondLineAsInput is set to true, this is ignored
 *   @param  useSecondLineAsInput: if set to TRUE, the user will input the string on an empty second line instead of the end of the current line
-*   @return inputStr*: pointer to the first char of the user string. Must be freed eventually!
+*   @return *inputStr: pointer to the first char of the user string. Must be freed eventually!
 */
 char* inputUserStr(int maxStrLength, char displayStrline1[], char displayStrline2[], Bool useSecondLineAsInput);
 
@@ -23,6 +23,12 @@ int inputUserInt(int minBound, int maxBound, char displayStr[]);
 *   @param displayMsg[]: the optional message to display. To ignore this argument, set it to ""
 */
 void inputUserAcknowledgement(char displayMsg[]);
+
+/* Asks the user to enter a player name. Prevent the user from entering ';' or any character not in the ASCII range 32-126
+*   @param displayMsg[]: the prompt given to the user asking for a name
+*   @return *userName: pointer to the first char of the user name. Must be freed eventually!
+*/
+char* inputUserName(char displayMsg[]);
 
 /* Asks the user for a card to play among the valid ones, according to the Coinche rules
 *   @param cardArray[]: array containing the player's cards

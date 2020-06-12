@@ -18,14 +18,14 @@ const char* VALUE_STR_TABLE[9][2] = { //Array used to convert between value type
     {"A ", "A"}     //ACE
 };
 
-const char* COLOR_STR_TABLE[7] = { //Array used to convert between color types and their string representations. Read only
-    "",                     //NULL_COLOR
-    "♠",                    //SPADE
-    "\033[0;31m♥\033[0m",   //HEART (in red)
-    "\033[0;31m♦\033[0m",   //DIAMOND (in red)
-    "♣",                    //CLUB
-    "All trump",            //ALLTRUMP
-    "No trump"              //NOTRUMP
+const char* COLOR_STR_TABLE[7][2] = { //Array used to convert between color types and their string representations. Read only
+    {"", ""},                           //NULL_COLOR
+    {"♠", " spade"},                    //SPADE
+    {"\033[0;31m♥\033[0m", " heart"},   //HEART (in red)
+    {"\033[0;31m♦\033[0m", " diamond"}, //DIAMOND (in red)
+    {"♣", " club"},                     //CLUB
+    {"All trump", "n all trump"},       //ALLTRUMP
+    {"No trump", "no trump"}            //NOTRUMP
 };
 
 const char* COINCHE_STR_TABLE[3] = { //Array used to convert between coinche types and their string representations. Read only

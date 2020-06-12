@@ -36,17 +36,17 @@ typedef struct Card {
     Bool canPlay;
 } Card;
 
-typedef enum cardAI {
+typedef enum CardAI {
     CARD_USER              = 0,
     CARD_AI_FIRSTAVAILABLE = 1,
     CARD_AI_STANDARD       = 2
-} cardAI;
+} CardAI;
 
-typedef enum contractAI {
+typedef enum ContractAI {
     CONTRACT_USER            = 0,
     CONTRACT_AI_ALWAYSEIGHTY = 1,
     CONTRACT_AI_STANDARD     = 2
-} contractAI;
+} ContractAI;
 
 typedef enum Position {
     SOUTH = 0,
@@ -56,8 +56,8 @@ typedef enum Position {
 } Position;
 
 typedef struct Player {
-    cardAI cardAI;
-    contractAI contractAI;
+    CardAI cardAI;
+    ContractAI contractAI;
     Position pos;
     char* name;
     char* croppedName;
@@ -97,7 +97,7 @@ const int CARD_POINTS_TABLE[4][8];
 
 const char* VALUE_STR_TABLE[9][2];
 
-const char* COLOR_STR_TABLE[7];
+const char* COLOR_STR_TABLE[7][2];
 
 const char* COINCHE_STR_TABLE[3];
 

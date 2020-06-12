@@ -29,7 +29,13 @@ Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
             everyonePassed = FALSE;     //If everyonePassed is still on TRUE, set it to FALSE
             if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
                 updateContractDisplay(players[currentPlayer].name, *contract); //Update the contract display with the new contract
-                sprintf(displayMsg, "%s decided to make a \"%s\" contract.", players[currentPlayer].croppedName, COLOR_STR_TABLE[contract->trump]); //The color of the contract will be displayed in white
+                if (contract->coinche == NOT_COINCHED) { //If the contract wasn't just coinched or overcoinched
+                    sprintf(displayMsg, "%s made a%s contract.", players[currentPlayer].croppedName, COLOR_STR_TABLE[contract->trump][1]);
+                    //The color of the contract will be displayed in either red or white
+                }
+                else { //If the contract has just been coinched or overcoinched
+                    sprintf(displayMsg, "Contract %s from %s!", COINCHE_STR_TABLE[contract->coinche], players[currentPlayer].croppedName);
+                }
                 inputUserAcknowledgement(displayMsg);
                 displayPlayerName(players[currentPlayer], FALSE); //Remove underline from the active player
             }
@@ -75,7 +81,7 @@ Position playTrick(Player players[], Position startingPlayer, Color trump) {
                 displayPlayerHand(players[SOUTH].cards, players[SOUTH].nbOfCards);   //update its hand with one less card
             }
             else {
-                sprintf(displayMsg, "%s played a %s of %s.", players[currentPlayer].croppedName, VALUE_STR_TABLE[trickCards[i].value][1], COLOR_STR_TABLE[trickCards[i].color]);
+                sprintf(displayMsg, "%s played a %s of%s.", players[currentPlayer].croppedName, VALUE_STR_TABLE[trickCards[i].value][1], COLOR_STR_TABLE[trickCards[i].color][1]);
                 inputUserAcknowledgement(displayMsg);
             }
             displayPlayerName(players[currentPlayer], FALSE); //Remove underline from the active player
@@ -163,11 +169,9 @@ int playGame(Player players[]) {
         players[pos].teamScore = 0;                     //Set its team score to 0
     }
     if (players[SOUTH].cardAI == CARD_USER) { //Display stuff if the game has a playing user
-        displayTable();
-        inputUserAcknowledgement("Table displayed.");
+        preparePlayTable();
         for (Position pos = SOUTH; pos <= EAST; pos++) {    //For each player,
             displayPlayerName(players[pos], FALSE);         //display their name
-            createPlayersCroppedNames(players);
         }
     }
     do {
@@ -207,8 +211,8 @@ float playAIGames(Player players[], int nbOfGames, int nbOfGamesWon[]) {
     float averageGameLength;
     for (int game = 0; game < nbOfGames; game++) {  //Play "nbOfGames" games
         totalNbOfRounds += playGame(players);       //Play a game and increase the total number of rounds
-        if (players[0].teamScore > 700) {           //If the first team won,
-            nbOfGamesWon[0] += 1;                   //Increase its number of wins
+        if (players[SOUTH].teamScore > 700) {       //If the first team won,
+            nbOfGamesWon[0] += 1;                   //increase its number of wins
         }
         else {
             nbOfGamesWon[1] += 1;                   //Else, increase the second team's number of wins

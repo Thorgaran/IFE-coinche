@@ -10,7 +10,7 @@ char* inputUserStr(int maxStrLength, char displayStrline1[], char displayStrline
     char* inputStr = NULL;
     char* fgetsReturnPtr = NULL;
     int inputStrLength;
-    inputStr = (char*) malloc(maxStrLength);    //Allocate enough memory for the input string
+    inputStr = (char*) malloc(maxStrLength * sizeof(char));    //Allocate enough memory for the input string
     if (useSecondLineAsInput) {                 //If using the second line as input,
         displayInfoMsg(displayStrline1, "");    //Display only on the first line
         printf("\033[1E\033[2C");               //Move cursor to the next line to have more room to write the string
@@ -72,6 +72,29 @@ void inputUserAcknowledgement(char displayMsg[]) {
     }
     printf("\033[?25h"); //Show cursor
     clearInfoMsg();
+}
+
+char* inputUserName(char displayMsg[]) {
+    char singleChar;
+    char* userName = NULL;
+    int charCount;
+    Bool validName;
+    do {
+        validName = TRUE;
+        userName = inputUserStr(MAX_PLAYER_NAME_LENGTH+1, displayMsg, "", TRUE);
+        charCount = 0;
+        do {
+            singleChar = userName[charCount];   //Get the next char in userName
+            charCount++;                        //Increment the character count
+            if ((singleChar != '\0') && ((singleChar == ';') || (singleChar < ' ') || (singleChar > '~'))) { //If the name contains an illegal character
+                validName = FALSE;
+            }
+        } while ((singleChar != '\0') && (validName == TRUE)); //Loop until all chars have been read or an illegal char has been encountered
+        if (validName == FALSE) {
+            inputUserAcknowledgement("Error: illegal characters (did you use ';' ?)");
+        }
+    } while (validName == FALSE); //Loop until a valid name is entered
+    return userName;
 }
 
 Card askUserCard(Card cardArray[], int nbOfCards) {

@@ -29,11 +29,11 @@ void changeCardDisplay(Card card) {
     else {
         printf("%s", VALUE_STR_TABLE[card.value][0]); //Display the value in the standard color
     }
-    printf("\033[1B%s\033[4D\033[2A", COLOR_STR_TABLE[card.color]); //Display the color, then return the cursor to the top-left of the card
+    printf("\033[1B%s\033[4D\033[2A", COLOR_STR_TABLE[card.color][0]); //Display the color, then return the cursor to the top-left of the card
 }
 
-void displayTable(void) {
-    printf("\033[1;17H╤═════════════════════╤");
+void preparePlayTable(void) {
+    printf("\033[1;17H╤\033[21C╤");
     printf("\033[2;2HContract:      │                     │");
     printf("\033[3;17H│     ╭┈┈┈┈┈┈┈┈┈╮     │");
     printf("\033[4;17H│     ┊ Round   ┊     │");
@@ -107,12 +107,12 @@ void updateContractDisplay(char playerName[], Contract contract) {
         printf("%s ", CONTRACTTYPE_STR_TABLE[contract.type]); //Else, print the contract type string
     }
     if ((contract.type == GENERAL) && (contract.trump >= ALLTRUMP)) {   //If in this very special case (General + All or No trump),
-        croppedColor = cropStr(COLOR_STR_TABLE[contract.trump], 7);     //shorten the color to fit in the contract box
+        croppedColor = cropStr(COLOR_STR_TABLE[contract.trump][0], 7);     //shorten the color to fit in the contract box
         printf("%s", croppedColor); //Then, print the color character
         free(croppedColor); //Free croppedColor as it's not needed anymore
     }
     else {
-        printf("%s", COLOR_STR_TABLE[contract.trump]); //Print the color character
+        printf("%s", COLOR_STR_TABLE[contract.trump][0]); //Print the color character
     }
     printf("\033[1E\033[1C"); //Move cursor to the coinche field
     printf("%s", COINCHE_STR_TABLE[contract.coinche]); //Print the coinche state

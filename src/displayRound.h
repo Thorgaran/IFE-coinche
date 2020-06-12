@@ -19,9 +19,9 @@ void clearCardDisplay(void);
 */
 void changeCardDisplay(Card card);
 
-/* Displays an empty play table
+/* Prepares the play phase by displaying everything needed
 */
-void displayTable(void);
+void preparePlayTable(void);
 
 /* Clears top-right box. The cursor is left untouched
 */
