@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "core.h"
+#include "main.h"
 #include "play.h"
 #include "displayMain.h"
-#include "leaderboard.h"
+#include "userInput.h"
 
 int main (int argc, char* argv[]) {
     srand(time(0)); //Initialize the random function
@@ -37,7 +37,9 @@ int main (int argc, char* argv[]) {
     players[SOUTH].cardAI = CARD_USER;
     players[SOUTH].contractAI = CONTRACT_USER;
 
-    playGame(players);
+    mainMenu(players);
+
+    //playGame(players);
     /*averageGameLength = playAIGames(players, 1000, nbOfGamesWon);
 
     printf("Team SOUTH - NORTH won %d games!\n", nbOfGamesWon[0]);
@@ -52,4 +54,26 @@ int main (int argc, char* argv[]) {
     getchar();
     printf("\033[?1049l"); //Return to main screen buffer
     return EXIT_SUCCESS;
+}
+
+void mainMenu(Player players[]){
+    Bool exitProgram = FALSE;
+    while (exitProgram == FALSE) {
+        displayMenu();
+        int chosenMenuOption = inputUserInt(1,4,"Select a menu item: enter its number ");
+        switch (chosenMenuOption) {
+            case 1: playGame(players);
+                break;
+            case 2: 
+                displayLeaderboard();
+                inputUserAcknowledgement("");
+                break;
+            case 3: 
+                //displayCredits();
+                break;
+            case 4:
+                exitProgram = TRUE;
+                break;
+        }
+    }    
 }

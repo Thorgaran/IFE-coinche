@@ -3,6 +3,7 @@
 #include <string.h>
 #include "displayMain.h"
 #include "stringUtils.h"
+#include "userInput.h" //TO DELETE
 #include "leaderboard.h"
 
 void displayFrame(void) {
@@ -67,6 +68,7 @@ void resizeCmdWindow(int nbOfLines, int nbOfColumns) {
 }
 
 void displayMenu(void) {
+    displayFrame();
     printf("\033[2;3H░█████╗░░█████╗░██╗███╗░░██╗░█████╗░██╗░░██╗███████╗");
     printf("\033[3;3H██╔══██╗██╔══██╗██║████╗░██║██╔══██╗██║░░██║██╔════╝");
     printf("\033[4;3H██║░░╚═╝██║░░██║██║██╔██╗██║██║░░╚═╝███████║█████╗░░");
@@ -87,25 +89,6 @@ void displayMenu(void) {
     printf("\033[28;28H"); //Move cursor to the info box
 }
 
-void mainMenu(Player players[]){
-    displayMenu();
-    int chosenMenuOption = inputUserInt(1,4,"Select an action: enter its number");
-    switch (chosenMenuOption){
-    case 1: playGame(players);
-        break;
-    
-    case 2: 
-        displayLeaderboard();
-        break;
-    
-    case 3: 
-        displayCredits();
-        break;
-    
-    case 4: break;
-    }
-}
-
 void displayLeaderboard(void) {
     char names[10][MAX_PLAYER_NAME_LENGTH+1];
     char *formattedName = NULL;
@@ -118,7 +101,7 @@ void displayLeaderboard(void) {
     printf("\033[1E╠═════════════════════════════════════════════════════╣");
     nbOfPlayers = getTopTen(names, wins);
     if (nbOfPlayers == 0) { //If there are no players to display
-        printf("\033[5E\033[4CWin a game to see your name displayed here!"); //Display placeholder message
+        printf("\033[10E\033[6CWin a game to see your name displayed here!"); //Display placeholder message
     }
     else { //If there are players to display
         printf("\033[4E\033[4C╭────┬───────────────────────────────────┬────╮"); //Display the top of the table

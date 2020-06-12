@@ -25,11 +25,6 @@ void resizeCmdWindow(int nbOfLines, int nbOfColumns);
 */
 void displayMenu(void);
 
-/* Executes the action selected by the user in the menu
-    @param players[]: the four players that will play a game if the user selected 1. Start a game
-*/
-void mainMenu(Player players[]);
-
 /* Displays the leaderboard of the top ten in number of wins
 */
 void displayLeaderboard(void);
