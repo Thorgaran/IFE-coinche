@@ -62,7 +62,8 @@ void mainMenu(Player players[]) {
                 inputUserAcknowledgement("");
                 break;
             case 3: 
-                //displayCredits();
+                displayCredits();
+                inputUserAcknowledgement("");
                 break;
             case 4:
                 exitProgram = TRUE;

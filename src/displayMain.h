@@ -29,4 +29,8 @@ void displayMenu(void);
 */
 void displayLeaderboard(void);
 
+/* Displays the credits of this project
+*/
+void displayCredits(void);
+
 #endif // DISPLAYMAIN_H

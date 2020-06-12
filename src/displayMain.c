@@ -114,3 +114,40 @@ void displayLeaderboard(void) {
         printf("\033[1E\033[4C╰────┴───────────────────────────────────┴────╯"); //Display end of the table
     }
 }
+
+void displayCredits(void) {
+    char credits[][54] = {
+        "Victor G. and Mathieu M.",
+        "For coding",
+        "The Stack Overflow community",
+        "For answers to the most obscure questions",
+        "F.C.",
+        "For constantly criticizing (and motivating us)",
+        "A.B.C.",
+        "For endless debates on the best way to code",
+        "...and everyone else",
+        "For playtesting, coding tips, and design inputs"
+    };
+    char *formattedStr = NULL;
+    displayFrame();
+    printf("\033[2;31Hd8b   d8,");
+    printf("\033[1E\033[30C88P  `8P    d8P");
+    printf("\033[1E\033[29Cd88       d888888P");
+    printf("\033[1E\033[2Cd8888b  88bd88b d8888b d888888    88b  ?88'   .d888b");
+    printf("\033[1E\033[1Cd8P' `P  88P'  `d8b_,dPd8P' ?88    88P  88P    ?8b,");
+    printf("\033[1E\033[1C88b     d88     88b    88b  ,88b  d88   88b      `?8b");
+    printf("\033[1E\033[1C`?888P'd88'     `?888P'`?88P'`88bd88'   `?8b  `?888P'");
+    printf("\033[1E╠═════════════════════════════════════════════════════╣");
+    for (int i = 0; i < 10; i++) {
+        if (i%2 == 0) { //If i is even
+            printf("\033[2E\033[1C"); //Move cursor two lines down
+            formattedStr = formatStr(credits[i], 53, TEXT_CENTER, TRUE); //Prepare the line, underlined
+        }
+        else { //If i is odd
+            printf("\033[1E\033[1C"); //Move cursor one line down
+            formattedStr = formatStr(credits[i], 53, TEXT_CENTER, FALSE); //Prepare the line, not underlined
+        }
+        printf(formattedStr); //Display the line
+        free(formattedStr); //Free formattedStr, not needed anymore
+    }
+}
