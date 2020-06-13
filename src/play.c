@@ -117,7 +117,7 @@ void awardTeamPoints(Player players[], Contract contract) {
     int issuerTeamScore, defendantTeamScore;
     int issuerTeamPoints = getTeamRoundPoints(players, contract.issuer);
     char displayMsg[54];
-    if (((contract.type == POINTS) && (issuerTeamPoints >= contract.points)) ||
+    if (((contract.type == POINTS) && (issuerTeamPoints >= contract.points) && (issuerTeamPoints >= 82)) ||
         ((contract.type == CAPOT) && (issuerTeamPoints == 162)) ||
         ((contract.type == GENERAL) && (players[contract.issuer].score == 162))) {  //If the contract is fulfilled,
         issuerTeamScore = issuerTeamPoints + contract.points;                       //total issuer score = trick points + contract point value
