@@ -81,11 +81,12 @@ void displayMenu(void) {
     printf("\033[11;11H██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░");
     printf("\033[12;11H╚██████╔╝██║░░██║██║░╚═╝░██║███████╗");
     printf("\033[13;11H░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝");
-    printf("\033[14;1H╠═════════════════════════════════════════════════════╣");
-    printf("\033[17;21H1. Start a game");
-    printf("\033[19;21H2. Leaderboard");
-    printf("\033[21;21H3. Credits");
-    printf("\033[23;21H4. Exit game");
+    printf("\033[15;21H1: Play");
+    printf("\033[17;21H2: AI games");
+    printf("\033[19;21H3: AI settings");
+    printf("\033[21;21H4: Leaderboard");
+    printf("\033[23;21H5: Credits");
+    printf("\033[25;21H6: Exit game");
     printf("\033[28;28H"); //Move cursor to the info box
 }
 

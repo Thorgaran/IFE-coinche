@@ -7,6 +7,12 @@
 */
 void mainMenu(Player players[]);
 
+/* Prompts the user to change player settings
+*   @param players[]: array of 4 players
+*   @param quitMsg[]: the text displayed as the quit option
+*/
+void changePlayerSettings(Player players[], char quitMsg[]);
+
 /* Sets up everything needed for the program to run, including the players
 *   @param players[]: array of 4 players. Each of them will be initialized
 */

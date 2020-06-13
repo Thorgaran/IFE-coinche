@@ -41,12 +41,14 @@ typedef enum CardAI {
     CARD_AI_FIRSTAVAILABLE = 1,
     CARD_AI_STANDARD       = 2
 } CardAI;
+#define NB_CARD_AI 3
 
 typedef enum ContractAI {
     CONTRACT_USER            = 0,
     CONTRACT_AI_ALWAYSEIGHTY = 1,
     CONTRACT_AI_STANDARD     = 2
 } ContractAI;
+#define NB_CONTRACT_AI 3
 
 typedef enum Position {
     SOUTH = 0,
@@ -102,5 +104,9 @@ const char* COLOR_STR_TABLE[7][2];
 const char* COINCHE_STR_TABLE[3];
 
 const char* CONTRACTTYPE_STR_TABLE[3];
+
+const char* CARDAI_STR_TABLE[NB_CARD_AI];
+
+const char* CONTRACTAI_STR_TABLE[NB_CONTRACT_AI];
 
 #endif // CORE_H

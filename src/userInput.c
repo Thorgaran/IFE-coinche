@@ -47,13 +47,14 @@ int inputUserInt(int minBound, int maxBound, char displayStr[]) {
     char* endPtr = NULL;
     int userVal = __INT_MAX__;
     long userValLong;
-    inputStr = inputUserStr(5, displayStr, "", FALSE); //Ask the user for an input
+    inputStr = inputUserStr(10, displayStr, "", FALSE);
+    //Ask the user for an input. Length 10 because the 10th char is guaranteed to be an '\0' if the string is too long
     userValLong = strtol(inputStr, &endPtr, 10); //Try to convert the string to a long
     while ((endPtr == inputStr) || (userValLong < minBound) || (userValLong > maxBound)) { //The condition order is very important!
         //While the address pointed to by endPtr is the first one of the inputStr (so if reading a long was unsuccessful), or the value is not between the bounds
         sprintf(formattedErrorMsg, "'%s' is not a valid input.", inputStr); //Construct the error message. inputStr is guaranteed to be 5 chars or less
         free(inputStr); //Free the last input, as it's a bad input that can be deleted safely
-        inputStr = inputUserStr(5, formattedErrorMsg, displayStr, FALSE); //Ask the user for an input
+        inputStr = inputUserStr(10, formattedErrorMsg, displayStr, FALSE); //Ask the user for an input
         userValLong = strtol(inputStr, &endPtr, 10); //Try to convert the string to a long
     };
     free(inputStr); //Free the last input, as it's already converted to an int

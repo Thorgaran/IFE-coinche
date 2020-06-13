@@ -56,7 +56,6 @@ Contract bidUntilContract(Player players[], Position startingPlayer) {
         }
         everyonePassed = bidAttempt(players, startingPlayer, &contract); //Do a bid attempt
     } while (everyonePassed == TRUE); //As long as no contract is made, repeat the loop
-    updateContractDisplay(players[contract.issuer].name, contract);
     return contract;
 }
 
