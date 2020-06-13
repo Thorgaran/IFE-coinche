@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "playerUtils.h"
+#include "ai.h"
 #include "cardUtils.h"
 #include "userInput.h"
-#include "ai.h"
 
 Card getPlayerCard(Player *player, Card trickCards[], int nbOfTrickCards, Color trump, Color roundColor) {
     Card chosenCard;
@@ -53,7 +53,7 @@ void cardsDistribution(Player players[]) {
     createDeck(cardDeck); //Prepare the full deck that will be dealed
     for (int cardIndex = 0; cardIndex < 8; cardIndex++) {
         for (Position player = SOUTH; player <= EAST; player++) {
-            randomCardNb = rand()%(nbOfRemainingCards);                         //Choose a card among the remaining ones
+            randomCardNb = rand()%nbOfRemainingCards;                           //Choose a card among the remaining ones
             players[player].cards[cardIndex] = cardDeck[randomCardNb];          //Give that card to the player,
             removeCard(cardDeck, &nbOfRemainingCards, cardDeck[randomCardNb]);  //and remove it from the deck
         } 

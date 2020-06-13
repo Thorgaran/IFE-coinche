@@ -1,10 +1,10 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "play.h"
 #include "cardUtils.h"
+#include "displayRound.h"
 #include "playerUtils.h"
 #include "userInput.h"
-#include "displayRound.h"
 
 Bool bidAttempt(Player players[], Position startingPlayer, Contract *contract) {
     Position currentPlayer = startingPlayer; //Transferring startingPlayer to currentPlayer

@@ -2,9 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "displayMain.h"
-#include "stringUtils.h"
-#include "userInput.h" //TO DELETE
 #include "leaderboard.h"
+#include "stringUtils.h"
 
 void displayFrame(void) {
     printf("\033[1;1H"); //Move cursor to origin

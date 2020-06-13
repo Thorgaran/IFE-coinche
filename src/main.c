@@ -1,24 +1,18 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include "main.h"
-#include "play.h"
 #include "displayMain.h"
-#include "userInput.h"
 #include "leaderboard.h"
+#include "play.h"
 #include "stringUtils.h"
+#include "userInput.h"
 
 int main (int argc, char* argv[]) {
     Player players[4];
     setUp(players);
     mainMenu(players);
-    /*
-
-    printf("Team SOUTH - NORTH won %d games!\n", nbOfGamesWon[0]);
-    printf("Team  WEST - EAST  won %d games!\n", nbOfGamesWon[1]);
-    printf("The games lasted %f rounds on average.\n", averageGameLength);
-    */
     tearDown(players);
     return EXIT_SUCCESS;
 }

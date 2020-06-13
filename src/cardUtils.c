@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "ai.h"
+#include "cardUtils.h"
 
 int getCardStrength(Card card, Color trump, Color roundColor) {
     int cardStrength = card.value;
