@@ -1,3 +1,6 @@
+/**
+ * \file core.c
+*/
 #include "core.h"
 
 const int CARD_POINTS_TABLE[4][8] = { //Array used to determine the point value of a card. Read only

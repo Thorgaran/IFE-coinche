@@ -1,3 +1,6 @@
+/**
+ * \file cardUtils.c
+*/
 #include "cardUtils.h"
 
 int getCardStrength(Card card, Color trump, Color roundColor) {

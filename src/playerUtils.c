@@ -1,3 +1,6 @@
+/**
+ * \file playerUtils.c
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "playerUtils.h"

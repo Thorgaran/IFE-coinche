@@ -2,24 +2,36 @@
 #define MAIN_H
 #include "core.h"
 
-/* Executes the action selected by the user in the menu
-    @param players[]: the four players that will play a game if the user selected 1. Start a game
+/**
+ * \fn void mainMenu(Player players[])
+ * @param players[]: the four players that will play a game if the user selected 1. Start a game
+ * 
+ * Executes the action selected by the user in the menu
 */
 void mainMenu(Player players[]);
 
-/* Prompts the user to change player settings
-*   @param players[]: array of 4 players
-*   @param quitMsg[]: the text displayed as the quit option
+/** 
+ * \fn void changePlayerSettings(Player players[], char quitMsg[])
+ * @param players[]: array of 4 players
+ * @param quitMsg[]: the text displayed as the quit option
+ * 
+ * Prompts the user to change player settings
 */
 void changePlayerSettings(Player players[], char quitMsg[]);
 
-/* Sets up everything needed for the program to run, including the players
-*   @param players[]: array of 4 players. Each of them will be initialized
+/** 
+ * \fn void setUp(Player players[])
+ * @param players[]: array of 4 players. Each of them will be initialized
+ * 
+ * Sets up everything needed for the program to run, including the players
 */
 void setUp(Player players[]);
 
-/* Prepares the program for exit. Mostly frees memory
-*   @param players[]: array of 4 players
+/** 
+ * \fn void tearDown(Player players[])
+ * @param players[]: array of 4 players
+ * 
+ * Prepares the program for exit. Mostly frees memory
 */
 void tearDown(Player players[]);
 

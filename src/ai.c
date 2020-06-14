@@ -1,3 +1,6 @@
+/**
+ * \file ai.c
+*/
 #include "ai.h"
 #include "cardUtils.h"
 
