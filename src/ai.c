@@ -69,3 +69,8 @@ Bool getAIContractStandard(Card cardsInHand[], int nbOfCardsInHand, Contract *co
     }
     return hasPassed;
 }
+
+Bool getAIContractAdvanced(Card cardsInHand[], int nbOfCardsInHand, Contract *contract) {
+    Bool hasPassed = getAIContractStandard(cardsInHand, nbOfCardsInHand, contract);
+    return hasPassed;
+}

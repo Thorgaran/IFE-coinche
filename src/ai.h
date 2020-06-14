@@ -48,4 +48,16 @@ Bool getAIContractAlwaysEighty(Card cardsInHand[], Contract *contract);
 */
 Bool getAIContractStandard(Card cardsInHand[], int nbOfCardsInHand, Contract *contract);
 
+
+/** 
+ * \fn Bool getAIContractAdvanced(Card cardsInHand[], int nbOfCardsInHand, Contract *contract)
+ * @param cardsInHand[]: array containing the cards in the AI's hand
+ * @param nbOfCardsInHand: the number of cards in hand
+ * @param *contract: pointer to the contract being debated. Will be edited if the AI decides to make a contract
+ * @return hasPassed: TRUE if the AI has decided to pass, FALSE if it decided to make a contract
+ * 
+ * DESC TO WRITE
+*/
+Bool getAIContractAdvanced(Card cardsInHand[], int nbOfCardsInHand, Contract *contract);
+
 #endif // AI_H

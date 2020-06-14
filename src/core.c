@@ -54,5 +54,6 @@ const char* CARDAI_STR_TABLE[NB_CARD_AI] = { //Array used to convert between Car
 const char* CONTRACTAI_STR_TABLE[NB_CONTRACT_AI] = { //Array used to convert between ContractAI types and their string representations. Read only
     "User",
     "Always eighty",
-    "Standard"
+    "Standard",
+    "Advanced"
 };

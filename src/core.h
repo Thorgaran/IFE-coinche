@@ -61,9 +61,10 @@ typedef enum CardAI {
 typedef enum ContractAI {
     CONTRACT_USER            = 0,
     CONTRACT_AI_ALWAYSEIGHTY = 1,
-    CONTRACT_AI_STANDARD     = 2
+    CONTRACT_AI_STANDARD     = 2,
+    CONTRACT_AI_ADVANCED     = 3
 } ContractAI;
-#define NB_CONTRACT_AI 3
+#define NB_CONTRACT_AI 4
 
 /**
  * \enum Position

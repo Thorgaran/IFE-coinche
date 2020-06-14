@@ -40,6 +40,9 @@ Bool getPlayerContract(Player player, Contract *contract) {
         case CONTRACT_AI_STANDARD: //If the player is an AI of type STANDARD
             hasPassed = getAIContractStandard(player.cards, player.nbOfCards, contract);
             break;
+        case CONTRACT_AI_ADVANCED: //If the player is an AI of type ADVANCED
+            hasPassed = getAIContractAdvanced(player.cards, player.nbOfCards, contract);
+            break;
         default: //Default behaviour if this AI type has no dedicated contract function
             hasPassed = getAIContractStandard(player.cards, player.nbOfCards, contract);
     }
