@@ -2,6 +2,7 @@
 
 #include "displayMain.h"
 #include "stringUtils.h"
+#include "leaderboard.h"
 
 void setUp(void)
 {

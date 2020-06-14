@@ -4,6 +4,7 @@
 #include "stringUtils.h"
 #include "displayMain.h"
 #include "displayRound.h"
+#include "leaderboard.h"
 
 void setUp(void)
 {
