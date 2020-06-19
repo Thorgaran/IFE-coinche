@@ -6,11 +6,12 @@ CC := gcc
 SRCS := $(wildcard src/*.c)
 OBJS := $(SRCS:.c=.o)
 
-OS=$(shell gcc -dumpmachine)
-ifeq ($(OS), x86_64-pc-cygwin)
-	RM=rm -f src/*.o
+ifeq ($(OS), Windows_NT)
+	RM=del src\*.o coinche.exe
+	EXT=.exe
 else
-	RM=del src\*.o
+	RM=rm -f src/*.o coinche
+	EXT=
 endif
 
 ifeq ($(DEBUG),true)
@@ -26,7 +27,7 @@ else
 	LFLAGS :=
 endif
 
-coinche.exe: $(OBJS)
+coinche: $(OBJS)
 ifeq ($(DEBUG),true)
 ifeq ($(PROFILING),true)
 	@echo "Profiling compilation"
@@ -36,7 +37,7 @@ endif
 else
 	@echo "Release compilation"
 endif
-	$(CC) $(LFLAGS) -o $@ $^
+	$(CC) $(LFLAGS) -o $@$(EXT) $^
 
 %.o: src/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
