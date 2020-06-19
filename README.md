@@ -1,6 +1,7 @@
 # IFE-coinche
 
-This is a project for our first-year C class. The "Coinche" is a French card game with overly complicated rules.
+This is a project for our first-year C class. The "Coinche" is a French card game with overly complicated rules.  
+For more informations, the project report can be found [here](https://github.com/Thorgaran/IFE-coinche/blob/master/docs/Project_report.pdf).
 
 # Building
 
