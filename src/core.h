@@ -122,39 +122,41 @@ typedef enum TextPosition {
     TEXT_RIGHT = 2
 } TextPosition;
 
+#ifndef CORE_C
 /**
  * \def const int CARD_POINTS_TABLE[4][8]
 */
-const int CARD_POINTS_TABLE[4][8];
+extern const int CARD_POINTS_TABLE[4][8];
 
 /**
  * \def const char* VALUE_STR_TABLE[9][2]
 */
-const char* VALUE_STR_TABLE[9][2];
+extern const char* VALUE_STR_TABLE[9][2];
 
 /**
  * \def const char* COLOR_STR_TABLE[7][2]
 */
-const char* COLOR_STR_TABLE[7][2];
+extern const char* COLOR_STR_TABLE[7][2];
 
 /**
  * \def const char* COINCHE_STR_TABLE[3]
 */
-const char* COINCHE_STR_TABLE[3];
+extern const char* COINCHE_STR_TABLE[3];
 
 /**
  * \def const char* CONTRACTTYPE_STR_TABLE[3]
 */
-const char* CONTRACTTYPE_STR_TABLE[3];
+extern const char* CONTRACTTYPE_STR_TABLE[3];
 
 /**
  * \def const char* CARDAI_STR_TABLE[NB_CARD_AI]
 */
-const char* CARDAI_STR_TABLE[NB_CARD_AI];
+extern const char* CARDAI_STR_TABLE[NB_CARD_AI];
 
 /**
  * \def const char* CONTRACTAI_STR_TABLE[NB_CONTRACT_AI]
 */
-const char* CONTRACTAI_STR_TABLE[NB_CONTRACT_AI];
+extern const char* CONTRACTAI_STR_TABLE[NB_CONTRACT_AI];
+#endif
 
 #endif // CORE_H
