@@ -9,13 +9,14 @@ For more informations, the project report can be found [here](https://github.com
 
 Make sure to have gcc installed.  
 Because of Unicode issues, if you compile through MinGW, the display will break, so we recommend compiling it through [Cygwin](https://www.cygwin.com/).  
-Run `make coinche.exe clean` in the project directory.  
-This will create a coinche.exe file.  
+Run `make coinche clean` in the project directory.  
+This will create a `coinche.exe` file.  
 
 ## Linux
 
-Compiling this project on linux hasn't been tested, but it will *probably* work.  
-Feel free to try it out.  
+Make sure to have gcc installed.
+Run `make coinche clean` in the project directory with any compiler
+This will create a `coinche` file.
 
 # Running
 
