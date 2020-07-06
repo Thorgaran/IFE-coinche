@@ -7,10 +7,15 @@ SRCS := $(wildcard src/*.c)
 OBJS := $(SRCS:.c=.o)
 
 ifeq ($(OS), Windows_NT)
-	RM=del src\*.o coinche.exe
+	MACHINE=$(shell gcc -dumpmachine)
+ifeq ($(MACHINE), x86_64-pc-cygwin)
+	RM=rm -f src/*.o
+else
+	RM=del src\*.o
+endif
 	EXT=.exe
 else
-	RM=rm -f src/*.o coinche
+	RM=rm -f src/*.o
 	EXT=
 endif
 
