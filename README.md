@@ -14,9 +14,9 @@ This will create a `coinche.exe` file.
 
 ## Linux
 
-Make sure to have gcc installed.
-Run `make coinche clean` in the project directory with any compiler
-This will create a `coinche` file.
+Make sure to have gcc installed.  
+Run `make coinche clean` in the project directory.  
+This will create a `coinche` file.  
 
 # Running
 
